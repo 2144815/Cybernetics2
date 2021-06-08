@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -133,7 +134,13 @@ public class MyCourses extends AppCompatActivity implements View.OnScrollChangeL
                     (error) -> {
                         progressBar.setVisibility(View.GONE);
                         //If an error occurs that means end of the list has been reached
-                        Toast.makeText(MyCourses.this, "No More Items Available", Toast.LENGTH_SHORT).show();
+                        if(listCourseVs.isEmpty()){
+                            TextView noCourses = (TextView)findViewById(R.id.noMyCourseItems);
+                            noCourses.setVisibility(View.VISIBLE);
+                        }
+                        else{
+                            Toast.makeText(MyCourses.this, "No More Items Available", Toast.LENGTH_SHORT).show();
+                        }
                     });
         }else{
             jsonArrayRequest = new JsonArrayRequest(instWebURL + String.valueOf(requestCount)+"&username="+USER.USERNAME,
@@ -150,7 +157,13 @@ public class MyCourses extends AppCompatActivity implements View.OnScrollChangeL
                     (error) -> {
                         progressBar.setVisibility(View.GONE);
                         //If an error occurs that means end of the list has been reached
-                        Toast.makeText(MyCourses.this, "No More Items Available", Toast.LENGTH_SHORT).show();
+                        if(listCourseVs.isEmpty()){
+                            TextView noCourses = (TextView)findViewById(R.id.noMyCourseItems);
+                            noCourses.setVisibility(View.VISIBLE);
+                        }
+                        else{
+                            Toast.makeText(MyCourses.this, "No More Items Available", Toast.LENGTH_SHORT).show();
+                        }
                     });
         }
         //Returning the request

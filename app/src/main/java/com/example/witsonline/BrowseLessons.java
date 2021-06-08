@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -122,7 +123,14 @@ public class BrowseLessons extends AppCompatActivity implements View.OnScrollCha
                 (error) -> {
                     progressBar.setVisibility(View.GONE);
                     //If an error occurs that means end of the list has been reached
-                    Toast.makeText(BrowseLessons.this, "No More Items Available", Toast.LENGTH_SHORT).show();
+
+                    if(listLessonVs.isEmpty()){
+                        TextView noLessons = (TextView)findViewById(R.id.noLessonItems);
+                        noLessons.setVisibility(View.VISIBLE);
+                    }
+                    else{
+                        Toast.makeText(BrowseLessons.this, "No More Items Available", Toast.LENGTH_SHORT).show();
+                    }
                 });
         //Returning the request
         return jsonArrayRequest;
