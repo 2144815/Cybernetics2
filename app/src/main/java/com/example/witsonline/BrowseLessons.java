@@ -119,6 +119,11 @@ public class BrowseLessons extends AppCompatActivity implements View.OnScrollCha
                     }
                     //Hiding the progressBar
                     progressBar.setVisibility(View.GONE);
+
+                    if(listLessonVs.isEmpty()){
+                        TextView noLessons = (TextView)findViewById(R.id.noLessonItems);
+                        noLessons.setVisibility(View.VISIBLE);
+                    }
                 },
                 (error) -> {
                     progressBar.setVisibility(View.GONE);

@@ -130,6 +130,11 @@ public class MyCourses extends AppCompatActivity implements View.OnScrollChangeL
                         }
                         //Hiding the progressBar
                         progressBar.setVisibility(View.GONE);
+
+                        if(listCourseVs.isEmpty()){
+                            TextView noCourses = (TextView)findViewById(R.id.noMyCourseItems);
+                            noCourses.setVisibility(View.VISIBLE);
+                        }
                     },
                     (error) -> {
                         progressBar.setVisibility(View.GONE);
@@ -153,6 +158,11 @@ public class MyCourses extends AppCompatActivity implements View.OnScrollChangeL
                         }
                         //Hiding the progressBar
                         progressBar.setVisibility(View.GONE);
+
+                        if(listCourseVs.isEmpty()){
+                            TextView noCourses = (TextView)findViewById(R.id.noMyCourseItems);
+                            noCourses.setVisibility(View.VISIBLE);
+                        }
                     },
                     (error) -> {
                         progressBar.setVisibility(View.GONE);

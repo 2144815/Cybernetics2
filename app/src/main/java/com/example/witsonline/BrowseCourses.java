@@ -126,10 +126,16 @@ public class BrowseCourses extends AppCompatActivity implements View.OnScrollCha
                     }
                     //Hiding the progressBar
                     progressBar.setVisibility(View.GONE);
+                    // This is when we got a response but it an empty array
+                    if(listCourseVs.isEmpty()){
+                        TextView noCourses = (TextView)findViewById(R.id.noCourseItems);
+                        noCourses.setVisibility(View.VISIBLE);
+                    }
+
                 },
                 (error) -> {
                     progressBar.setVisibility(View.GONE);
-                    //If an error occurs that means end of the list has been reached
+                    //If an error occurs that means end of the list has been reached or we unable to get an courses
                     if(listCourseVs.isEmpty()){
                         TextView noCourses = (TextView)findViewById(R.id.noCourseItems);
                         noCourses.setVisibility(View.VISIBLE);
