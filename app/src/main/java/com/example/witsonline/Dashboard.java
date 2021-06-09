@@ -318,6 +318,10 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
             course.setImageUrl(featuredCourse.getString("Course_Image"));
             course.setCourseRating(featuredCourse.getString("Course_Rating"));
             course.setCourseInstructor(featuredCourse.getString("Course_Instructor"));
+            String instName = "";
+            instName += featuredCourse.getString("Instructor_FName") + " ";
+            instName += featuredCourse.getString("Instructor_LName");
+            course.setInstName(instName);
 
             courses.add(course);
         }

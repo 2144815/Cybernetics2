@@ -77,8 +77,6 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
     //This is for the add tag pop up menu
     private TextView DialogueInstruction;
 
-    //this if for adding a tag
-    private Button tagAdd;
 
     //CreatingViews
     private RecyclerView recyclerView;
@@ -118,7 +116,6 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
         courseRating = (RatingBar)findViewById(R.id.courseRating);
         outlineLayout = findViewById(R.id.courseOutline);
         image = (ImageView)findViewById(R.id.courseImage);
-        tagAdd = (Button)findViewById(R.id.tagadd);
 
         //Initializing Views
         recyclerView = (RecyclerView)findViewById(R.id.reviewRecyclerView);
@@ -184,12 +181,6 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
                 Intent intent = new Intent(CourseHomePageInstructor.this, BrowseLessons.class);
                 startActivity(intent);
                // finish();
-            }
-        });
-        tagAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view){
-                createNewViewTagReview();
             }
         });
 
@@ -357,7 +348,8 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
                 }
                 courseName.setText(COURSE.NAME);
                 courseDescription.setText(COURSE.DESCRIPTION);
-                courseInstructor.setText("By: "+COURSE.INSTRUCTOR);
+                //courseInstructor.setText("By: "+COURSE.INSTRUCTOR);
+                courseInstructor.setText("By: " + USER.FNAME + " " + USER.LNAME);
                 courseRating.setRating(Float.parseFloat(COURSE.RATING));
                 addOutlineTopics(COURSE.OUTLINE);
 
@@ -442,91 +434,5 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
         finish();
     }
 
-    public void createNewViewTagReview(){
-        dialogBuilder = new AlertDialog.Builder(this);
-        final View viewPopUp = LayoutInflater.from(this)
-                .inflate(R.layout.review_dialog, null);
 
-        dialogBuilder.setView(viewPopUp);
-        dialog = dialogBuilder.create();
-        dialog.show();
-        DialogueInstruction = viewPopUp.findViewById(R.id.dialogTitle);
-        DialogueInstruction.setText("Please Enter Tag Below");
-        btnReviewPostReview = (Button) viewPopUp.findViewById(R.id.dialogPostReview);
-        btnReviewPostReview.setText("Add");
-        rtbReviewRating = (RatingBar) viewPopUp.findViewById(R.id.dialogCourseRating);
-        rtbReviewRating.setVisibility (View.GONE);
-        edtReviewDescription = (EditText) viewPopUp.findViewById(R.id.dialogCourseDescription);
-        edtReviewDescription.setHint("Tag Description");
-
-        btnReviewPostReview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String newtag= edtReviewDescription.getText().toString();
-                Log.i("newtag", "newtag = "+newtag);
-                if(newtag.isEmpty()){
-                    Toast toast = Toast.makeText(CourseHomePageInstructor.this, "Please Insert Tag Name", Toast.LENGTH_LONG);
-                    toast.show();
-                }
-                else {
-                    try {
-                        doTagAdd("taginsert.php", newtag);
-                        dialog.dismiss();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
-
-    }
-    private void doTagAdd(String phpFile, String tag)throws IOException {
-
-        Log.i("newtag", "doTagAdd called");
-        Log.i("newtag", COURSE.TAGS);
-        String alltags;
-        if(COURSE.TAGS == "null" || COURSE.TAGS.equals("null")) {
-            alltags = tag;
-        }
-        else{
-            alltags=COURSE.TAGS+";"+tag;
-        }
-
-        Log.i("newtag", "alltags = "+alltags);
-        OkHttpClient client = new OkHttpClient();
-
-        HttpUrl.Builder urlBuilder = HttpUrl.parse("https://lamp.ms.wits.ac.za/home/s2105624/" + phpFile).newBuilder();
-        urlBuilder.addQueryParameter("ccode",COURSE.CODE);
-        urlBuilder.addQueryParameter("tags", alltags);
-        String url = urlBuilder.build().toString();
-        Log.i("newtag", url);
-
-        Request request = new Request.Builder()
-                .url(url)
-                .build();
-
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                e.printStackTrace();
-                Log.i("newtag", "it failed");
-            }
-
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                final String responseData = response.body().string();
-                Log.i("newtag", "it passed");
-                CourseHomePageInstructor.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        overridePendingTransition(0, 0);
-                        startActivity(getIntent());
-                        overridePendingTransition(0, 0);
-                        Toast toast = Toast.makeText(CourseHomePageInstructor.this, "Tag posted", Toast.LENGTH_LONG);
-                        toast.show();
-                    }
-                });
-            }
-        });
-    }
 }

@@ -4,6 +4,7 @@ public class CourseV {
     private String strCourseName;
     private String strCourseDescription;
     private String strCourseInstructor;
+    private String strInstName;
     private String strCourseCode;
     private String strCourseRating;
     private String strCourseOutline;
@@ -15,6 +16,7 @@ public class CourseV {
     }
     public void setCourseDescription(String courseDescription){ this.strCourseDescription = courseDescription;}
     public void setCourseInstructor(String courseInstructor){ this.strCourseInstructor = courseInstructor;}
+    public void setInstName(String instName){ this.strInstName = instName;}
     public void setCourseCode(String courseCode){this.strCourseCode = courseCode;}
     public void setCourseRating(String courseRating){ this.strCourseRating = courseRating;}
     public void setCourseOutline(String courseOutline){this.strCourseOutline = courseOutline;};
@@ -29,6 +31,9 @@ public class CourseV {
     }
     public String getCourseInstructor(){
         return strCourseInstructor;
+    }
+    public String getInstName(){
+        return strInstName;
     }
     public String getCourseCode(){ return strCourseCode; }
     public String getImageUrl(){ return strImageUrl; }

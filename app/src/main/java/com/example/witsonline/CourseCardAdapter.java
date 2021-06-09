@@ -70,7 +70,8 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
         holder.setIsRecyclable(false);
         holder.courseName.setText(courseV.getCourseName());
         holder.courseDescription.setText(courseV.getCourseDescription());
-        holder.courseInstructor.setText(courseV.getCourseInstructor());
+        //holder.courseInstructor.setText(courseV.getCourseInstructor());
+        holder.courseInstructor.setText(courseV.getInstName());
         holder.courseCode.setText(courseV.getCourseCode());
         holder.courseRatingBar.setRating(Float.parseFloat(courseV.getCourseRating()));
         holder.courseOutline = courseV.getCourseOutline();
@@ -116,7 +117,8 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
                     COURSE.OUTLINE = courseOutline;
                     COURSE.IMAGE = courseImage;
                     COURSE.RATING =courseRating;
-                    COURSE.INSTRUCTOR = courseInstructor.getText().toString();
+                    //COURSE.INSTRUCTOR = courseInstructor.getText().toString();
+                    COURSE.INSTRUCTOR_NAME = courseInstructor.getText().toString();
                     COURSE.CODE = courseCode.getText().toString();
                     COURSE.DESCRIPTION = courseDescription.getText().toString();
 

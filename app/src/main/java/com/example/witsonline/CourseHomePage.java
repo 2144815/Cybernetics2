@@ -51,6 +51,7 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
     private boolean mycourses = false;
     private boolean dashboard = false;
     private Button viewLesson;
+    private TextView courseInstructor;
     //Creating a list of Courses
     private ArrayList<ReviewV> listReviewVs;
 
@@ -78,6 +79,7 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
     private RecyclerView.Adapter adapterTags;
     String webURL = "https://lamp.ms.wits.ac.za/home/s2105624/loadReviews.php?page=";
     String tagURL = "https://lamp.ms.wits.ac.za/home/s2105624/tagretrieve.php?ccode=";
+    String instrURL = "https://lamp.ms.wits.ac.za/home/s2105624/getInstructorName.php?Instructor_Username=";
 
     //Volley Request Queue
     private RequestQueue requestQueue;
@@ -90,7 +92,7 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
         super.onCreate(savedInstanceState);
         TextView courseName =(TextView)findViewById(R.id.courseName);
         TextView courseDescription =(TextView)findViewById(R.id.courseDescription);
-        TextView courseInstructor =(TextView)findViewById(R.id.courseInstructor);
+        courseInstructor =(TextView)findViewById(R.id.courseInstructor);
         RatingBar courseRating = (RatingBar)findViewById(R.id.courseRating);
         subscribe = (Button)findViewById(R.id.subscribe);
         outlineLayout = findViewById(R.id.courseOutline);
@@ -118,7 +120,7 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
         }
         courseName.setText(COURSE.NAME);
         courseDescription.setText(COURSE.DESCRIPTION);
-        courseInstructor.setText("By: "+COURSE.INSTRUCTOR);
+        courseInstructor.setText("By: "+COURSE.INSTRUCTOR_NAME);
         courseRating.setRating(Float.parseFloat(COURSE.RATING));
         addOutlineTopics(COURSE.OUTLINE);
 
@@ -142,6 +144,7 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
         //Calling methods to get data from server
         getData();
         getTagData();
+        getInstrData();
 
         //Adding an scroll change listener to recyclerView
         recyclerView.setOnScrollChangeListener(this);
@@ -255,6 +258,33 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
         return jsonArrayRequest;
     }
 
+    private JsonArrayRequest getInstrDataFromServer(){
+
+        //Initializing progressbar
+        final ProgressBar progressBar = (ProgressBar) findViewById(R.id.reviewProgressBar);
+
+        //Displaying ProgressBar
+        progressBar.setVisibility(View.VISIBLE);
+        setProgressBarIndeterminateVisibility(true);
+
+        //JsonArrayRequest of volley
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(instrURL + COURSE.INSTRUCTOR,
+                (response) -> {
+                    //Calling method parseData to parse the json responce
+                    parseInstrData(response);
+                    //Hiding the progressBar
+                    progressBar.setVisibility(View.GONE);
+
+                },
+                (error) -> {
+                    //If an error occurs that means end of the list has been reached
+                    progressBar.setVisibility(View.GONE);
+                    //Toast.makeText(CourseHomePage.this, "No More Items Available", Toast.LENGTH_SHORT).show();
+                });
+        //Returning the request
+        return jsonArrayRequest;
+    }
+
     //This method will get Data from the web api
     private void getData(){
         //Adding the method to the queue by calling the method getDatafromServer
@@ -267,6 +297,12 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
         //Adding the method to the queue by calling the method getTagData
         requestQueue.add(getTagDataFromServer());
     }
+
+    private void getInstrData(){
+        //Adding the method to the queue by calling the method getTagData
+        requestQueue.add(getInstrDataFromServer());
+    }
+
 
     private String[] taglist(JSONArray all){
         String[] tagTemps = null;
@@ -295,6 +331,29 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
         }
         adapterTags.notifyDataSetChanged();
         return tagTemps;
+    }
+
+    //This method will parse json Data
+    private void parseInstrData(JSONArray array){
+        for (int i = 0; i< array.length(); i++){
+
+            JSONObject json = null;
+            try {
+                //Getting json
+                json = array.getJSONObject(i);
+
+                //Adding data to the course object
+                String fname = json.getString("Instructor_FName");
+                String lname = json.getString("Instructor_LName");
+
+                courseInstructor.setText("By: "+ fname + " " + lname);
+
+            } catch (JSONException e){
+                e.printStackTrace();
+            }
+
+        }
+
     }
 
 

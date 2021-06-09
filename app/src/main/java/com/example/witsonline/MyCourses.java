@@ -54,6 +54,7 @@ public class MyCourses extends AppCompatActivity implements View.OnScrollChangeL
 
     //The request counter to send ?page=1, ?page=2 requests
     private int courseCount = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -207,6 +208,14 @@ public class MyCourses extends AppCompatActivity implements View.OnScrollChangeL
                 courseV.setCourseRating(json.getString("courseRating"));
                 courseV.setCourseOutline(json.getString("courseOutline"));
                 courseV.setImageUrl(json.getString("courseImageUrl"));
+                if (USER.STUDENT) {
+                    String instName = "";
+                    instName += json.getString("instructorFName") + " ";
+                    instName += json.getString("instructorLName");
+                    courseV.setInstName(instName);
+                }else{
+                    courseV.setInstName(USER.FNAME+" "+USER.LNAME);
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }

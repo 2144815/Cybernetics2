@@ -8,6 +8,7 @@ public class COURSE {
 	public static String NAME;
 	public static String DESCRIPTION;
 	public static String INSTRUCTOR;
+	public static String INSTRUCTOR_NAME;
 	public static String IMAGE;
 	public static String RATING;
 	public static String OUTLINE;
