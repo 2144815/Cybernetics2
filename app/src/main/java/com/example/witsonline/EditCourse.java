@@ -79,8 +79,8 @@ public class EditCourse extends AppCompatActivity {
     private boolean imgChanged = false;
     private Bitmap bitmap;
     private Uri filePath;
-    LinearLayout outlineLayout;
-    LinearLayout tagLayout;
+    private LinearLayout outlineLayout;
+    private LinearLayout tagLayout;
     private String visibility = "Public";
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;

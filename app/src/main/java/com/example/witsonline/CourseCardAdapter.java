@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +37,7 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
     private Context context;
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
+    private ProgressBar progressBar;
     private Button btnViewDialogSubscribe, btnViewDialogViewCourse;
     private Button btnUnsubscribe, btnCancel;
     //List to store all Courses
@@ -56,11 +58,6 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
                 .inflate(R.layout.course_card, parent, false);
         ViewHolder viewHolder = new ViewHolder(v);
 
-        try {
-            doPostRequest("enrolment.php");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         return viewHolder;
     }
 
@@ -123,12 +120,12 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
                     COURSE.CODE = courseCode.getText().toString();
                     COURSE.DESCRIPTION = courseDescription.getText().toString();
 
-                    try {
-                        doPostRequest("enrolment.php");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
                     if(USER.STUDENT){
+                        try {
+                            doPostRequest("enrolment.php");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         createNewViewDialog();
                     }
                     else{
@@ -147,12 +144,16 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
 
         btnViewDialogSubscribe = (Button) viewPopUp.findViewById(R.id.viewSubscribe);
         btnViewDialogViewCourse = (Button) viewPopUp.findViewById(R.id.viewViewCourse);
-
+        progressBar = viewPopUp.findViewById(R.id.progressBarSubscribe);
+        progressBar.setVisibility(View.VISIBLE);
         dialogBuilder.setView(viewPopUp);
         dialog = dialogBuilder.create();
         dialog.show();
-
-
+        try {
+            doPostRequest("enrolment.php");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         btnViewDialogSubscribe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -160,7 +161,7 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
                     try {
                         doPostRequest("enrol.php");
                         btnViewDialogSubscribe.setText("UNSUBSCRIBE");
-                    Toast toast = Toast.makeText(context, "Subscribed to "+ COURSE.CODE, Toast.LENGTH_LONG);
+                        Toast toast = Toast.makeText(context, "Subscribed to "+ COURSE.CODE, Toast.LENGTH_LONG);
                         toast.show();
                         dialog.dismiss();
                         Intent intent = new Intent(context,BrowseCourses.class);
@@ -188,16 +189,17 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
 
     }
     public void createNewViewDialogUnsubscribe(){
+
         dialogBuilder = new AlertDialog.Builder(context);
         final View viewPopUp = LayoutInflater.from(context)
                 .inflate(R.layout.unsubscribe_dialog, null);
-
+        //relativeLayout = findViewById(R.id.CourseHomeInstructorLayout);
         btnUnsubscribe = (Button) viewPopUp.findViewById(R.id.unSubscribe);
         btnCancel = (Button) viewPopUp.findViewById(R.id.unsubscribeCancel);
-
         dialogBuilder.setView(viewPopUp);
         dialog = dialogBuilder.create();
         dialog.show();
+
 
         btnUnsubscribe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -222,6 +224,7 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
                 dialog.dismiss();
             }
         });
+
 
     }
 
@@ -257,12 +260,23 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
                             if (responseData.trim().equals("subscribed")) {
                                 btnViewDialogSubscribe.setText("UNSUBSCRIBE");
                             }
+                            if(progressBar!=null){
+                                btnViewDialogSubscribe.setVisibility(View.VISIBLE);
+                                btnViewDialogViewCourse.setVisibility(View.VISIBLE);
+                                progressBar.setVisibility(View.GONE);
+                            }
                         }
                         if (btnUnsubscribe != null) {
                             if (responseData.trim().equals("unsubscribed")) {
                                 btnUnsubscribe.setText("SUBSCRIBE");
                             }
+                            if(progressBar!=null) {
+                                btnUnsubscribe.setVisibility(View.VISIBLE);
+                                btnViewDialogViewCourse.setVisibility(View.VISIBLE);
+                                progressBar.setVisibility(View.GONE);
+                            }
                         }
+
                     }
                 });
             }

@@ -6,7 +6,6 @@
     android:layout_height="wrap_content"
     android:padding="16dp"
     android:textSize="25dp">
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -14,29 +13,39 @@
         android:textStyle="bold"
         android:layout_gravity="center"
         android:text="What do you want to do?"/>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
         android:padding="16dp">
+        <ProgressBar
+            android:id="@+id/progressBarSubscribe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
 
 
         <Button
+            android:id="@+id/viewSubscribe"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/viewSubscribe"
-            android:text="SUBSCRIBE"
-            android:padding="10dp"
-            android:layout_margin="10dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:background="@color/color1"
+            android:padding="10dp"
+            android:text="SUBSCRIBE"
             android:textColor="@color/white"
-            android:layout_gravity="center"/>
+            android:visibility="gone" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/viewViewCourse"
             android:text="VIEW"
+            android:visibility="gone"
             android:layout_alignParentRight="true"
             android:padding="10dp"
             android:layout_margin="10dp"
@@ -44,6 +53,5 @@
             android:textColor="@color/white"
             android:layout_gravity="center"/>
     </RelativeLayout>
-
 
 </LinearLayout>
