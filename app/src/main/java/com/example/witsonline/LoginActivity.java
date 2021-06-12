@@ -48,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
     String URL = "https://lamp.ms.wits.ac.za/home/s2105624/";
 
     @Override
+    @Generated
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
@@ -61,6 +62,7 @@ public class LoginActivity extends AppCompatActivity {
 
         rgLogin.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
+            @Generated
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if(checkedId == R.id.student){
                     userText.setHint("Student Number");
