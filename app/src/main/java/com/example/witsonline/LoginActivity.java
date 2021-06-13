@@ -44,7 +44,6 @@ public class LoginActivity extends AppCompatActivity {
     private ArrayList<String> studentNumbers = new ArrayList<>();
     private ArrayList<String> instructorUsernames = new ArrayList<>();
     private ArrayList<ArrayList<String> > instructor = new ArrayList<>();
-
     String URL = "https://lamp.ms.wits.ac.za/home/s2105624/";
 
     @Override
