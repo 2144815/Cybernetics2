@@ -113,7 +113,6 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
                 mycourses = true;
             }
         }
-      //  Toast.makeText(CourseHomePage.this, act, Toast.LENGTH_LONG).show();
 
         if(!COURSE.IMAGE.equals("null")){
             Glide.with(this).load(COURSE.IMAGE).into(image);
