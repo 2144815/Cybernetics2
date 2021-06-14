@@ -102,16 +102,16 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
 
         //To determine which activity we came from (BrowseCourses or MyCourses
         Bundle extras = getIntent().getExtras();
-        String act = extras.getString("activity");
-        if (act.contains("BrowseCourses")){
-            browse = true;
-        }
-        else if (act.contains("Dashboard")){
-            dashboard = true;
+        if (extras != null) {
+            String act = extras.getString("activity");
+            if (act.contains("BrowseCourses")) {
+                browse = true;
+            } else if (act.contains("Dashboard")) {
+                dashboard = true;
 
-        }
-        else{
-            mycourses = true;
+            } else {
+                mycourses = true;
+            }
         }
       //  Toast.makeText(CourseHomePage.this, act, Toast.LENGTH_LONG).show();
 
@@ -194,7 +194,7 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(CourseHomePage.this, BrowseLessons.class);
-           //     intent.putExtra("activity","student");
+                intent.putExtra("activity","student");
                 startActivity(intent);
             //    finish();
             }

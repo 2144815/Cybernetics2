@@ -50,6 +50,9 @@ public class BrowseLessons extends AppCompatActivity implements View.OnScrollCha
 
     //The request counter to send ?page=1, ?page=2 requests
     private int courseCount = 1;
+
+    //to see where we came from
+    private boolean student;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +67,15 @@ public class BrowseLessons extends AppCompatActivity implements View.OnScrollCha
         //Initializing our Course list
         listLessonVs = new ArrayList<>();
         requestQueue = Volley.newRequestQueue(this);
+
+        Bundle extras = getIntent().getExtras();
+        String act = extras.getString("activity");
+        if (act.equals("student")){
+            student = true;
+        }
+        else{
+            student = false;
+        }
 
         //Calling method getData to fetch data
         getData();
@@ -266,9 +278,16 @@ public class BrowseLessons extends AppCompatActivity implements View.OnScrollCha
 
     @Override
     public void onBackPressed(){
-        Intent i = new Intent(this,CourseHomePageInstructor.class);
-        startActivity(i);
-        finish();
+        if (student == false){
+            Intent i = new Intent(this,CourseHomePageInstructor.class);
+            startActivity(i);
+            finish();
+        }else{
+            Intent i = new Intent(this,CourseHomePage.class);
+            startActivity(i);
+            finish();
+        }
+
     }
 
 

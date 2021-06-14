@@ -179,6 +179,7 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(CourseHomePageInstructor.this, BrowseLessons.class);
+                intent.putExtra("activity","instructor");
                 startActivity(intent);
                // finish();
             }
