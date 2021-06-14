@@ -41,7 +41,6 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
     private RelativeLayout relativeLayout; // for the entire page
 
     //delay for loading featured courses
-    private ProgressBar progressBarFeatCourses;
     private LinearLayout featuredCourses;  // for the featured course
 
 
@@ -71,37 +70,35 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
         setContentView(R.layout.activity_dashboard);
         name = findViewById(R.id.textViewStudentName);
 
+        //Initializing progressbar
+        progressBar = findViewById(R.id.dashboardProgressBar);
+        progressBar.setVisibility(View.VISIBLE);
+
+        relativeLayout = findViewById(R.id.dashboardRelLayout);
+
         //NO ACTION BAR ON THIS ACTIVITY
         Objects.requireNonNull(getSupportActionBar()).hide();
-
-        //ADD COURSE CARD VIEWS TO THIS LINEAR LAYOUT
-        LinearLayout dashboard = findViewById(R.id.dashboardLinearLayout);
 
         BottomNavigationView dashboardBottomNavigation = findViewById(R.id.dashboardBottomNavigation);
         dashboardBottomNavigation.setOnNavigationItemSelectedListener(Dashboard.this);
 
         featuredCourses = findViewById(R.id.dashboardFeaturedCourses);
-        progressBarFeatCourses = findViewById(R.id.featCoursesProgressBar);
         if (USER.STUDENT) {
             dashboardBottomNavigation.inflateMenu(R.menu.menu_student);
             dashboardBottomNavigation.getMenu().findItem(R.id.menuHomeStudent).setChecked(true);
-            featuredCourses.setVisibility(LinearLayout.VISIBLE);
+
             String getFeaturedCoursesMethod = "getFeaturedCourses";
             ArrayList<CourseV> courses = new ArrayList<CourseV>();
             getFeaturedCourses(URL, getFeaturedCoursesMethod, courses);
         } else {
-            progressBarFeatCourses.setVisibility(View.GONE);
             dashboardBottomNavigation.inflateMenu(R.menu.menu_instructor);
             dashboardBottomNavigation.getMenu().findItem(R.id.menuHomeInstructor).setChecked(true);
+
             featuredCourses.setVisibility(LinearLayout.INVISIBLE);
         }
 
         //display the user's name and surname
         getName(USER.USER_NUM);
-
-        progressBar = findViewById(R.id.dashboardProgressBar);
-        relativeLayout = findViewById(R.id.dashboardRelLayout);
-        progressBar.setVisibility(View.VISIBLE);
     }
 
     public void createNewViewDialog(){
@@ -139,13 +136,6 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
 
         String getStudentNameMethod = "getStudentName";
         String getInstructorNameMethod = "getInstructorName";
-
-        //Initializing progressbar
-        final ProgressBar progressBar = (ProgressBar) findViewById(R.id.dashboardProgressBar);
-
-        //Displaying ProgressBar
-        progressBar.setVisibility(View.VISIBLE);
-        setProgressBarIndeterminateVisibility(true);
 
         if (USER.STUDENT) {
             PHPRequestBuilder requestBuilder = new PHPRequestBuilder(URL, getStudentNameMethod);
@@ -193,17 +183,9 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
 
         name.setText(FName + " " + LName);
         progressBar.setVisibility(View.GONE);
-        relativeLayout.setVisibility(View.VISIBLE);
     }
 
     private void displayFeaturedCourses() {
-        //Initializing progressbar
-        final ProgressBar progressBarFeatCourses = (ProgressBar) findViewById(R.id.featCoursesProgressBar);
-
-        //Displaying ProgressBar
-        progressBarFeatCourses.setVisibility(View.VISIBLE);
-        setProgressBarIndeterminateVisibility(true);
-
         //Initializing Views
         recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -224,9 +206,7 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
             //Adding adapter to recyclerview
             recyclerView.setAdapter(adapter);
         }
-
-        progressBarFeatCourses.setVisibility(View.GONE);
-        featuredCourses.setVisibility(View.VISIBLE);
+        featuredCourses.setVisibility(LinearLayout.VISIBLE);
     }
 
     @Override

@@ -11,76 +11,96 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true" />
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:id="@+id/dashboardRelLayout"
-        android:visibility="gone"
-        android:layout_height="match_parent">
-
-        <LinearLayout
-            android:id="@+id/dashboardLinearLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:orientation="vertical"
-            android:padding="@dimen/padding">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/shape_height"
-                android:background="@drawable/shape_dashboard"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/vegur_light"
-                    android:text="@string/welcome"
-                    android:textColor="#FFFFFF"
-                    android:textSize="@dimen/text_0" />
-
-                <TextView
-                    android:id="@+id/textViewStudentName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/vegur"
-                    android:textColor="#FFFFFF"
-                    android:textSize="@dimen/text_2" />
-            </LinearLayout>
-
-        </LinearLayout>
-
-       <ProgressBar
-            android:id="@+id/featCoursesProgressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true" />
 
     <LinearLayout
-        android:id="@+id/dashboardFeaturedCourses"
+        android:id="@+id/dashboardLinearLayout"
+        android:layout_above="@id/dashboardBottomNavigation"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="gone"
-        android:layout_below="@id/dashboardLinearLayout"
-        android:gravity="center">
+        android:gravity="center_horizontal">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/featured_courses"
-            android:textColor="@color/color5"
-            android:textSize="@dimen/text_2"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
+        <ScrollView
+            android:id="@+id/dashboardScrollView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_below="@id/dashboardFeaturedCourses"
-            android:layout_above="@id/dashboardBottomNavigation" />
+            android:padding="@dimen/padding">
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:id="@+id/dashboardRelLayout"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/dashboardNameLinearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/shape_height_2"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="@dimen/padding"
+                    android:background="@drawable/shape_dashboard_2">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/shape_height_1"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:layout_marginBottom="@dimen/padding"
+                        android:background="@drawable/shape_dashboard_1">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/shape_height"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:layout_marginBottom="@dimen/padding"
+                            android:background="@drawable/shape_dashboard">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/vegur_light"
+                                android:text="@string/welcome"
+                                android:textColor="#FFFFFF"
+                                android:textSize="@dimen/text_1" />
+
+                            <TextView
+                                android:id="@+id/textViewStudentName"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/vegur"
+                                android:textColor="#FFFFFF"
+                                android:textSize="@dimen/text_2" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_below="@id/dashboardNameLinearLayout"
+                    android:id="@+id/dashboardFeaturedCourses"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/featured_courses"
+                        android:textColor="@color/color1"
+                        android:textSize="@dimen/text_2"
+                        android:fontFamily="@font/vegur_bold"
+                        android:layout_gravity="left"/>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/shape_frame"/>
+                </LinearLayout>
+            </RelativeLayout>
+        </ScrollView>
     </LinearLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -88,7 +108,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        style="@style/AppTheme.BottomNavigation"/>
-
-    </RelativeLayout>
+        style="@style/AppTheme.BottomNavigation"
+        android:layout_alignParentEnd="true"/>
 </RelativeLayout>
