@@ -89,7 +89,7 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
     public int getItemCount() {
         return coursesVs.size();
     }
-
+    @Generated
     class ViewHolder extends RecyclerView.ViewHolder{
         //Views
         public TextView courseName;
@@ -237,7 +237,7 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
 
 
     }
-
+    @Generated
     private void doPostRequest(String phpFile) throws IOException {
         OkHttpClient client = new OkHttpClient();
 

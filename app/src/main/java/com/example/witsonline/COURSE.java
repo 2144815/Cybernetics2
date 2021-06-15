@@ -1,7 +1,7 @@
 package com.example.witsonline;
 
 import java.util.ArrayList;
-
+@Generated
 public class COURSE {
 
 	public static String CODE;

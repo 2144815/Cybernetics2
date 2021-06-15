@@ -204,6 +204,7 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
         relativeLayout = findViewById(R.id.CourseHomeInstructorLayout);
         progressBar.setVisibility(View.VISIBLE);
     }
+    @Generated
     private JsonArrayRequest getDataFromServer(int requestCount){
         //Initializing progressbar
         final ProgressBar progressBar = (ProgressBar) findViewById(R.id.reviewProgressBar);
@@ -228,6 +229,7 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
         //Returning the request
         return jsonArrayRequest;
     }
+    @Generated
     private JsonArrayRequest getTagDataFromServer(){
         Log.i("method", "getTagDataFromServer() called");
         //Initializing progressbar
@@ -258,7 +260,7 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
         //Returning the request
         return jsonArrayRequest;
     }
-
+    @Generated
     private JsonArrayRequest getCourseDataFromServer(){
         //Initializing progressbar
         final ProgressBar progressBar = (ProgressBar) findViewById(R.id.tagsProgressBarInstructor);
@@ -285,22 +287,26 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
     }
 
     //These methods will get Data from the web api
+    @Generated
     private void getData(){
         //Adding the method to the queue by calling the method getDatafromServer
         requestQueue.add(getDataFromServer(reviewCount));
         //Incrementing the course counter
         reviewCount++;
     }
+    @Generated
     private void getTagData(){
         //Adding the method to the queue by calling the method getTagData
         requestQueue.add(getTagDataFromServer());
     }
+    @Generated
     private void getCourseData(){
         //Adding the method to the queue by calling the method getTagData
         requestQueue.add(getCourseDataFromServer());
     }
 
     //This method will parse json Data
+    @Generated
     private String[] taglist(JSONArray all){
         String[] tagTemps = null;
         for(int i = 0; i< all.length(); i++){
@@ -331,6 +337,7 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
     }
 
     //This method will parse json Data for course
+    @Generated
     private void parseCourseData(JSONArray array){
         for (int i = 0; i< array.length(); i++){
             // Creating the Course object
@@ -368,6 +375,7 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
     }
 
     //This method will parse json Data
+    @Generated
     private void parseData(JSONArray array){
         for (int i = 0; i< array.length(); i++){
             // Creating the Course object
@@ -401,6 +409,7 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
         }
         return false;
     }
+    @Generated
     void addOutlineTopics(String outline) {
         //this assume every modules is separated by a space
         String[] outlineTopics = outline.split(";");

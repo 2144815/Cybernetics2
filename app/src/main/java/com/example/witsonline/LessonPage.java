@@ -58,6 +58,7 @@ public class LessonPage extends AppCompatActivity {
         // download the pdf resource
         downloadButton.setOnClickListener(new View.OnClickListener() {
             @Override
+            @Generated
             public void onClick(View v) {
                 try {
                     downloadManager = (DownloadManager)getSystemService(Context.DOWNLOAD_SERVICE);

@@ -146,7 +146,7 @@ public class LessonPageInstructor extends AppCompatActivity {
         }
         return null;
     }
-
+    @Generated
     private JsonArrayRequest getLessonDataFromServer() {
 
         //Initializing progressbar
@@ -173,13 +173,14 @@ public class LessonPageInstructor extends AppCompatActivity {
         //Returning the request
         return jsonArrayRequest;
     }
-
+    @Generated
     private void getLessonData() {
         //Adding the method to the queue by calling the method getLessonData
         requestQueue.add(getLessonDataFromServer());
     }
 
     //This method will parse json Data for lesson
+    @Generated
     private void parseLessonData(JSONArray array) {
         for (int i = 0; i < array.length(); i++) {
             // Creating the lesson object

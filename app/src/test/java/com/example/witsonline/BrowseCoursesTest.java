@@ -3,11 +3,17 @@ package com.example.witsonline;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import java.util.ArrayList;
+import java.util.jar.JarException;
 
 import static org.junit.Assert.*;
 @RunWith(MockitoJUnitRunner.class)
@@ -47,4 +53,5 @@ public class BrowseCoursesTest {
         Boolean output=temp.isLastItemDistplaying(recyclerViewTest_Empty);
         assertEquals(false,output);
     }
+
 }

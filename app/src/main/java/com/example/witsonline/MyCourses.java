@@ -110,6 +110,7 @@ public class MyCourses extends AppCompatActivity implements View.OnScrollChangeL
     //Request to get json from server we are passing an integer here
     //This integer will used to specify the page number for the request ?page = requestCount
     //This method would return a JsonArrayRequest that will be added to the request queue
+    @Generated
     private JsonArrayRequest getDataFromServer(int requestCount){
         //Initializing progressbar
         final ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar1);
@@ -183,6 +184,7 @@ public class MyCourses extends AppCompatActivity implements View.OnScrollChangeL
     }
 
     //This method will get Data from the web api
+    @Generated
     private void getData(){
         //Adding the method to the queue by calling the method getDatafromServer
         requestQueue.add(getDataFromServer(courseCount));
@@ -191,6 +193,7 @@ public class MyCourses extends AppCompatActivity implements View.OnScrollChangeL
     }
 
     //This method will parse json Data
+    @Generated
     private void parseData(JSONArray array) throws JSONException {
         for (int i = 0; i< array.length(); i++) {
             // Creating the Course object
@@ -280,6 +283,7 @@ public class MyCourses extends AppCompatActivity implements View.OnScrollChangeL
     }
 
     @Override
+    @Generated
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             // STUDENT MENU

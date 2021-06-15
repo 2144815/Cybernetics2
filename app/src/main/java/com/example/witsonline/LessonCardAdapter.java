@@ -60,7 +60,7 @@ public class LessonCardAdapter extends RecyclerView.Adapter<LessonCardAdapter.Vi
     public int getItemCount() {
         return lessonVs.size();
     }
-
+    @Generated
     class ViewHolder extends RecyclerView.ViewHolder{
         //Views
         public TextView lessonName;

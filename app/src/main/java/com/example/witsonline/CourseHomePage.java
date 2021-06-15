@@ -308,7 +308,7 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
         requestQueue.add(getInstrDataFromServer());
     }
 
-
+    @Generated
     private String[] taglist(JSONArray all){
         String[] tagTemps = null;
         for(int i = 0; i< all.length(); i++){
@@ -339,6 +339,7 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
     }
 
     //This method will parse json Data
+    @Generated
     private void parseInstrData(JSONArray array){
         for (int i = 0; i< array.length(); i++){
 
@@ -363,6 +364,7 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
 
 
     //This method will parse json Data
+    @Generated
     private void parseData(JSONArray array){
         for (int i = 0; i< array.length(); i++){
             // Creating the Course object
@@ -396,6 +398,7 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
         }
         return false;
     }
+    @Generated
     void addOutlineTopics(String outline) {
         //this assume every modules is separated by a space
         String[] outlineTopics = outline.split(";");

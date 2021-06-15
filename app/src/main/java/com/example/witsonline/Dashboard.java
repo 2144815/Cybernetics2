@@ -133,7 +133,7 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
         });
 
     }
-
+    @Generated
     private void getName(String user) {
         String URL = "https://lamp.ms.wits.ac.za/home/s2105624/";
 
@@ -166,7 +166,7 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
             requestBuilder.doRequest(Dashboard.this, response -> addName(response));
         }
     }
-
+    @Generated
     private void addName(String JSON) throws JSONException {
         JSONObject NAMES = new JSONObject(JSON);
 
@@ -187,7 +187,7 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
         name.setText(FName + " " + LName);
         progressBar.setVisibility(View.GONE);
     }
-
+    @Generated
     private void displayFeaturedCourses() {
         //Initializing Views
         recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
@@ -213,6 +213,7 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
     }
 
     @Override
+    @Generated
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             // STUDENT MENU
@@ -277,7 +278,7 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
             //Calling the method getData again
         }
     }
-
+    @Generated
     private void getFeaturedCourses(String URL, String method, ArrayList<CourseV> courses) {
         PHPRequestBuilder requestBuilder = new PHPRequestBuilder(URL, method);
         requestBuilder.doRequest(Dashboard.this, new ResponseHandler() {
@@ -288,7 +289,7 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
         });
 
     }
-
+    @Generated
     private void setFeaturedCourses(String JSON, ArrayList<CourseV> courses) throws JSONException {
         JSONArray featuredCourses = new JSONArray(JSON);
         for (int index = 0; index < featuredCourses.length(); index++) {

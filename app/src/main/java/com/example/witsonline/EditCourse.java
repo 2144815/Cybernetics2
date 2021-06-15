@@ -143,6 +143,7 @@ public class EditCourse extends AppCompatActivity {
         //image on click
         image.setOnClickListener(new View.OnClickListener() {
             @Override
+            @Generated
             public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.setType("image/*");
@@ -176,6 +177,7 @@ public class EditCourse extends AppCompatActivity {
         //store the visibility
         rgVisibility.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
+            @Generated
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == R.id.privateVisibility){
                     visibility = "Private";
@@ -284,6 +286,7 @@ public class EditCourse extends AppCompatActivity {
         }
     }
     // This function checks to see if no faculty was selected. This will produce an error
+    @Generated
     public boolean noFacultySelected(Boolean check){
         if (check == false){
             Toast toast = Toast.makeText(EditCourse.this, "Select a faculty", Toast.LENGTH_LONG);
@@ -293,6 +296,7 @@ public class EditCourse extends AppCompatActivity {
             return false;
         }
     }
+    @Generated
     void addOutlineTopics(String outline) {
         //this assume every modules is separated by a space
         String[] outlineTopics = outline.split(";");
@@ -321,6 +325,7 @@ public class EditCourse extends AppCompatActivity {
             }
         }
     }
+    @Generated
     void addTags(String tags) {
         //this assume every modules is separated by a space
         tagLayout.removeAllViews();
@@ -349,6 +354,7 @@ public class EditCourse extends AppCompatActivity {
             }
         }
     }
+    @Generated
     public void dialogAddOutline(String currentOutline,int index){
         dialogBuilder = new AlertDialog.Builder(this);
         final View viewPopUp = LayoutInflater.from(this)
@@ -416,6 +422,7 @@ public class EditCourse extends AppCompatActivity {
         }
 
     }
+    @Generated
     public void dialogAddTag(String currentTag,int index){
         dialogBuilder = new AlertDialog.Builder(this);
         final View viewPopUp = LayoutInflater.from(this)
@@ -483,6 +490,7 @@ public class EditCourse extends AppCompatActivity {
     }
 
     //This function checks if course outlines and tags have been added
+    @Generated
     public boolean validateOutlineAndTag(ArrayList<String>allOutlines,ArrayList<String>allTags){
         boolean invalid = false;
         if(allOutlines.size()<0){
@@ -540,6 +548,7 @@ public class EditCourse extends AppCompatActivity {
     }
 
     //getting the bitmap of image and encoding it as a string
+    @Generated
     private String getStringImage(Bitmap bitmap) {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();

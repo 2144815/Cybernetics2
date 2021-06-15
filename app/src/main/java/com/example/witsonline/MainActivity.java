@@ -291,68 +291,6 @@ public class MainActivity extends AppCompatActivity {
 
     //Course(s) Info//
 
-    public void settakings(View v){
 
-        OkHttpClient client = new OkHttpClient();
-
-        RequestBody addinf=new FormBody.Builder()
-                .add("unum", (USER.USER_NUM))
-                .build();
-        Request request = new Request.Builder()
-                .url("https://lamp.ms.wits.ac.za/home/s2105624/lstakers.php")
-                .post(addinf)
-                .build();
-
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            @Generated
-            public void onFailure(Call call, IOException exc) {
-                exc.printStackTrace();
-            }
-
-            @Override
-            @Generated
-            public void onResponse(Call call, final Response response) throws IOException {
-
-                if (response.isSuccessful()) {
-                    COURSE.temp=(response.body().string());
-                } else {
-                    throw new IOException("Unexpected code " + response);
-                }
-            }
-        });
-    }
-
-    public void setmakings(View v){
-
-        OkHttpClient client = new OkHttpClient();
-
-        RequestBody addinf=new FormBody.Builder()
-                .add("unum", (USER.USER_NUM))
-                .build();
-        Request request = new Request.Builder()
-                .url("https://lamp.ms.wits.ac.za/home/s2090273/lsmakers.php")
-                .post(addinf)
-                .build();
-
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            @Generated
-            public void onFailure(Call call, IOException exc) {
-                exc.printStackTrace();
-            }
-
-            @Override
-            @Generated
-            public void onResponse(Call call, final Response response) throws IOException {
-
-                if (response.isSuccessful()) {
-                    COURSE.temp=(response.body().string());
-                } else {
-                    throw new IOException("Unexpected code " + response);
-                }
-            }
-        });
-    }
 
 }

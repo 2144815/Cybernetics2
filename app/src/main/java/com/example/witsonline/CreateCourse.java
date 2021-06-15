@@ -390,6 +390,7 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
+            @Generated
             public void onClick(View v) {
                 Intent intent5 = new Intent(CreateCourse.this,LoginActivity.class);
                 startActivity(intent5);
@@ -399,6 +400,7 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
         });
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
+            @Generated
             public void onClick(View v) {
                 dialog.dismiss();
             }
@@ -408,6 +410,7 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
 
 
     @Override
+    @Generated
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menuHomeInstructor :
@@ -474,6 +477,7 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
     }
 
     // This function checks to see if no faculty was selected. This will produce an error
+    @Generated
     public boolean noFacultySelected(Boolean check){
         if (check == false){
             Toast toast = Toast.makeText(CreateCourse.this, "Select a faculty", Toast.LENGTH_LONG);
@@ -483,7 +487,7 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
             return false;
         }
     }
-
+    @Generated
     void addOutlineTopics(String outline) {
         //this assume every modules is separated by a space
         String[] outlineTopics = outline.split(";");
@@ -512,6 +516,7 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
             }
         }
     }
+    @Generated
     void addTags(String tags) {
         //this assume every modules is separated by a space
         tagLayout.removeAllViews();
@@ -540,6 +545,7 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
             }
         }
     }
+    @Generated
     public void dialogAddOutline(String currentOutline,int index){
         dialogBuilder = new AlertDialog.Builder(this);
         final View viewPopUp = LayoutInflater.from(this)
@@ -605,6 +611,7 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
         }
 
     }
+    @Generated
     public void dialogAddTag(String currentTag,int index){
         dialogBuilder = new AlertDialog.Builder(this);
         final View viewPopUp = LayoutInflater.from(this)
@@ -711,6 +718,7 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
         return valid;
     }
     //This function checks if course outlines and tags have been added
+    @Generated
     public boolean validateOutlineAndTag(ArrayList<String>allOutlines,ArrayList<String>allTags){
         boolean invalid = false;
         if(allOutlines.size()<0){
@@ -749,6 +757,7 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
     }
 
     //getting the bitmap of image and encoding it as a string
+    @Generated
     public String getStringImage(Bitmap bitmap) {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -760,6 +769,7 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
     }
 
     //not actually using this anymore. Might be useful later on
+    @Generated
     public String getPath(Uri uri){
         String path = "";
         Cursor cursor = getContentResolver().query(uri,null,null,null,null);

@@ -18,6 +18,7 @@ public class SplashActivity extends AppCompatActivity {
         //the splash logic. It lasts for 2 seconds.
         new Handler().postDelayed(new Runnable() {
             @Override
+            @Generated
             public void run() {
                 Intent splashPageIntent = new Intent(SplashActivity.this,MainActivity.class);
                 startActivity(splashPageIntent);

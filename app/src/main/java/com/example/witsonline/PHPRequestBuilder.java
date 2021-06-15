@@ -22,7 +22,7 @@ public class PHPRequestBuilder {
     public PHPRequestBuilder (String url, String method) {
         URL = url + method + ".php";
     }
-
+    @Generated
     public void doBuild(ArrayList<ArrayList<String>> Parameters) {
         HttpUrl.Builder urlBuilder = Objects.requireNonNull(HttpUrl.parse(URL)).newBuilder();
 
@@ -32,7 +32,7 @@ public class PHPRequestBuilder {
 
         URL = urlBuilder.build().toString();
     }
-
+    @Generated
     public void doRequest(Activity activity, ResponseHandler responseHandler) {
         OkHttpClient client = new OkHttpClient();
 
