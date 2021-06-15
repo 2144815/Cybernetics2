@@ -107,6 +107,7 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
     private int reviewCount = 1;
     @SuppressLint("WrongConstant")
     @Override
+    @Generated
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_course_home_page_instructor);
         super.onCreate(savedInstanceState);
@@ -166,6 +167,7 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
         btnAddLesson = findViewById(R.id.addLesson);
         btnAddLesson.setOnClickListener(new View.OnClickListener() {
             @Override
+            @Generated
             public void onClick(View v) {
                 Intent intent = new Intent(CourseHomePageInstructor.this, CreateLesson.class);
               //  intent.putExtra("activity","instructor");
@@ -177,6 +179,7 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
         btnViewLesson = findViewById(R.id.viewLessons);
         btnViewLesson.setOnClickListener(new View.OnClickListener() {
             @Override
+            @Generated
             public void onClick(View v) {
                 Intent intent = new Intent(CourseHomePageInstructor.this, BrowseLessons.class);
                 intent.putExtra("activity","instructor");
@@ -189,6 +192,7 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
         imgEditCourse = findViewById(R.id.editCourse);
         imgEditCourse.setOnClickListener(new View.OnClickListener() {
             @Override
+            @Generated
             public void onClick(View v) {
                 Intent intent = new Intent(CourseHomePageInstructor.this, EditCourse.class);
                 startActivity(intent);
@@ -420,6 +424,7 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
         }
     }
     @Override
+    @Generated
     public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
         //if Scrolled at last then
         if(isLastItemDisplaying(recyclerView)){
@@ -429,6 +434,7 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
     }
 
     @Override
+    @Generated
     public void onBackPressed(){
         Intent i = new Intent(CourseHomePageInstructor.this,MyCourses.class);
         startActivity(i);

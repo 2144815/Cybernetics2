@@ -35,6 +35,7 @@ public class LessonPage extends AppCompatActivity {
     private YouTubePlayerView youTubePlayerView;
 
     @Override
+    @Generated
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lesson_page);

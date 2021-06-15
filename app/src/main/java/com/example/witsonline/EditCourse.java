@@ -96,6 +96,7 @@ public class EditCourse extends AppCompatActivity {
 
 
     @Override
+    @Generated
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_course);
@@ -187,6 +188,7 @@ public class EditCourse extends AppCompatActivity {
         //Add course outline button on click
         addOutline.setOnClickListener(new View.OnClickListener() {
             @Override
+            @Generated
             public void onClick(View view) {
                 dialogAddOutline("",0);
             }
@@ -195,6 +197,7 @@ public class EditCourse extends AppCompatActivity {
         //Add course tag button on click
         addTag.setOnClickListener(new View.OnClickListener() {
             @Override
+            @Generated
             public void onClick(View view) {
                 dialogAddTag("",0);
             }
@@ -206,6 +209,7 @@ public class EditCourse extends AppCompatActivity {
         requestQueue = Volley.newRequestQueue(getApplicationContext());
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
+            @Generated
             public void onClick(View v) {
                 if (isEmpty(name) | isEmpty(description) | validateOutlineAndTag(allOutlines,allTags) ){
 
@@ -260,6 +264,7 @@ public class EditCourse extends AppCompatActivity {
 
     //getting and setting bitmap
     @Override
+    @Generated
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == IMAGE_REQUEST_CODE && resultCode == RESULT_OK && data != null && data.getData() != null) {
@@ -376,6 +381,7 @@ public class EditCourse extends AppCompatActivity {
             });
             btnDeleteOutline.setOnClickListener(new View.OnClickListener() {
                 @Override
+                @Generated
                 public void onClick(View v) {
                     allOutlines.remove(index);
                     addOutlineTopics(convert(allOutlines));
@@ -387,6 +393,7 @@ public class EditCourse extends AppCompatActivity {
         else {
             btnAddOutline.setOnClickListener(new View.OnClickListener() {
                 @Override
+                @Generated
                 public void onClick(View v) {
                     if (validateCourseOutlineOrTag(outline, allOutlines)) {
                         //error dislayes
@@ -400,6 +407,7 @@ public class EditCourse extends AppCompatActivity {
             });
             btnDeleteOutline.setOnClickListener(new View.OnClickListener() {
                 @Override
+                @Generated
                 public void onClick(View v) {
 
                     dialog.dismiss();
@@ -427,6 +435,7 @@ public class EditCourse extends AppCompatActivity {
             tag.getEditText().setText(currentTag);
             btnAddTag.setOnClickListener(new View.OnClickListener() {
                 @Override
+                @Generated
                 public void onClick(View v) {
                     if (validateCourseOutlineOrTag(tag, allTags)&&!tag.getEditText().getText().toString().equals(currentTag)) {
                         //error dislayes
@@ -439,6 +448,7 @@ public class EditCourse extends AppCompatActivity {
             });
             btnDeleteTag.setOnClickListener(new View.OnClickListener() {
                 @Override
+                @Generated
                 public void onClick(View v) {
                     allTags.remove(index);
                     addTags(convert(allTags));
@@ -450,6 +460,7 @@ public class EditCourse extends AppCompatActivity {
         else {
             btnAddTag.setOnClickListener(new View.OnClickListener() {
                 @Override
+                @Generated
                 public void onClick(View v) {
                     if (validateCourseOutlineOrTag(tag, allTags)) {
                         //error dislayes
@@ -462,6 +473,7 @@ public class EditCourse extends AppCompatActivity {
             });
             btnDeleteTag.setOnClickListener(new View.OnClickListener() {
                 @Override
+                @Generated
                 public void onClick(View v) {
                     dialog.dismiss();
                 }
@@ -537,7 +549,7 @@ public class EditCourse extends AppCompatActivity {
         Log.i("My_data_image", "" + temp);
         return temp;
     }
-
+    @Generated
     public void requestStoragePermission(){
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
             return;
@@ -551,6 +563,7 @@ public class EditCourse extends AppCompatActivity {
 
     //This method will be called when user taps on allow or deny
     @Override
+    @Generated
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults){
 
         //Checking if request code is our request
@@ -589,6 +602,7 @@ public class EditCourse extends AppCompatActivity {
     }
 
     @Override
+    @Generated
     public void onBackPressed(){
         Intent i = new Intent(EditCourse.this, CourseHomePageInstructor.class);
         startActivity(i);

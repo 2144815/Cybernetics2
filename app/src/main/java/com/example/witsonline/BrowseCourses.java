@@ -55,6 +55,7 @@ public class BrowseCourses extends AppCompatActivity implements View.OnScrollCha
    // String instrName = "";
 
     @Override
+    @Generated
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse_courses);
@@ -218,6 +219,7 @@ public class BrowseCourses extends AppCompatActivity implements View.OnScrollCha
 
 
     @Override
+    @Generated
     public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
         //if Scrolled at last then
         if (isLastItemDistplaying(recyclerView)) {
@@ -225,7 +227,7 @@ public class BrowseCourses extends AppCompatActivity implements View.OnScrollCha
             getData();
         }
     }
-
+    @Generated
     public void createNewViewDialog() {
         dialogBuilder = new AlertDialog.Builder(this);
         final View viewPopUp = LayoutInflater.from(this)
@@ -240,6 +242,7 @@ public class BrowseCourses extends AppCompatActivity implements View.OnScrollCha
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
+            @Generated
             public void onClick(View v) {
                 Intent intent5 = new Intent(BrowseCourses.this, LoginActivity.class);
                 startActivity(intent5);
@@ -249,6 +252,7 @@ public class BrowseCourses extends AppCompatActivity implements View.OnScrollCha
         });
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
+            @Generated
             public void onClick(View v) {
                 dialog.dismiss();
             }
@@ -283,6 +287,7 @@ public class BrowseCourses extends AppCompatActivity implements View.OnScrollCha
     }
 
     @Override
+    @Generated
     public void onBackPressed() {
 
     }

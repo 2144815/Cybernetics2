@@ -107,6 +107,7 @@ public class LoginActivity extends AppCompatActivity {
         req.doRequest(LoginActivity.this, "studentLogin",
                 new ResponseHandler() {
                     @Override
+                    @Generated
                     public void processResponse(String response) {
                         getStudentLogin(response);
                     }
@@ -114,6 +115,7 @@ public class LoginActivity extends AppCompatActivity {
         req.doRequest(LoginActivity.this, "instructorLogin",
                 new ResponseHandler() {
                     @Override
+                    @Generated
                     public void processResponse(String response) {
                         getInstructorLogin(response);
                     }
@@ -125,6 +127,7 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.buttonLogin);
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
+            @Generated
             public void onClick(View v) {
                 if (rbStudent.isChecked()) {
 

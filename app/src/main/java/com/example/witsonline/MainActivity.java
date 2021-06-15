@@ -42,6 +42,7 @@ import javax.crypto.spec.PBEKeySpec;
 public class MainActivity extends AppCompatActivity {
 
     @Override
+    @Generated
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
@@ -304,11 +305,13 @@ public class MainActivity extends AppCompatActivity {
 
         client.newCall(request).enqueue(new Callback() {
             @Override
+            @Generated
             public void onFailure(Call call, IOException exc) {
                 exc.printStackTrace();
             }
 
             @Override
+            @Generated
             public void onResponse(Call call, final Response response) throws IOException {
 
                 if (response.isSuccessful()) {
@@ -334,11 +337,13 @@ public class MainActivity extends AppCompatActivity {
 
         client.newCall(request).enqueue(new Callback() {
             @Override
+            @Generated
             public void onFailure(Call call, IOException exc) {
                 exc.printStackTrace();
             }
 
             @Override
+            @Generated
             public void onResponse(Call call, final Response response) throws IOException {
 
                 if (response.isSuccessful()) {

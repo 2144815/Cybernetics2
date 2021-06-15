@@ -56,6 +56,7 @@ public class MyCourses extends AppCompatActivity implements View.OnScrollChangeL
     private int courseCount = 1;
 
     @Override
+    @Generated
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_courses);
@@ -237,7 +238,7 @@ public class MyCourses extends AppCompatActivity implements View.OnScrollChangeL
         }
         return false;
     }
-
+    @Generated
     public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
         //if Scrolled at last then
         if(isLastItemDistplaying(recyclerView)){
@@ -245,7 +246,7 @@ public class MyCourses extends AppCompatActivity implements View.OnScrollChangeL
             getData();
         }
     }
-
+    @Generated
     public void createNewViewDialog(){
         dialogBuilder = new AlertDialog.Builder(this);
         final View viewPopUp = LayoutInflater.from(this)
@@ -260,6 +261,7 @@ public class MyCourses extends AppCompatActivity implements View.OnScrollChangeL
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
+            @Generated
             public void onClick(View v) {
                 Intent intent5 = new Intent(MyCourses.this,LoginActivity.class);
                 startActivity(intent5);
@@ -269,6 +271,7 @@ public class MyCourses extends AppCompatActivity implements View.OnScrollChangeL
         });
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
+            @Generated
             public void onClick(View v) {
                 dialog.dismiss();
             }
@@ -323,6 +326,7 @@ public class MyCourses extends AppCompatActivity implements View.OnScrollChangeL
     }
 
     @Override
+    @Generated
     public void onBackPressed(){
 
     }

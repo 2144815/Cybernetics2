@@ -47,6 +47,7 @@ public class BlankFragment extends Fragment {
     }
 
     @Override
+    @Generated
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
@@ -56,6 +57,7 @@ public class BlankFragment extends Fragment {
     }
 
     @Override
+    @Generated
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment

@@ -53,6 +53,7 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
 
     @NonNull
     @Override
+    @Generated
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.course_card, parent, false);
@@ -62,6 +63,7 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
     }
 
     @Override
+    @Generated
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         //Getting the particular item from the list
         final CourseV courseV = coursesVs.get(position);
@@ -139,6 +141,7 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
 
         }
     }
+    @Generated
     public void createNewViewDialog(){
         dialogBuilder = new AlertDialog.Builder(context);
         final View viewPopUp = LayoutInflater.from(context)
@@ -158,6 +161,7 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
         }
         btnViewDialogSubscribe.setOnClickListener(new View.OnClickListener() {
             @Override
+            @Generated
             public void onClick(View v) {
                 if(btnViewDialogSubscribe.getText().toString().trim().equals("SUBSCRIBE")){
                     try {
@@ -181,6 +185,7 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
         });
        btnViewDialogViewCourse.setOnClickListener(new View.OnClickListener() {
             @Override
+            @Generated
             public void onClick(View v) {
                 dialog.dismiss();
                 Intent i = new Intent(context, CourseHomePage.class);
@@ -190,6 +195,7 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
         });
 
     }
+    @Generated
     public void createNewViewDialogUnsubscribe(){
 
         dialogBuilder = new AlertDialog.Builder(context);
@@ -205,6 +211,7 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
 
         btnUnsubscribe.setOnClickListener(new View.OnClickListener() {
             @Override
+            @Generated
             public void onClick(View v) {
                 try {
                     doPostRequest("unsubscribe.php");
@@ -222,6 +229,7 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
         });
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
+            @Generated
             public void onClick(View v) {
                 dialog.dismiss();
             }
@@ -248,15 +256,18 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
             private Activity cont = (Activity)context;
 
             @Override
+            @Generated
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 e.printStackTrace();
             }
 
             @Override
+            @Generated
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 final String responseData = response.body().string();
                 cont.runOnUiThread(new Runnable() {
                     @Override
+                    @Generated
                     public void run() {
                         if (btnViewDialogSubscribe != null) {
                             if (responseData.trim().equals("subscribed")) {

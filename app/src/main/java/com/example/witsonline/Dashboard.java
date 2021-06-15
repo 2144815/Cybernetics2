@@ -65,6 +65,7 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
     @SuppressLint("SetTextI18n")
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
+    @Generated
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
@@ -100,7 +101,7 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
         //display the user's name and surname
         getName(USER.USER_NUM);
     }
-
+    @Generated
     public void createNewViewDialog(){
         dialogBuilder = new AlertDialog.Builder(this);
         final View viewPopUp = LayoutInflater.from(this)
@@ -115,6 +116,7 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
+            @Generated
             public void onClick(View v) {
                     Intent intent5 = new Intent(Dashboard.this,LoginActivity.class);
                     startActivity(intent5);
@@ -124,6 +126,7 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
         });
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
+            @Generated
             public void onClick(View v) {
                 dialog.dismiss();
             }
@@ -267,6 +270,7 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
     }
 
     @Override
+    @Generated
     public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
         //if Scrolled at last then
         if(isLastItemDistplaying(recyclerView)){

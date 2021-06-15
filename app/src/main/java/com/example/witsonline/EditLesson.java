@@ -54,6 +54,7 @@ public class EditLesson extends AppCompatActivity {
     private String insertURL = "https://lamp.ms.wits.ac.za/home/s2105624/lessonUpdate.php";
 
     @Override
+    @Generated
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_lesson);
@@ -82,6 +83,7 @@ public class EditLesson extends AppCompatActivity {
         //selecting a file
         btnUploadFileEdit.setOnClickListener(new View.OnClickListener() {
             @Override
+            @Generated
             public void onClick(View v) {
                 Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
                 chooseFile.setType("application/pdf");
@@ -94,6 +96,7 @@ public class EditLesson extends AppCompatActivity {
         requestQueue = Volley.newRequestQueue(getApplicationContext());
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
+            @Generated
             public void onClick(View v) {
 
                 if (isEmpty(editLessonName) | isEmpty(editLessonText) | !isYoutubeUrl(editLessonURL)) {
@@ -105,11 +108,13 @@ public class EditLesson extends AppCompatActivity {
                     }
                     StringRequest request = new StringRequest(Request.Method.POST, insertURL, new Response.Listener<String>() {
                         @Override
+                        @Generated
                         public void onResponse(String response) {
                             System.out.println(response);
                         }
                     }, new Response.ErrorListener() {
                         @Override
+                        @Generated
                         public void onErrorResponse(VolleyError error) {
                             System.out.println(error.getMessage());
                         }
@@ -134,6 +139,7 @@ public class EditLesson extends AppCompatActivity {
 
     //code for getting pdf input stream
     @Override
+    @Generated
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -160,6 +166,7 @@ public class EditLesson extends AppCompatActivity {
     //Escape aphzostrophe
 
     //request permission to access external storage
+    @Generated
     private void requestStoragePermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             return;
@@ -173,6 +180,7 @@ public class EditLesson extends AppCompatActivity {
 
     //This method will be called when user taps on allow or deny
     @Override
+    @Generated
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
         //Checking if request code is our request
@@ -220,6 +228,7 @@ public class EditLesson extends AppCompatActivity {
     }
 
     @Override
+    @Generated
     public void onBackPressed() {
         Intent intent = new Intent(EditLesson.this, LessonPageInstructor.class);
         startActivity(intent);

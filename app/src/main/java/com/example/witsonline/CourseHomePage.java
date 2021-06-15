@@ -87,6 +87,7 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
     //The request counter to send ?page=1, ?page=2 requests
     private int reviewCount = 1;
     @Override
+    @Generated
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_course_home_page);
         super.onCreate(savedInstanceState);
@@ -165,6 +166,7 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
         }
         subscribe.setOnClickListener(new View.OnClickListener() {
             @Override
+            @Generated
             public void onClick(View v) {
                 if(subscribe.getText().toString().trim().equals("SUBSCRIBE")){
                     try {
@@ -184,6 +186,7 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
 
         review.setOnClickListener(new View.OnClickListener() {
             @Override
+            @Generated
             public void onClick(View view) {
                 createNewViewDialogReview();
             }
@@ -192,6 +195,7 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
 
         viewLesson.setOnClickListener(new View.OnClickListener() {
             @Override
+            @Generated
             public void onClick(View v) {
                 Intent intent = new Intent(CourseHomePage.this, BrowseLessons.class);
                 intent.putExtra("activity","student");
@@ -202,6 +206,7 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
 
 
     }
+    @Generated
     private JsonArrayRequest getDataFromServer(int requestCount){
         //Initializing progressbar
         final ProgressBar progressBar = (ProgressBar) findViewById(R.id.reviewProgressBar);
@@ -226,7 +231,7 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
         //Returning the request
         return jsonArrayRequest;
     }
-
+    @Generated
     private JsonArrayRequest getTagDataFromServer(){
         Log.i("method", "getTagDataFromServer() called");
         //Initializing progressbar
@@ -257,7 +262,7 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
         //Returning the request
         return jsonArrayRequest;
     }
-
+    @Generated
     private JsonArrayRequest getInstrDataFromServer(){
 
         //Initializing progressbar
@@ -414,6 +419,7 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
         }
     }
     @Override
+    @Generated
     public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
         //if Scrolled at last then
         if(isLastItemDisplaying(recyclerView)){
@@ -421,6 +427,7 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
             getData();
         }
     }
+    @Generated
     private void doPostRequest(String phpFile) throws IOException {
         OkHttpClient client = new OkHttpClient();
 
@@ -435,11 +442,13 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
 
         client.newCall(request).enqueue(new Callback() {
             @Override
+            @Generated
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 e.printStackTrace();
             }
 
             @Override
+            @Generated
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 final String responseData = response.body().string();
                 CourseHomePage.this.runOnUiThread(new Runnable() {
@@ -457,6 +466,7 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
             }
         });
     }
+    @Generated
     public void createNewViewDialog(){
         dialogBuilder = new AlertDialog.Builder(this);
         final View viewPopUp = LayoutInflater.from(this)
@@ -471,6 +481,7 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
 
         btnUnsubscribe.setOnClickListener(new View.OnClickListener() {
             @Override
+            @Generated
             public void onClick(View v) {
                 try {
                     doPostRequest("unsubscribe.php");
@@ -484,13 +495,14 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
         });
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
+            @Generated
             public void onClick(View v) {
                 dialog.dismiss();
             }
         });
 
     }
-
+    @Generated
     public void createNewViewDialogReview(){
         dialogBuilder = new AlertDialog.Builder(this);
         final View viewPopUp = LayoutInflater.from(this)
@@ -506,6 +518,7 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
 
         btnReviewPostReview.setOnClickListener(new View.OnClickListener() {
             @Override
+            @Generated
             public void onClick(View v) {
                 float postReviewRating = rtbReviewRating.getRating();
                 String postReviewDescription = edtReviewDescription.getText().toString();
@@ -525,7 +538,7 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
         });
 
     }
-
+    @Generated
     private void doPostReview(String phpFile, float postReviewRating, String reviewDescription) throws IOException {
         OkHttpClient client = new OkHttpClient();
 
@@ -542,11 +555,13 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
 
         client.newCall(request).enqueue(new Callback() {
             @Override
+            @Generated
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 e.printStackTrace();
             }
 
             @Override
+            @Generated
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 final String responseData = response.body().string();
                 CourseHomePage.this.runOnUiThread(new Runnable() {
@@ -578,6 +593,7 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
     }
 
     @Override
+    @Generated
     public void onBackPressed(){
         if (browse){
             Intent intent = new Intent(CourseHomePage.this, BrowseCourses.class);

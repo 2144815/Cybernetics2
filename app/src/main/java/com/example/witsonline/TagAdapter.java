@@ -32,6 +32,7 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.ViewHolder> {
     @RequiresApi(api = Build.VERSION_CODES.M)
     @NonNull
     @Override
+    @Generated
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.tag, parent, false);
@@ -40,6 +41,7 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.ViewHolder> {
     }
 
     @Override
+    @Generated
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         //Getting the particular item from the list
         final TagV tag =  tags.get(position);

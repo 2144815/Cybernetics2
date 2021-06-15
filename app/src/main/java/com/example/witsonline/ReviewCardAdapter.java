@@ -33,6 +33,7 @@ public class ReviewCardAdapter extends RecyclerView.Adapter<ReviewCardAdapter.Vi
     @RequiresApi(api = Build.VERSION_CODES.M)
     @NonNull
     @Override
+    @Generated
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.review_card, parent, false);
@@ -41,6 +42,7 @@ public class ReviewCardAdapter extends RecyclerView.Adapter<ReviewCardAdapter.Vi
     }
 
     @Override
+    @Generated
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         //Getting the particular item from the list
         final ReviewV reviewV =  reviewVs.get(position);

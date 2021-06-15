@@ -43,6 +43,7 @@ public class RegisterActivity extends AppCompatActivity {
     private Boolean instructorCheck=false;
 
     @Override
+    @Generated
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
@@ -89,6 +90,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         register.setOnClickListener(new View.OnClickListener() {
             @Override
+            @Generated
             public void onClick(View v) {
 
                 //Remove errors on input layouts if errors are fixed
@@ -140,11 +142,13 @@ public class RegisterActivity extends AppCompatActivity {
 
         client.newCall(request).enqueue(new Callback() {
             @Override
+            @Generated
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 e.printStackTrace();
             }
 
             @Override
+            @Generated
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 final String responseData = response.body().string();
                 RegisterActivity.this.runOnUiThread(new Runnable() {
@@ -262,6 +266,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     @Override
+    @Generated
     public void onBackPressed() {
         Intent i = new Intent(RegisterActivity.this,LoginActivity.class);
         startActivity(i);
