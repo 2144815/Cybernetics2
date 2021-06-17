@@ -8,7 +8,7 @@ public class OkHttp {
 
     // one instance, reuse
     private final OkHttpClient httpClient = new OkHttpClient();
-
+    @Generated
     public void validateURL(String url) throws Exception {
 
         Request request = new Request.Builder()

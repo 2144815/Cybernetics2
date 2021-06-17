@@ -87,6 +87,7 @@ public class LessonPage extends AppCompatActivity {
     }
 
     //Get the ID of the youtube video
+    @Generated
     public static String getVideoIdFromYoutubeUrl(String youtubeUrl)
     {
        /*

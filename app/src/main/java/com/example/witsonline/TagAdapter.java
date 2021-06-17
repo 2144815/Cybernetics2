@@ -52,6 +52,7 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.ViewHolder> {
     }
 
     @Override
+    @Generated
     public int getItemCount() {
         return tags.size();
     }

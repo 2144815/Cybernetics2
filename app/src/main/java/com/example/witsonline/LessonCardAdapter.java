@@ -57,6 +57,7 @@ public class LessonCardAdapter extends RecyclerView.Adapter<LessonCardAdapter.Vi
     }
 
     @Override
+    @Generated
     public int getItemCount() {
         return lessonVs.size();
     }

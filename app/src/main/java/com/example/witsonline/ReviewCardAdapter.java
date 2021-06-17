@@ -57,6 +57,7 @@ public class ReviewCardAdapter extends RecyclerView.Adapter<ReviewCardAdapter.Vi
     }
 
     @Override
+    @Generated
     public int getItemCount() {
         return reviewVs.size();
     }
