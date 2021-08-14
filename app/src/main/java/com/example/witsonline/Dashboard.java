@@ -65,6 +65,7 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
     @SuppressLint("SetTextI18n")
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
+    @Generated
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
@@ -100,7 +101,7 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
         //display the user's name and surname
         getName(USER.USER_NUM);
     }
-
+    @Generated
     public void createNewViewDialog(){
         dialogBuilder = new AlertDialog.Builder(this);
         final View viewPopUp = LayoutInflater.from(this)
@@ -115,6 +116,7 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
+            @Generated
             public void onClick(View v) {
                     Intent intent5 = new Intent(Dashboard.this,LoginActivity.class);
                     startActivity(intent5);
@@ -124,13 +126,14 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
         });
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
+            @Generated
             public void onClick(View v) {
                 dialog.dismiss();
             }
         });
 
     }
-
+    @Generated
     private void getName(String user) {
         String URL = "https://lamp.ms.wits.ac.za/home/s2105624/";
 
@@ -163,7 +166,7 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
             requestBuilder.doRequest(Dashboard.this, response -> addName(response));
         }
     }
-
+    @Generated
     private void addName(String JSON) throws JSONException {
         JSONObject NAMES = new JSONObject(JSON);
 
@@ -184,7 +187,7 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
         name.setText(FName + " " + LName);
         progressBar.setVisibility(View.GONE);
     }
-
+    @Generated
     private void displayFeaturedCourses() {
         //Initializing Views
         recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
@@ -210,6 +213,7 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
     }
 
     @Override
+    @Generated
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             // STUDENT MENU
@@ -256,7 +260,7 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
     }
 
     //This method will check if the recyclerview has reached the bottom or not
-    private boolean isLastItemDistplaying(RecyclerView recyclerView){
+    public boolean isLastItemDistplaying(RecyclerView recyclerView){
         if(recyclerView.getAdapter().getItemCount() != 0){
             int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
             if (lastVisibleItemPosition != RecyclerView.NO_POSITION && lastVisibleItemPosition == recyclerView.getAdapter().getItemCount() -1){
@@ -267,13 +271,14 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
     }
 
     @Override
+    @Generated
     public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
         //if Scrolled at last then
         if(isLastItemDistplaying(recyclerView)){
             //Calling the method getData again
         }
     }
-
+    @Generated
     private void getFeaturedCourses(String URL, String method, ArrayList<CourseV> courses) {
         PHPRequestBuilder requestBuilder = new PHPRequestBuilder(URL, method);
         requestBuilder.doRequest(Dashboard.this, new ResponseHandler() {
@@ -284,7 +289,7 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
         });
 
     }
-
+    @Generated
     private void setFeaturedCourses(String JSON, ArrayList<CourseV> courses) throws JSONException {
         JSONArray featuredCourses = new JSONArray(JSON);
         for (int index = 0; index < featuredCourses.length(); index++) {

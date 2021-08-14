@@ -60,6 +60,7 @@ public class LessonPageInstructor extends AppCompatActivity {
     String lessonURL = "https://lamp.ms.wits.ac.za/home/s2105624/getLessonInfo.php?ccode=";
 
     @Override
+    @Generated
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lesson_page_instructor);
@@ -112,6 +113,7 @@ public class LessonPageInstructor extends AppCompatActivity {
 
         editLesson.setOnClickListener(new View.OnClickListener() {
             @Override
+            @Generated
             public void onClick(View v) {
                 //Toast.makeText(LessonPageInstructor.this, LESSON.ID, Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(LessonPageInstructor.this, EditLesson.class);
@@ -123,6 +125,7 @@ public class LessonPageInstructor extends AppCompatActivity {
     }
 
     //Get the ID of the youtube video
+    @Generated
     public static String getVideoIdFromYoutubeUrl(String youtubeUrl) {
        /*
            Possibile Youtube urls.
@@ -144,7 +147,7 @@ public class LessonPageInstructor extends AppCompatActivity {
         }
         return null;
     }
-
+    @Generated
     private JsonArrayRequest getLessonDataFromServer() {
 
         //Initializing progressbar
@@ -171,13 +174,14 @@ public class LessonPageInstructor extends AppCompatActivity {
         //Returning the request
         return jsonArrayRequest;
     }
-
+    @Generated
     private void getLessonData() {
         //Adding the method to the queue by calling the method getLessonData
         requestQueue.add(getLessonDataFromServer());
     }
 
     //This method will parse json Data for lesson
+    @Generated
     private void parseLessonData(JSONArray array) {
         for (int i = 0; i < array.length(); i++) {
             // Creating the lesson object
@@ -224,6 +228,7 @@ public class LessonPageInstructor extends AppCompatActivity {
     }
 
     @Override
+    @Generated
     public void onBackPressed() {
         Intent i = new Intent(this, BrowseLessons.class);
         startActivity(i);

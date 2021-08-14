@@ -66,6 +66,7 @@ public class CreateLesson extends AppCompatActivity {
     private RequestQueue requestQueue;
     private String insertURL = "https://lamp.ms.wits.ac.za/home/s2105624/lessonInsert.php";
     @Override
+    @Generated
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_lesson);
@@ -84,6 +85,7 @@ public class CreateLesson extends AppCompatActivity {
         //selecting a file
         btnUploadFile.setOnClickListener(new View.OnClickListener() {
             @Override
+            @Generated
             public void onClick(View v) {
                 Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
                 chooseFile.setType("application/pdf");
@@ -96,6 +98,7 @@ public class CreateLesson extends AppCompatActivity {
         requestQueue = Volley.newRequestQueue(getApplicationContext());
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
+            @Generated
             public void onClick(View v) {
 
                 if (isEmpty(lessonName) | isEmpty(lessonText) | !isYoutubeUrl(lessonURL)){
@@ -107,16 +110,19 @@ public class CreateLesson extends AppCompatActivity {
                     }
                     StringRequest request = new StringRequest(Request.Method.POST, insertURL, new Response.Listener<String>() {
                         @Override
+                        @Generated
                         public void onResponse(String response) {
                             System.out.println(response);
                         }
                     }, new Response.ErrorListener() {
                         @Override
+                        @Generated
                         public void onErrorResponse(VolleyError error) {
                             System.out.println(error.getMessage());
                         }
                     }) {
                         @Override
+                        @Generated
                         protected Map<String, String> getParams() throws AuthFailureError {
                             Map<String, String> parameters = new HashMap<>();
                             parameters.put("name", lessonName.getEditText().getText().toString().trim());
@@ -142,6 +148,7 @@ public class CreateLesson extends AppCompatActivity {
 
     //code for getting pdf input stream
     @Override
+    @Generated
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -169,6 +176,7 @@ public class CreateLesson extends AppCompatActivity {
     //Escape aphzostrophe
 
     //request permission to access external storage
+    @Generated
     private void requestStoragePermission(){
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
             return;
@@ -182,6 +190,7 @@ public class CreateLesson extends AppCompatActivity {
 
     //This method will be called when user taps on allow or deny
     @Override
+    @Generated
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults){
 
         //Checking if request code is our request
@@ -233,6 +242,7 @@ public class CreateLesson extends AppCompatActivity {
         return success;
     }
     @Override
+    @Generated
     public void onBackPressed(){
         Intent i = new Intent(this,CourseHomePageInstructor.class);
         startActivity(i);

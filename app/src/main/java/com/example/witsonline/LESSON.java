@@ -1,5 +1,5 @@
 package com.example.witsonline;
-
+@Generated
 public class LESSON {
     public static String Code;
     public static String Name;

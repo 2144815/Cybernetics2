@@ -107,6 +107,7 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
     private int reviewCount = 1;
     @SuppressLint("WrongConstant")
     @Override
+    @Generated
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_course_home_page_instructor);
         super.onCreate(savedInstanceState);
@@ -166,6 +167,7 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
         btnAddLesson = findViewById(R.id.addLesson);
         btnAddLesson.setOnClickListener(new View.OnClickListener() {
             @Override
+            @Generated
             public void onClick(View v) {
                 Intent intent = new Intent(CourseHomePageInstructor.this, CreateLesson.class);
               //  intent.putExtra("activity","instructor");
@@ -177,6 +179,7 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
         btnViewLesson = findViewById(R.id.viewLessons);
         btnViewLesson.setOnClickListener(new View.OnClickListener() {
             @Override
+            @Generated
             public void onClick(View v) {
                 Intent intent = new Intent(CourseHomePageInstructor.this, BrowseLessons.class);
                 intent.putExtra("activity","instructor");
@@ -189,6 +192,7 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
         imgEditCourse = findViewById(R.id.editCourse);
         imgEditCourse.setOnClickListener(new View.OnClickListener() {
             @Override
+            @Generated
             public void onClick(View v) {
                 Intent intent = new Intent(CourseHomePageInstructor.this, EditCourse.class);
                 startActivity(intent);
@@ -200,6 +204,7 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
         relativeLayout = findViewById(R.id.CourseHomeInstructorLayout);
         progressBar.setVisibility(View.VISIBLE);
     }
+    @Generated
     private JsonArrayRequest getDataFromServer(int requestCount){
         //Initializing progressbar
         final ProgressBar progressBar = (ProgressBar) findViewById(R.id.reviewProgressBar);
@@ -224,6 +229,7 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
         //Returning the request
         return jsonArrayRequest;
     }
+    @Generated
     private JsonArrayRequest getTagDataFromServer(){
         Log.i("method", "getTagDataFromServer() called");
         //Initializing progressbar
@@ -254,7 +260,7 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
         //Returning the request
         return jsonArrayRequest;
     }
-
+    @Generated
     private JsonArrayRequest getCourseDataFromServer(){
         //Initializing progressbar
         final ProgressBar progressBar = (ProgressBar) findViewById(R.id.tagsProgressBarInstructor);
@@ -281,22 +287,26 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
     }
 
     //These methods will get Data from the web api
+    @Generated
     private void getData(){
         //Adding the method to the queue by calling the method getDatafromServer
         requestQueue.add(getDataFromServer(reviewCount));
         //Incrementing the course counter
         reviewCount++;
     }
+    @Generated
     private void getTagData(){
         //Adding the method to the queue by calling the method getTagData
         requestQueue.add(getTagDataFromServer());
     }
+    @Generated
     private void getCourseData(){
         //Adding the method to the queue by calling the method getTagData
         requestQueue.add(getCourseDataFromServer());
     }
 
     //This method will parse json Data
+    @Generated
     private String[] taglist(JSONArray all){
         String[] tagTemps = null;
         for(int i = 0; i< all.length(); i++){
@@ -327,6 +337,7 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
     }
 
     //This method will parse json Data for course
+    @Generated
     private void parseCourseData(JSONArray array){
         for (int i = 0; i< array.length(); i++){
             // Creating the Course object
@@ -364,6 +375,7 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
     }
 
     //This method will parse json Data
+    @Generated
     private void parseData(JSONArray array){
         for (int i = 0; i< array.length(); i++){
             // Creating the Course object
@@ -397,6 +409,7 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
         }
         return false;
     }
+    @Generated
     void addOutlineTopics(String outline) {
         //this assume every modules is separated by a space
         String[] outlineTopics = outline.split(";");
@@ -420,6 +433,7 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
         }
     }
     @Override
+    @Generated
     public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
         //if Scrolled at last then
         if(isLastItemDisplaying(recyclerView)){
@@ -429,6 +443,7 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
     }
 
     @Override
+    @Generated
     public void onBackPressed(){
         Intent i = new Intent(CourseHomePageInstructor.this,MyCourses.class);
         startActivity(i);

@@ -55,6 +55,7 @@ public class BrowseCourses extends AppCompatActivity implements View.OnScrollCha
    // String instrName = "";
 
     @Override
+    @Generated
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse_courses);
@@ -111,6 +112,7 @@ public class BrowseCourses extends AppCompatActivity implements View.OnScrollCha
     //Request to get json from server we are passing an integer here
     //This integer will used to specify the page number for the request ?page = requestCount
     //This method would return a JsonArrayRequest that will be added to the request queue
+    @Generated
     private JsonArrayRequest getDataFromServer(int requestCount) {
         //Initializing progressbar
         final ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar1);
@@ -152,14 +154,17 @@ public class BrowseCourses extends AppCompatActivity implements View.OnScrollCha
     }
 
     //This method will get Data from the web api
-    private void getData() {
+    public void getData() {
         //Adding the method to the queue by calling the method getDatafromServer
         requestQueue.add(getDataFromServer(courseCount));
         //Incrementing the course counter
         courseCount++;
     }
 
+
+
     //This method will parse json Data
+    @Generated
     private void parseData(JSONArray array) throws JSONException {
         for (int i = 0; i < array.length(); i++) {
             // Creating the Course object
@@ -218,6 +223,7 @@ public class BrowseCourses extends AppCompatActivity implements View.OnScrollCha
 
 
     @Override
+    @Generated
     public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
         //if Scrolled at last then
         if (isLastItemDistplaying(recyclerView)) {
@@ -225,7 +231,7 @@ public class BrowseCourses extends AppCompatActivity implements View.OnScrollCha
             getData();
         }
     }
-
+    @Generated
     public void createNewViewDialog() {
         dialogBuilder = new AlertDialog.Builder(this);
         final View viewPopUp = LayoutInflater.from(this)
@@ -240,6 +246,7 @@ public class BrowseCourses extends AppCompatActivity implements View.OnScrollCha
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
+            @Generated
             public void onClick(View v) {
                 Intent intent5 = new Intent(BrowseCourses.this, LoginActivity.class);
                 startActivity(intent5);
@@ -249,6 +256,7 @@ public class BrowseCourses extends AppCompatActivity implements View.OnScrollCha
         });
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
+            @Generated
             public void onClick(View v) {
                 dialog.dismiss();
             }
@@ -257,6 +265,7 @@ public class BrowseCourses extends AppCompatActivity implements View.OnScrollCha
     }
 
     @Override
+    @Generated
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menuHomeStudent:
@@ -283,6 +292,7 @@ public class BrowseCourses extends AppCompatActivity implements View.OnScrollCha
     }
 
     @Override
+    @Generated
     public void onBackPressed() {
 
     }

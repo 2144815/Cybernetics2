@@ -12,13 +12,12 @@ import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-
+@Generated
 public class PHPRequest {
     String url;
     public PHPRequest(String prefix){
         url = prefix;
     }
-
     public void doRequest(final Activity a, String method, final ResponseHandler rh){
         OkHttpClient client = new OkHttpClient();
 

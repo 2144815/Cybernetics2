@@ -10,6 +10,7 @@ public class SplashActivity extends AppCompatActivity {
     private final static int SPLASH_TIME_OUT = 2000;
 
     @Override
+    @Generated
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
@@ -17,6 +18,7 @@ public class SplashActivity extends AppCompatActivity {
         //the splash logic. It lasts for 2 seconds.
         new Handler().postDelayed(new Runnable() {
             @Override
+            @Generated
             public void run() {
                 Intent splashPageIntent = new Intent(SplashActivity.this,MainActivity.class);
                 startActivity(splashPageIntent);

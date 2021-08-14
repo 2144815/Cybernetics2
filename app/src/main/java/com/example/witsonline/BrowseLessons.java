@@ -54,6 +54,7 @@ public class BrowseLessons extends AppCompatActivity implements View.OnScrollCha
     //to see where we came from
     private boolean student;
     @Override
+    @Generated
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse_lessons);
@@ -112,6 +113,7 @@ public class BrowseLessons extends AppCompatActivity implements View.OnScrollCha
     //Request to get json from server we are passing an integer here
     //This integer will used to specify the page number for the request ?page = requestCount
     //This method would return a JsonArrayRequest that will be added to the request queue
+    @Generated
     private JsonArrayRequest getDataFromServer(int requestCount){
         //Initializing progressbar
         final ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBarLessons);
@@ -162,6 +164,7 @@ public class BrowseLessons extends AppCompatActivity implements View.OnScrollCha
     }
 
     //This method will parse json Data
+    @Generated
     private void parseData(JSONArray array) throws JSONException {
         for (int i = 0; i< array.length(); i++) {
             // Creating the Course object
@@ -212,6 +215,7 @@ public class BrowseLessons extends AppCompatActivity implements View.OnScrollCha
     }
 
     @Override
+    @Generated
     public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
         //if Scrolled at last then
         if(isLastItemDistplaying(recyclerView)){
@@ -219,6 +223,7 @@ public class BrowseLessons extends AppCompatActivity implements View.OnScrollCha
             getData();
         }
     }
+    @Generated
     public void createNewViewDialog(){
         dialogBuilder = new AlertDialog.Builder(this);
         final View viewPopUp = LayoutInflater.from(this)
@@ -233,6 +238,7 @@ public class BrowseLessons extends AppCompatActivity implements View.OnScrollCha
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
+            @Generated
             public void onClick(View v) {
                 Intent intent5 = new Intent(BrowseLessons.this,LoginActivity.class);
                 startActivity(intent5);
@@ -242,6 +248,7 @@ public class BrowseLessons extends AppCompatActivity implements View.OnScrollCha
         });
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
+            @Generated
             public void onClick(View v) {
                 dialog.dismiss();
             }
@@ -250,6 +257,7 @@ public class BrowseLessons extends AppCompatActivity implements View.OnScrollCha
     }
 
     @Override
+    @Generated
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
         switch (item.getItemId()) {
@@ -277,6 +285,7 @@ public class BrowseLessons extends AppCompatActivity implements View.OnScrollCha
     }
 
     @Override
+    @Generated
     public void onBackPressed(){
         if (student == false){
             Intent i = new Intent(this,CourseHomePageInstructor.class);

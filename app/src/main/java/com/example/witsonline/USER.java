@@ -1,7 +1,7 @@
 package com.example.witsonline;
 
 import java.util.ArrayList;
-
+@Generated
 public class USER {
 	public static boolean STUDENT;
 	public static String USER_NUM;

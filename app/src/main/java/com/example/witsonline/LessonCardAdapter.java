@@ -32,6 +32,7 @@ public class LessonCardAdapter extends RecyclerView.Adapter<LessonCardAdapter.Vi
 
     @NonNull
     @Override
+    @Generated
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.lesson_card, parent, false);
@@ -40,6 +41,7 @@ public class LessonCardAdapter extends RecyclerView.Adapter<LessonCardAdapter.Vi
     }
 
     @Override
+    @Generated
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         //Getting the particular item from the list
         final LessonV lessonV = lessonVs.get(position);
@@ -55,10 +57,11 @@ public class LessonCardAdapter extends RecyclerView.Adapter<LessonCardAdapter.Vi
     }
 
     @Override
+    @Generated
     public int getItemCount() {
         return lessonVs.size();
     }
-
+    @Generated
     class ViewHolder extends RecyclerView.ViewHolder{
         //Views
         public TextView lessonName;
@@ -78,6 +81,7 @@ public class LessonCardAdapter extends RecyclerView.Adapter<LessonCardAdapter.Vi
             lessonID = (TextView)itemView.findViewById(R.id.viewLessonID);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
+                @Generated
                 public void onClick(View view) {
                     LESSON.Code = COURSE.CODE;
                     LESSON.Text = lessonText.getText().toString();

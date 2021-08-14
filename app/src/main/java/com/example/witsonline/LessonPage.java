@@ -35,6 +35,7 @@ public class LessonPage extends AppCompatActivity {
     private YouTubePlayerView youTubePlayerView;
 
     @Override
+    @Generated
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lesson_page);
@@ -57,6 +58,7 @@ public class LessonPage extends AppCompatActivity {
         // download the pdf resource
         downloadButton.setOnClickListener(new View.OnClickListener() {
             @Override
+            @Generated
             public void onClick(View v) {
                 try {
                     downloadManager = (DownloadManager)getSystemService(Context.DOWNLOAD_SERVICE);
@@ -85,6 +87,7 @@ public class LessonPage extends AppCompatActivity {
     }
 
     //Get the ID of the youtube video
+    @Generated
     public static String getVideoIdFromYoutubeUrl(String youtubeUrl)
     {
        /*
