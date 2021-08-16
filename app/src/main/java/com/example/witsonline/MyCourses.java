@@ -324,6 +324,18 @@ public class MyCourses extends AppCompatActivity implements View.OnScrollChangeL
             case R.id.menuLogOutInstructor :
                 createNewViewDialog();
                 break;
+
+            case R.id.menuProfileStudent:
+                Intent intent5 = new Intent(MyCourses.this, EditProfile.class);
+                startActivity(intent5);
+                finish();
+                break;
+
+            case R.id.menuProfileInstructor:
+                Intent intent6 = new Intent(MyCourses.this, EditProfile.class);
+                startActivity(intent6);
+                finish();
+                break;
         }
 
         return false;

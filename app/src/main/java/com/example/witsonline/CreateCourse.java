@@ -431,6 +431,12 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
             case R.id.menuLogOutInstructor :
                 createNewViewDialog();
                 break;
+
+            case R.id.menuProfileInstructor:
+                Intent intent6 = new Intent(CreateCourse.this, EditProfile.class);
+                startActivity(intent6);
+                finish();
+                break;
         }
         return false;
     }

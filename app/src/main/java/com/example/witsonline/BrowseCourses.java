@@ -286,6 +286,13 @@ public class BrowseCourses extends AppCompatActivity implements View.OnScrollCha
             case R.id.menuLogOutStudent:
                 createNewViewDialog();
                 break;
+
+            case R.id.menuProfileStudent:
+                Intent intent5 = new Intent(BrowseCourses.this, EditProfile.class);
+                startActivity(intent5);
+                finish();
+                break;
+
         }
 
         return false;

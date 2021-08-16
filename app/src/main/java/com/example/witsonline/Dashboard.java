@@ -49,7 +49,7 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
     private AlertDialog dialog;
     private Button btnLogout, btnCancel;
 
-    //CreatingViews
+    //Creating Views
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private RecyclerView.Adapter adapter;
@@ -253,6 +253,18 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
 
             case R.id.menuLogOutInstructor :
                 createNewViewDialog();
+                break;
+
+            case R.id.menuProfileStudent:
+                Intent intent5 = new Intent(Dashboard.this, EditProfile.class);
+                startActivity(intent5);
+                finish();
+                break;
+
+            case R.id.menuProfileInstructor:
+                Intent intent6 = new Intent(Dashboard.this, EditProfile.class);
+                startActivity(intent6);
+                finish();
                 break;
         }
 
