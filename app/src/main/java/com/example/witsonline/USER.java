@@ -7,7 +7,7 @@ public class USER {
 	public static String USER_NUM;
 	public static String USERNAME;
 	public static String PASSWORD;
-	public static String USER_EMAIL;
+	public static String EMAIL;
 	public static ArrayList<String> COURSES;
 	public static String temp;
 
