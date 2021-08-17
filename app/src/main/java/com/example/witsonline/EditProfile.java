@@ -6,15 +6,18 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.util.PatternsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -42,8 +45,13 @@ public class EditProfile extends AppCompatActivity implements View.OnScrollChang
 
     //Creating Views
     private TextInputLayout user, firstName, lastName, email, password, confirmPass;
-    private Button editProfile;
+    private Button btnEditProfile;
+    private Switch passwordSwitch;
     private RecyclerView recyclerView;
+
+    //boolean for password update
+    boolean passwordUpdateRequired = false;
+    String passwordUpdate;
 
     //This is for the delay while loading the email
     ProgressBar progressBar;
@@ -78,6 +86,30 @@ public class EditProfile extends AppCompatActivity implements View.OnScrollChang
         lastName = findViewById(R.id.lastName);
         lastName.getEditText().setText(USER.LNAME);
         email = findViewById(R.id.email);
+        passwordSwitch = findViewById(R.id.passwordSwitch);
+        password = findViewById(R.id.password);
+        confirmPass = findViewById(R.id.confirmPassword);
+
+        passwordSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            @Generated
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (passwordSwitch.isChecked()){
+                    password.setVisibility(View.VISIBLE);
+                    confirmPass.setVisibility(View.VISIBLE);
+                    passwordUpdateRequired = true;
+                }
+                else{
+                    password.getEditText().setText("");
+                    confirmPass.getEditText().setText("");
+                    password.setError(null);
+                    confirmPass.setError(null);
+                    password.setVisibility(View.GONE);
+                    confirmPass.setVisibility(View.GONE);
+                    passwordUpdateRequired = false;
+                }
+            }
+        });
 
 
         if (USER.STUDENT) {
@@ -90,7 +122,6 @@ public class EditProfile extends AppCompatActivity implements View.OnScrollChang
             //set email
             getStudentData();
 
-            //set email text in the parseStudentData function
 
         } else {
             dashboardBottomNavigation.inflateMenu(R.menu.menu_instructor);
@@ -101,7 +132,97 @@ public class EditProfile extends AppCompatActivity implements View.OnScrollChang
 
         }
 
+        btnEditProfile = findViewById(R.id.buttonEditProfile);
+        btnEditProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            @Generated
+            public void onClick(View v) {
+                boolean valid = true;
+                if (passwordUpdateRequired){
+                    passwordUpdate = "password";
+                    //validate with password text inputs
+                    if (isEmpty(firstName) | isEmpty(lastName) | validateEmail(email) | !validatePassword(password,confirmPass)){
+                        valid = false;
+                    }
+                }
+                else{
+                    passwordUpdate = "nopassword";
+                    //validate without password text inputs
+                    if (isEmpty(firstName) | isEmpty(lastName) | validateEmail(email)){
+                        valid = false;
+                    }
+                }
+
+                if (valid){
+                    //perfom the update
+
+                }
+
+                }
+        });
+
     }
+
+    // This function checks if a required text is empty or not
+    public boolean isEmpty(TextInputLayout text) {
+        boolean empty = false;
+        if (text.getEditText().getText().toString().isEmpty()) {
+            text.setError("Field can't be empty");
+            empty = true;
+        }
+        else{
+            text.setError(null);
+        }
+        return empty;
+    }
+
+    //this function validates email
+    public boolean validateEmail(TextInputLayout text) {
+        boolean valid = true;
+
+        String emailInput = text.getEditText().getText().toString().trim();
+        if (emailInput.isEmpty()) {
+            text.setError("Field can't be empty");
+            valid =  false;
+        } else if (!PatternsCompat.EMAIL_ADDRESS.matcher(emailInput).matches()) {
+            text.setError("Please enter a valid email address");
+            valid = false;
+        } else {
+            text.setError(null);
+            valid = true;
+        }
+        return valid;
+    }
+
+    //This function validates password only
+    public boolean validatePassword(TextInputLayout password, TextInputLayout confirmPass){
+        boolean valid = true;
+        if (password.getEditText().getText().toString().isEmpty()){
+            password.setError("Field can't be empty");
+            valid = false;
+        }
+        else if (password.getEditText().getText().toString().length() < 5) {
+            password.setError("Password must be at least 5 characters long");
+            valid = false;
+        }
+        else{
+            password.setError(null);
+        }
+        if (confirmPass.getEditText().getText().toString().isEmpty()) {
+            confirmPass.setError("Confirm your password");
+            valid = false;
+        }
+        else if (!password.getEditText().getText().toString().equals(confirmPass.getEditText().getText().toString())) {
+            confirmPass.setError("Passwords don't match");
+            valid = false;
+        }
+        else {
+            confirmPass.setError(null);
+        }
+
+        return valid;
+    }
+
 
     @Generated
     private void getStudentData(){

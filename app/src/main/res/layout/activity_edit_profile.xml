@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true" />
 
-    <RelativeLayout
+     <RelativeLayout
         android:layout_width="match_parent"
         android:id="@+id/EditProfileLayout"
         android:visibility="gone"
@@ -107,6 +107,14 @@
                         android:inputType="textEmailAddress" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <Switch
+                    android:id="@+id/passwordSwitch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:text="Update Password " />
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/password"
                     android:layout_width="match_parent"
@@ -114,7 +122,8 @@
                     android:layout_marginTop="0dp"
                     android:orientation="horizontal"
                     app:passwordToggleEnabled="true"
-                    app:errorEnabled="true">
+                    app:errorEnabled="true"
+                    android:visibility="gone">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
@@ -130,7 +139,8 @@
                     android:layout_marginTop="5dp"
                     android:orientation="horizontal"
                     app:passwordToggleEnabled="true"
-                    app:errorEnabled="true">
+                    app:errorEnabled="true"
+                    android:visibility="gone">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
@@ -158,5 +168,5 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         style="@style/AppTheme.BottomNavigation"/>
-    </RelativeLayout>
+     </RelativeLayout>
 </RelativeLayout>
