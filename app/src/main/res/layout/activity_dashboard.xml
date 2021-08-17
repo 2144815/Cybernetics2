@@ -12,6 +12,11 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true" />
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:id="@+id/DashboardLayout"
+        android:layout_height="wrap_content">
+
     <LinearLayout
         android:id="@+id/dashboardLinearLayout"
         android:layout_above="@id/dashboardBottomNavigation"
@@ -29,7 +34,8 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:id="@+id/dashboardRelLayout"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:id="@+id/dashboardNameLinearLayout"
@@ -110,4 +116,5 @@
         android:layout_alignParentBottom="true"
         style="@style/AppTheme.BottomNavigation"
         android:layout_alignParentEnd="true"/>
+    </RelativeLayout>
 </RelativeLayout>

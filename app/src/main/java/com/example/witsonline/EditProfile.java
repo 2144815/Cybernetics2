@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,7 +45,11 @@ public class EditProfile extends AppCompatActivity implements View.OnScrollChang
     private Button editProfile;
     private RecyclerView recyclerView;
 
-    //URL for php
+    //This is for the delay while loading the email
+    ProgressBar progressBar;
+    RelativeLayout relativeLayout;
+
+    //URLs for php
     String studURL = "https://lamp.ms.wits.ac.za/home/s2105624/getStudentProfile.php?unum=";
     String instURL = "https://lamp.ms.wits.ac.za/home/s2105624/getInstructorProfile.php?unum=";
 
@@ -52,6 +57,11 @@ public class EditProfile extends AppCompatActivity implements View.OnScrollChang
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
+
+        //Initializing progressbar
+        progressBar = findViewById(R.id.editProfileProgressBar);
+        relativeLayout = findViewById(R.id.EditProfileLayout);
+        progressBar.setVisibility(View.VISIBLE);
 
         //setup request queue
         requestQueue = Volley.newRequestQueue(this);
@@ -103,11 +113,11 @@ public class EditProfile extends AppCompatActivity implements View.OnScrollChang
     private JsonArrayRequest getStudentDataFromServer(){
 
         //Initializing progressbar
-        final ProgressBar progressBar = (ProgressBar) findViewById(R.id.editProfileProgressBar);
+       // final ProgressBar progressBar = (ProgressBar) findViewById(R.id.editProfileProgressBar);
 
         //Displaying ProgressBar
-        progressBar.setVisibility(View.VISIBLE);
-        setProgressBarIndeterminateVisibility(true);
+       // progressBar.setVisibility(View.VISIBLE);
+       // setProgressBarIndeterminateVisibility(true);
 
 
         //JsonArrayRequest of volley
@@ -116,10 +126,12 @@ public class EditProfile extends AppCompatActivity implements View.OnScrollChang
                     //Calling method parseData to parse the json response
                     parseStudentData(response);
                     //Hiding the progressBar
+                    relativeLayout.setVisibility(View.VISIBLE);
                     progressBar.setVisibility(View.GONE);
                 },
                 (error) -> {
                     //Hiding the progressBar
+                    relativeLayout.setVisibility(View.VISIBLE);
                     progressBar.setVisibility(View.GONE);
                     //If an error occurs that means end of the list has been reached
                     //Toast.makeText(CourseHomePage.this, "No More Items Available", Toast.LENGTH_SHORT).show();
@@ -160,11 +172,11 @@ public class EditProfile extends AppCompatActivity implements View.OnScrollChang
     private JsonArrayRequest getInstructorDataFromServer(){
 
         //Initializing progressbar
-        final ProgressBar progressBar = (ProgressBar) findViewById(R.id.editProfileProgressBar);
+        //final ProgressBar progressBar = (ProgressBar) findViewById(R.id.editProfileProgressBar);
 
         //Displaying ProgressBar
-        progressBar.setVisibility(View.VISIBLE);
-        setProgressBarIndeterminateVisibility(true);
+        //progressBar.setVisibility(View.VISIBLE);
+       // setProgressBarIndeterminateVisibility(true);
 
 
         //JsonArrayRequest of volley
@@ -173,10 +185,12 @@ public class EditProfile extends AppCompatActivity implements View.OnScrollChang
                     //Calling method parseData to parse the json response
                     parseInstructorData(response);
                     //Hiding the progressBar
+                    relativeLayout.setVisibility(View.VISIBLE);
                     progressBar.setVisibility(View.GONE);
                 },
                 (error) -> {
                     //Hiding the progressBar
+                    relativeLayout.setVisibility(View.VISIBLE);
                     progressBar.setVisibility(View.GONE);
                     //If an error occurs that means end of the list has been reached
                     //Toast.makeText(CourseHomePage.this, "No More Items Available", Toast.LENGTH_SHORT).show();

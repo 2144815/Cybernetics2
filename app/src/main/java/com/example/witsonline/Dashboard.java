@@ -39,6 +39,7 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
     //This is for the delay while loading user full name
     ProgressBar progressBar;
     private RelativeLayout relativeLayout; // for the entire page
+    private RelativeLayout relativeLayoutName;
 
     //delay for loading featured courses
     private LinearLayout featuredCourses;  // for the featured course
@@ -75,7 +76,8 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
         progressBar = findViewById(R.id.dashboardProgressBar);
         progressBar.setVisibility(View.VISIBLE);
 
-        relativeLayout = findViewById(R.id.dashboardRelLayout);
+        relativeLayout = findViewById(R.id.DashboardLayout);
+        relativeLayoutName = findViewById(R.id.dashboardRelLayout);
 
         //NO ACTION BAR ON THIS ACTIVITY
         Objects.requireNonNull(getSupportActionBar()).hide();
@@ -185,6 +187,8 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
         USER.LNAME = LName;
 
         name.setText(FName + " " + LName);
+        relativeLayout.setVisibility(View.VISIBLE);
+        relativeLayoutName.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.GONE);
     }
     @Generated
