@@ -73,13 +73,6 @@ public class ReviewCardAdapter extends RecyclerView.Adapter<ReviewCardAdapter.Vi
         public ViewHolder(View itemView) {
             super(itemView);
             studentName = (TextView) itemView.findViewById(R.id.studentName);
-            studentName.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(v.getContext(), userInfo.class);
-                    v.getContext().startActivity(intent);
-                }
-            });
             reviewDescription = (TextView) itemView.findViewById(R.id.reviewDescription);
             reviewRating = (RatingBar) itemView.findViewById(R.id.reviewRating);
 
