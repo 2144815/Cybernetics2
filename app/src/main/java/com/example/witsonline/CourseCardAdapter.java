@@ -112,6 +112,7 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
             courseInstructor = (TextView) itemView.findViewById(R.id.courseInstructor);
             courseInstructor.setOnClickListener(new View.OnClickListener() {
                 @Override
+                @Generated
                 public void onClick(View v) {
                     if (USER.STUDENT){
                         createNewViewProfileDialog();
@@ -127,6 +128,7 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
             image = (ImageView)itemView.findViewById(R.id.courseImage) ;
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
+                @Generated
                 public void onClick(View view) {
 
                     COURSE.NAME = courseName.getText().toString();

@@ -99,6 +99,7 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
         courseInstructor =(TextView)findViewById(R.id.courseInstructor);
         courseInstructor.setOnClickListener(new View.OnClickListener() {
             @Override
+            @Generated
             public void onClick(View v) {
                 createNewViewProfileDialog();
             }
