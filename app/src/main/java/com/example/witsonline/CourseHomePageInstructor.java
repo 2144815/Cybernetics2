@@ -77,7 +77,6 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
     //This is for the add tag pop up menu
     private TextView DialogueInstruction;
 
-
     //CreatingViews
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;

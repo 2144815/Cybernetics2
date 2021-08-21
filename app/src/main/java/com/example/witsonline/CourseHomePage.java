@@ -70,6 +70,9 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
     private RatingBar rtbReviewRating;
     private Button btnReviewPostReview;
 
+    // for viewing instructor's profile
+    private Button btnView, btnProfileCancel;
+
     //CreatingViews
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
@@ -94,6 +97,12 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
         TextView courseName =(TextView)findViewById(R.id.courseName);
         TextView courseDescription =(TextView)findViewById(R.id.courseDescription);
         courseInstructor =(TextView)findViewById(R.id.courseInstructor);
+        courseInstructor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createNewViewProfileDialog();
+            }
+        });
         RatingBar courseRating = (RatingBar)findViewById(R.id.courseRating);
         subscribe = (Button)findViewById(R.id.subscribe);
         outlineLayout = findViewById(R.id.courseOutline);
@@ -536,6 +545,37 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
                         e.printStackTrace();
                     }
                 }
+            }
+        });
+
+    }
+    @Generated
+    public void createNewViewProfileDialog(){
+        dialogBuilder = new AlertDialog.Builder(this);
+        final View viewPopUp = LayoutInflater.from(this)
+                .inflate(R.layout.view_profile_dialog, null);
+
+        btnView = (Button) viewPopUp.findViewById(R.id.btnView);
+        btnProfileCancel = (Button) viewPopUp.findViewById(R.id.btnViewCancel);
+
+        dialogBuilder.setView(viewPopUp);
+        dialog = dialogBuilder.create();
+        dialog.show();
+
+        btnView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            @Generated
+            public void onClick(View v) {
+                Intent intent5 = new Intent(CourseHomePage.this,UserDetails.class);
+                startActivity(intent5);
+                dialog.dismiss();
+            }
+        });
+        btnProfileCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            @Generated
+            public void onClick(View v) {
+                dialog.dismiss();
             }
         });
 

@@ -1,11 +1,14 @@
 package com.example.witsonline;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -16,7 +19,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class ReviewCardAdapter extends RecyclerView.Adapter<ReviewCardAdapter.ViewHolder> {
+
+    //For the dialog to view student's profile
     private Context context;
+    private AlertDialog.Builder dialogBuilder;
+    private AlertDialog dialog;
+    private Button btnView, btnCancel;
 
     //List to store all Courses
     ArrayList<ReviewV>  reviewVs;
@@ -27,6 +35,38 @@ public class ReviewCardAdapter extends RecyclerView.Adapter<ReviewCardAdapter.Vi
         //Getting all requests
         this.reviewVs = requestVs;
         this.context = context;
+    }
+
+    @Generated
+    public void createNewViewDialog(){
+        dialogBuilder = new AlertDialog.Builder(context);
+        final View viewPopUp = LayoutInflater.from(context)
+                .inflate(R.layout.view_profile_dialog, null);
+
+        btnView = (Button) viewPopUp.findViewById(R.id.btnView);
+        btnCancel = (Button) viewPopUp.findViewById(R.id.btnViewCancel);
+
+        dialogBuilder.setView(viewPopUp);
+        dialog = dialogBuilder.create();
+        dialog.show();
+
+        btnView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            @Generated
+            public void onClick(View v) {
+                Intent intent5 = new Intent(context,UserDetails.class);
+                context.startActivity(intent5);
+                dialog.dismiss();
+            }
+        });
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            @Generated
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
     }
 
 
@@ -73,6 +113,14 @@ public class ReviewCardAdapter extends RecyclerView.Adapter<ReviewCardAdapter.Vi
         public ViewHolder(View itemView) {
             super(itemView);
             studentName = (TextView) itemView.findViewById(R.id.studentName);
+            studentName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Intent intent = new Intent(v.getContext(),UserDetails.class);
+                    //v.getContext().startActivity(intent);
+                    createNewViewDialog();
+                }
+            });
             reviewDescription = (TextView) itemView.findViewById(R.id.reviewDescription);
             reviewRating = (RatingBar) itemView.findViewById(R.id.reviewRating);
 

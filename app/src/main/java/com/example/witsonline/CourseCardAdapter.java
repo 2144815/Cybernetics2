@@ -40,6 +40,7 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
     private ProgressBar progressBar;
     private Button btnViewDialogSubscribe, btnViewDialogViewCourse;
     private Button btnUnsubscribe, btnCancel;
+    private Button btnView, btnProfileCancel; // for viewing instructor's profile
     //List to store all Courses
     ArrayList<CourseV> coursesVs;
 
@@ -109,6 +110,18 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
             courseName = (TextView) itemView.findViewById(R.id.courseName);
             courseDescription = (TextView) itemView.findViewById(R.id.courseDescription);
             courseInstructor = (TextView) itemView.findViewById(R.id.courseInstructor);
+            courseInstructor.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (USER.STUDENT){
+                        createNewViewProfileDialog();
+                    }
+                    else{
+                        Intent i = new Intent(context, CourseHomePageInstructor.class);
+                        context.startActivity(i);
+                    }
+                }
+            });
             courseCode = (TextView) itemView.findViewById(R.id.codeContainer);
             courseRatingBar = (RatingBar)itemView.findViewById(R.id.courseRating);
             image = (ImageView)itemView.findViewById(R.id.courseImage) ;
@@ -142,6 +155,39 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
 
         }
     }
+
+    @Generated
+    public void createNewViewProfileDialog(){
+        dialogBuilder = new AlertDialog.Builder(context);
+        final View viewPopUp = LayoutInflater.from(context)
+                .inflate(R.layout.view_profile_dialog, null);
+
+        btnView = (Button) viewPopUp.findViewById(R.id.btnView);
+        btnProfileCancel = (Button) viewPopUp.findViewById(R.id.btnViewCancel);
+
+        dialogBuilder.setView(viewPopUp);
+        dialog = dialogBuilder.create();
+        dialog.show();
+
+        btnView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            @Generated
+            public void onClick(View v) {
+                Intent intent5 = new Intent(context,UserDetails.class);
+                context.startActivity(intent5);
+                dialog.dismiss();
+            }
+        });
+        btnProfileCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            @Generated
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+    }
+
     @Generated
     public void createNewViewDialog(){
         dialogBuilder = new AlertDialog.Builder(context);
