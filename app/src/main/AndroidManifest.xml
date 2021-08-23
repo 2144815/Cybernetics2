@@ -16,7 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-
+        <activity
+            android:name=".BrowseStudents"
+            android:exported="true" />
         <!--
                Set to true if your app is Standalone, that is, it does not require the handheld
                app to run.
@@ -24,9 +26,9 @@
         <meta-data
             android:name="com.google.android.wearable.standalone"
             android:value="true" />
-             -->
-
-      <!--  <activity
+        -->
+        <!--
+  <activity
             android:name=".EditProfile"
             android:label="@string/title_activity_edit_profile">
             <intent-filter>
@@ -34,7 +36,8 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> -->
+        </activity>
+        -->
         <activity android:name=".EditLesson" />
         <activity android:name=".EditProfile" />
         <activity android:name=".LessonPageInstructor" />

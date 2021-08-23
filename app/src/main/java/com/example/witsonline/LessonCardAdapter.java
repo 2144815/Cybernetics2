@@ -2,6 +2,7 @@ package com.example.witsonline;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +46,11 @@ public class LessonCardAdapter extends RecyclerView.Adapter<LessonCardAdapter.Vi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         //Getting the particular item from the list
         final LessonV lessonV = lessonVs.get(position);
+
+        Log.d("HERE", "new");
+        for(LessonV it: lessonVs){
+            Log.d("HERE", it.getLessonID() + ": " + it.getLessonName() + " "+ it.getLessonCourse());
+        }
 
         //Showing data on the views
         holder.setIsRecyclable(false);

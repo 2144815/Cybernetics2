@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -149,6 +150,10 @@ public class BrowseLessons extends AppCompatActivity implements View.OnScrollCha
                     }
                     else{
                         Toast.makeText(BrowseLessons.this, "No More Items Available", Toast.LENGTH_SHORT).show();
+                        Log.d("HERE", "lesson part");
+                        for(LessonV it: listLessonVs){
+                            Log.d("HERE", it.getLessonID());
+                        }
                     }
                 });
         //Returning the request

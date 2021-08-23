@@ -98,6 +98,9 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
     //button for editing a course
     private ImageView imgEditCourse;
 
+    //button for assigning tutors;
+    private Button btnAssignTutors;
+
     //This is for the delay while loading correct course info
     private ProgressBar progressBar;
     private RelativeLayout relativeLayout;
@@ -175,6 +178,19 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
             }
         });
 
+        //Adding on-click for assigning a tutor
+        btnAssignTutors = findViewById(R.id.assignTutorsButton);
+        btnAssignTutors.setOnClickListener(new View.OnClickListener() {
+            @Override
+            @Generated
+            public void onClick(View v) {
+                Intent intent = new Intent(CourseHomePageInstructor.this, BrowseStudents.class);
+                intent.putExtra("activity","instructor");
+                startActivity(intent);
+                //  finish();
+            }
+        });
+
         btnViewLesson = findViewById(R.id.viewLessons);
         btnViewLesson.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -198,6 +214,9 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
                 finish();
             }
         });
+
+
+
         //Progress bar for the whole page and the page's relative layout
         progressBar = findViewById(R.id.progressBar);
         relativeLayout = findViewById(R.id.CourseHomeInstructorLayout);
