@@ -6,8 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
+    android:layout_marginBottom="20dp"
     android:scrollbarThumbVertical="@null"
-    tools:context=".CourseHomePage"><LinearLayout
+    tools:context=".CourseHomePage">
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -151,16 +153,18 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
+
                     <androidx.recyclerview.widget.RecyclerView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
                         android:id="@+id/tagsRecyclerView"
-                        android:layout_centerInParent="true"/>
-                    <ProgressBar
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_centerInParent="true" />
+
+                    <ProgressBar
                         android:id="@+id/tagsProgressBar"
-                        android:layout_centerInParent="true"/>
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true" />
                 </RelativeLayout>
 
                 <TextView
@@ -175,11 +179,12 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
+
                     <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/reviewRecyclerView"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:id="@+id/reviewRecyclerView"
-                        android:layout_centerInParent="true"/>
+                        android:layout_centerInParent="true" />
                     <ProgressBar
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -200,5 +205,17 @@
 
             </LinearLayout>
         </ScrollView>
+
     </LinearLayout>
+    <ImageButton
+        android:id="@+id/forumButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/ic_baseline_forum_24"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        app:srcCompat="@drawable/ic_baseline_forum_24" />
+
+
 </RelativeLayout>

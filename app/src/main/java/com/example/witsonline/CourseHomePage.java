@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -54,6 +55,7 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
     private TextView courseInstructor;
     //Creating a list of Courses
     private ArrayList<ReviewV> listReviewVs;
+    private ImageView imgEditCourse;
 
     //Creating a list of tags
     private ArrayList<String> tags;
@@ -72,7 +74,7 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
 
     // for viewing instructor's profile
     private Button btnView, btnProfileCancel;
-
+    private ImageButton imgForum;
     //CreatingViews
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
@@ -173,6 +175,16 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
         //Adding adapter to recyclerview's
         recyclerView.setAdapter(adapter);
         recyclerViewTags.setAdapter(adapterTags);
+        imgForum = findViewById(R.id.forumButton);
+        imgForum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            @Generated
+            public void onClick(View v) {
+                Intent intent = new Intent(CourseHomePage.this, ForumActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         try {
             doPostRequest("enrolment.php");

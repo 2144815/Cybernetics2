@@ -18,7 +18,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:id="@+id/CourseHomeInstructorLayout"
-        android:visibility="gone"
+
         android:layout_height="match_parent">
 
     <LinearLayout
@@ -210,16 +210,18 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
                 <androidx.recyclerview.widget.RecyclerView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
                     android:id="@+id/reviewRecyclerView"
-                    android:layout_centerInParent="true"/>
-                <ProgressBar
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_centerInParent="true" />
+
+                <ProgressBar
                     android:id="@+id/reviewProgressBar"
-                    android:layout_centerInParent="true"/>
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true" />
             </RelativeLayout>
 
 
@@ -227,19 +229,33 @@
     </ScrollView>
 
 </LinearLayout>
-        <ImageView
-            android:id="@+id/editCourse"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:background="@drawable/shape_tag"
+            android:orientation="vertical"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:padding="10dp"
-            android:layout_margin="10dp"
-            android:text="Edit Course"
-            android:src="@drawable/edit_white"
-            />
+            android:layout_alignParentEnd="true">
+            <ImageView
+                android:id="@+id/editCourse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="@drawable/shape_tag"
+                android:padding="10dp"
+                android:layout_margin="10dp"
+                android:text="Edit Course"
+                android:src="@drawable/edit_white"
+                />
+            <ImageButton
+                android:id="@+id/forumButton"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/ic_baseline_forum_24"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                app:srcCompat="@drawable/ic_baseline_forum_24" />
+        </LinearLayout>
 
     </RelativeLayout>
 </RelativeLayout>

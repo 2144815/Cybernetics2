@@ -50,6 +50,7 @@
         <activity android:name=".CreateCourse" />
         <activity android:name=".MyCourses" />
         <activity android:name=".UserDetails" />
+        <activity android:name=".ForumActivity" />
         <activity
             android:name=".RegisterActivity"
             android:theme="@style/AppTheme.NoActionBar" />
