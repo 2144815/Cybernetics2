@@ -25,6 +25,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -41,6 +42,7 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
     private Button btnViewDialogSubscribe, btnViewDialogViewCourse;
     private Button btnUnsubscribe, btnCancel;
     private Button btnView, btnProfileCancel; // for viewing instructor's profile
+    private HashMap <String,String> instUsernames = new HashMap<>(); // for viewing instructor's profile
     //List to store all Courses
     ArrayList<CourseV> coursesVs;
 
@@ -84,6 +86,9 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
             Glide.with(context).load(holder.courseImage).into(holder.image);
         }
 
+        //for view profile, we need the instructor's username
+        instUsernames.put(courseV.getCourseCode(),courseV.getCourseInstructor());
+
     }
 
     @Override
@@ -110,22 +115,30 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
             courseName = (TextView) itemView.findViewById(R.id.courseName);
             courseDescription = (TextView) itemView.findViewById(R.id.courseDescription);
             courseInstructor = (TextView) itemView.findViewById(R.id.courseInstructor);
+            courseCode = (TextView) itemView.findViewById(R.id.codeContainer);
+            courseRatingBar = (RatingBar)itemView.findViewById(R.id.courseRating);
+            image = (ImageView)itemView.findViewById(R.id.courseImage) ;
             courseInstructor.setOnClickListener(new View.OnClickListener() {
                 @Override
                 @Generated
                 public void onClick(View v) {
                     if (USER.STUDENT){
-                        createNewViewProfileDialog();
+                        createNewViewProfileDialog(courseCode);
                     }
                     else{
+                        COURSE.NAME = courseName.getText().toString();
+                        COURSE.OUTLINE = courseOutline;
+                        COURSE.IMAGE = courseImage;
+                        COURSE.RATING =courseRating;
+                        //COURSE.INSTRUCTOR = courseInstructor.getText().toString();
+                        COURSE.INSTRUCTOR_NAME = courseInstructor.getText().toString();
+                        COURSE.CODE = courseCode.getText().toString();
+                        COURSE.DESCRIPTION = courseDescription.getText().toString();
                         Intent i = new Intent(context, CourseHomePageInstructor.class);
                         context.startActivity(i);
                     }
                 }
             });
-            courseCode = (TextView) itemView.findViewById(R.id.codeContainer);
-            courseRatingBar = (RatingBar)itemView.findViewById(R.id.courseRating);
-            image = (ImageView)itemView.findViewById(R.id.courseImage) ;
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 @Generated
@@ -146,7 +159,7 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        createNewViewDialog();
+                        createNewViewDialog(courseCode);
                     }
                     else{
                         Intent i = new Intent(context, CourseHomePageInstructor.class);
@@ -159,7 +172,7 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
     }
 
     @Generated
-    public void createNewViewProfileDialog(){
+    public void createNewViewProfileDialog(TextView courseCode){
         dialogBuilder = new AlertDialog.Builder(context);
         final View viewPopUp = LayoutInflater.from(context)
                 .inflate(R.layout.view_profile_dialog, null);
@@ -175,7 +188,9 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
             @Override
             @Generated
             public void onClick(View v) {
+                INSTRUCTOR.USERNAME = instUsernames.get(courseCode.getText());
                 Intent intent5 = new Intent(context,UserDetails.class);
+                intent5.putExtra("userType","instructor");
                 context.startActivity(intent5);
                 dialog.dismiss();
             }
@@ -191,7 +206,7 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
     }
 
     @Generated
-    public void createNewViewDialog(){
+    public void createNewViewDialog(TextView courseCode){
         dialogBuilder = new AlertDialog.Builder(context);
         final View viewPopUp = LayoutInflater.from(context)
                 .inflate(R.layout.subscribe_dialog, null);
@@ -236,9 +251,11 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
             @Override
             @Generated
             public void onClick(View v) {
+                //INSTRUCTOR.USERNAME = instUsernames.get(courseCode.getText());
                 dialog.dismiss();
                 Intent i = new Intent(context, CourseHomePage.class);
                 i.putExtra("activity",""+context);
+                i.putExtra("username",instUsernames.get(courseCode.getText()));
                 context.startActivity(i);
             }
         });

@@ -87,6 +87,9 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
     //Volley Request Queue
     private RequestQueue requestQueue;
 
+    //For determining previous activity
+    Bundle extras;
+
     //The request counter to send ?page=1, ?page=2 requests
     private int reviewCount = 1;
     @Override
@@ -94,6 +97,21 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_course_home_page);
         super.onCreate(savedInstanceState);
+
+        //To determine which activity we came from (BrowseCourses or MyCourses
+        extras = getIntent().getExtras();
+        if (extras != null) {
+            String act = extras.getString("activity");
+            if (act.contains("BrowseCourses")) {
+                browse = true;
+            } else if (act.contains("Dashboard")) {
+                dashboard = true;
+
+            } else {
+                mycourses = true;
+            }
+        }
+
         TextView courseName =(TextView)findViewById(R.id.courseName);
         TextView courseDescription =(TextView)findViewById(R.id.courseDescription);
         courseInstructor =(TextView)findViewById(R.id.courseInstructor);
@@ -111,19 +129,6 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
         image = (ImageView)findViewById(R.id.courseImage);
         viewLesson = (Button)findViewById(R.id.viewLessons);
 
-        //To determine which activity we came from (BrowseCourses or MyCourses
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            String act = extras.getString("activity");
-            if (act.contains("BrowseCourses")) {
-                browse = true;
-            } else if (act.contains("Dashboard")) {
-                dashboard = true;
-
-            } else {
-                mycourses = true;
-            }
-        }
 
         if(!COURSE.IMAGE.equals("null")){
             Glide.with(this).load(COURSE.IMAGE).into(image);
@@ -132,6 +137,7 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
         courseDescription.setText(COURSE.DESCRIPTION);
         courseInstructor.setText("By: "+COURSE.INSTRUCTOR_NAME);
         courseRating.setRating(Float.parseFloat(COURSE.RATING));
+        INSTRUCTOR.USERNAME = COURSE.INSTRUCTOR;
         addOutlineTopics(COURSE.OUTLINE);
 
         //Initializing Views
@@ -384,6 +390,8 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
                 json = array.getJSONObject(i);
 
                 //Adding data to the course object
+                reviewV.setReviewID(json.getString("reviewID"));
+                reviewV.setStudentNumber(json.getString("reviewStudentNumber"));
                 reviewV.setStudentFName(json.getString("reviewStudentFName"));
                 reviewV.setStudentLName(json.getString("reviewStudentLName"));
                 reviewV.setReviewRating(json.getString("reviewRating"));
@@ -567,7 +575,9 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
             @Override
             @Generated
             public void onClick(View v) {
+                INSTRUCTOR.USERNAME = extras.getString("username");
                 Intent intent5 = new Intent(CourseHomePage.this,UserDetails.class);
+                intent5.putExtra("userType","instructor");
                 startActivity(intent5);
                 dialog.dismiss();
             }

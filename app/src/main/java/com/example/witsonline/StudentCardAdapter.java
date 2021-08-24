@@ -151,7 +151,7 @@ public class StudentCardAdapter extends RecyclerView.Adapter<StudentCardAdapter.
                     @Override
                     @Generated
                     public void run() {
-                        Toast.makeText(context, "did it", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Update successful", Toast.LENGTH_SHORT).show();
                         /*
                         if (btnViewDialogSubscribe != null) {
                             if (responseData.trim().equals("subscribed")) {

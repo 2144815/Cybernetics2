@@ -404,6 +404,8 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
                 json = array.getJSONObject(i);
 
                 //Adding data to the course object
+                reviewV.setReviewID(json.getString("reviewID"));
+                reviewV.setStudentNumber(json.getString("reviewStudentNumber"));
                 reviewV.setStudentFName(json.getString("reviewStudentFName"));
                 reviewV.setStudentLName(json.getString("reviewStudentLName"));
                 reviewV.setReviewRating(json.getString("reviewRating"));

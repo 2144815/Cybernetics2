@@ -61,6 +61,13 @@
                     android:padding="10dp"
                     android:text="Review Description...." />
 
+                <TextView
+                    android:id="@+id/reviewID"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#F0F2F5"
+                    android:text="ID" />
+
             </LinearLayout>
 
 

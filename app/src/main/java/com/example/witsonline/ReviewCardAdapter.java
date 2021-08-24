@@ -17,6 +17,7 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ReviewCardAdapter extends RecyclerView.Adapter<ReviewCardAdapter.ViewHolder> {
 
@@ -29,6 +30,9 @@ public class ReviewCardAdapter extends RecyclerView.Adapter<ReviewCardAdapter.Vi
     //List to store all Courses
     ArrayList<ReviewV>  reviewVs;
 
+    //Store student numbers for view profile
+    private HashMap<String,String> studentNumbers = new HashMap<>();
+
     //Constructor of this class
     public ReviewCardAdapter(ArrayList<ReviewV> requestVs, Context context ){
         super();
@@ -38,7 +42,7 @@ public class ReviewCardAdapter extends RecyclerView.Adapter<ReviewCardAdapter.Vi
     }
 
     @Generated
-    public void createNewViewDialog(){
+    public void createNewViewDialog(TextView reviewID){
         dialogBuilder = new AlertDialog.Builder(context);
         final View viewPopUp = LayoutInflater.from(context)
                 .inflate(R.layout.view_profile_dialog, null);
@@ -54,7 +58,9 @@ public class ReviewCardAdapter extends RecyclerView.Adapter<ReviewCardAdapter.Vi
             @Override
             @Generated
             public void onClick(View v) {
+                STUDENT.number = studentNumbers.get(reviewID.getText());
                 Intent intent5 = new Intent(context,UserDetails.class);
+                intent5.putExtra("userType","student");
                 context.startActivity(intent5);
                 dialog.dismiss();
             }
@@ -90,9 +96,12 @@ public class ReviewCardAdapter extends RecyclerView.Adapter<ReviewCardAdapter.Vi
         //Showing data on the view
         holder.studentName.setText(reviewV.getStudentFName() +" "+ reviewV.getStudentLName());
         holder.reviewDescription.setText(reviewV.getReviewDescription());
+        holder.reviewID.setText(reviewV.getReviewID());
         if(reviewV.getReviewRating()!=null) {
             holder.reviewRating.setRating(Float.parseFloat(reviewV.getReviewRating()));
         }
+
+        studentNumbers.put(reviewV.getReviewID(),reviewV.getStudentNumber());
 
     }
 
@@ -107,11 +116,13 @@ public class ReviewCardAdapter extends RecyclerView.Adapter<ReviewCardAdapter.Vi
         public TextView studentName;
         public TextView reviewDescription;
         public RatingBar reviewRating;
+        public TextView reviewID;
 
         //Initializing Views
         @RequiresApi(api = Build.VERSION_CODES.M)
         public ViewHolder(View itemView) {
             super(itemView);
+            reviewID = (TextView) itemView.findViewById(R.id.reviewID);
             studentName = (TextView) itemView.findViewById(R.id.studentName);
             studentName.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -119,7 +130,7 @@ public class ReviewCardAdapter extends RecyclerView.Adapter<ReviewCardAdapter.Vi
                 public void onClick(View v) {
                     //Intent intent = new Intent(v.getContext(),UserDetails.class);
                     //v.getContext().startActivity(intent);
-                    createNewViewDialog();
+                    createNewViewDialog(reviewID);
                 }
             });
             reviewDescription = (TextView) itemView.findViewById(R.id.reviewDescription);
