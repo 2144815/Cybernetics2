@@ -6,6 +6,22 @@
     android:layout_height="match_parent"
     tools:context=".UserDetails">
 
+    <ProgressBar
+        android:id="@+id/userDetailsProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="300dp"
+        android:layout_marginLeft="175dp"/>
+
+
+     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/userDetailsLayout"
+         android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="match_parent">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/viewUser"
@@ -101,4 +117,5 @@
             android:text="Email"
             android:textColor="#000000" />
     </com.google.android.material.textfield.TextInputLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
