@@ -1,6 +1,7 @@
 package com.example.witsonline;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -32,7 +33,11 @@ import okhttp3.Response;
 
 public class StudentCardAdapter extends RecyclerView.Adapter<StudentCardAdapter.ViewHolder>{
 
+    //For the dialog to view student's profile
     private Context context;
+    private AlertDialog.Builder dialogBuilder;
+    private AlertDialog dialog;
+    private Button btnView, btnCancel;
 
     //List to store all Courses
     ArrayList<StudentV> studentVs;
@@ -73,6 +78,41 @@ public class StudentCardAdapter extends RecyclerView.Adapter<StudentCardAdapter.
         }
     }
 
+    @Generated
+    public void createNewViewProfileDialog(TextView studNumber){
+        dialogBuilder = new AlertDialog.Builder(context);
+        final View viewPopUp = LayoutInflater.from(context)
+                .inflate(R.layout.view_profile_dialog, null);
+
+        btnView = (Button) viewPopUp.findViewById(R.id.btnView);
+        btnCancel = (Button) viewPopUp.findViewById(R.id.btnViewCancel);
+
+        dialogBuilder.setView(viewPopUp);
+        dialog = dialogBuilder.create();
+        dialog.show();
+
+        btnView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            @Generated
+            public void onClick(View v) {
+                STUDENT.number = studNumber.getText().toString();
+                Intent intent5 = new Intent(context,UserDetails.class);
+                intent5.putExtra("userType","student");
+                context.startActivity(intent5);
+                dialog.dismiss();
+            }
+        });
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            @Generated
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+    }
+
+
     @Override
     @Generated
     public int getItemCount() { return studentVs.size(); }
@@ -89,8 +129,14 @@ public class StudentCardAdapter extends RecyclerView.Adapter<StudentCardAdapter.
         //Initializing Views
         public ViewHolder(View itemView){
             super(itemView);
-            studentName = (TextView) itemView.findViewById(R.id.studentCardName);
             studentNumber = (TextView) itemView.findViewById(R.id.studentCardNumber);
+            studentName = (TextView) itemView.findViewById(R.id.studentCardName);
+            studentName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    createNewViewProfileDialog(studentNumber);
+                }
+            });
             assignTutor = (Button) itemView.findViewById(R.id.assignTutorButton);
             tutorState = (TextView) itemView.findViewById(R.id.studentCardTutor);
 

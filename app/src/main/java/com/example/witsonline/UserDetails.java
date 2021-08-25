@@ -16,6 +16,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TextView;
@@ -50,6 +52,10 @@ public class UserDetails extends AppCompatActivity {
     private TextInputLayout user, firstName, lastName, email;
     private RequestQueue requestQueue;
 
+    //This is for the delay while loading the email
+    private ProgressBar progressBar;
+    private androidx.constraintlayout.widget.ConstraintLayout constraintLayout;
+
     private String getStudentURL = "https://lamp.ms.wits.ac.za/home/s2105624/getStudentProfile.php?unum=";
     private String getInstructorURL = "https://lamp.ms.wits.ac.za/home/s2105624/getInstructorProfile.php?unum=";
 
@@ -61,6 +67,11 @@ public class UserDetails extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_details);
+
+        //Initializing progressbar
+        progressBar = findViewById(R.id.userDetailsProgressBar);
+        constraintLayout = findViewById(R.id.userDetailsLayout);
+        progressBar.setVisibility(View.VISIBLE);
 
         requestQueue = Volley.newRequestQueue(this);
 
@@ -99,10 +110,13 @@ public class UserDetails extends AppCompatActivity {
                 (response) -> {
                     //Calling method parseData to parse the json response
                     parseStudentData(response);
+                    //Hiding the progressBar
+                    constraintLayout.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.GONE);
                 },
                 (error) -> {
                     //If an error occurs that means user was not found or does not exist
-                    Toast.makeText(UserDetails.this, "USER NOT FOUND OR DOES NOT EXIST", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UserDetails.this, "User not found", Toast.LENGTH_SHORT).show();
                 });
         //Returning the request
         return jsonArrayRequest;
@@ -147,6 +161,9 @@ public class UserDetails extends AppCompatActivity {
                 (response) -> {
                     //Calling method parseData to parse the json response
                     parseInstructorData(response);
+                    //Hiding the progressBar
+                    constraintLayout.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.GONE);
                 },
                 (error) -> {
                     //If an error occurs that means user was not found or does not exist
