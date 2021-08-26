@@ -1,5 +1,18 @@
 package com.example.witsonline;
 
+import android.util.Log;
+import android.view.View;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.gson.JsonArray;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -12,7 +25,19 @@ public class Discussion implements Serializable {
     private Date date;
 
     public Discussion getDiscId() {
+        String webURL = "https://lamp.ms.wits.ac.za/home/s2105624/getDiscId.php?StName=";
+        String JsonResponse;
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest( webURL + student, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
 
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
 
         return DiscId;
     }
