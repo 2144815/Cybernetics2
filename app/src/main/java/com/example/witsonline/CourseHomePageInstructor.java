@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -94,7 +95,7 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
     //button for a lesson
     private Button btnAddLesson;
     private Button btnViewLesson;
-
+    private ImageButton imgForum;
     //button for editing a course
     private ImageView imgEditCourse;
 
@@ -214,7 +215,16 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
                 finish();
             }
         });
-
+        imgForum = findViewById(R.id.forumButton);
+        imgForum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            @Generated
+            public void onClick(View v) {
+                Intent intent = new Intent(CourseHomePageInstructor.this, ForumActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
 
         //Progress bar for the whole page and the page's relative layout

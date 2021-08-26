@@ -24,11 +24,11 @@
             android:paddingTop="20dp">
 
             <TextView
-                android:id="@+id/courseName"
+                android:id="@+id/courseCode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/vegur_bold"
-                android:text="Course Name"
+                android:text="Course Code"
                 android:textColor="@color/color2"
                 android:textSize="30dp" />
 
@@ -54,6 +54,8 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
             android:layout_height="wrap_content">
 
             <androidx.recyclerview.widget.RecyclerView

@@ -129,31 +129,6 @@
                         android:text="Closed/Open" />
 
                 </LinearLayout>
-
-                <TextView
-                    android:id="@+id/tv_answer"
-                    android:layout_width="85dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="260dp"
-                    android:layout_weight="1"
-                    android:clickable="true"
-                    android:onClick="onClick"
-                    android:paddingTop="5dp"
-                    android:text="Answer..."
-                    android:textColor="@color/color1"
-                    android:textStyle="bold" />
-
-                TextView
-                    android:id="@+id/btn_Reply"
-                    android:layout_width="75dp"
-                    android:layout_height="30dp"
-                    android:layout_weight="1"
-                    android:clickable="true"
-                    android:paddingTop="5dp"
-                    android:text="Answer..."
-                    android:textColor="@color/color1" />
-
-
             </LinearLayout>
 
 

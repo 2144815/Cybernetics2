@@ -64,8 +64,11 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
     //TextViews
     private TextView topic;
     private TextView text;
+    private boolean browse = false;
+    private boolean mycourses = false;
+    private boolean dashboard = false;
 
-
+    Bundle extras;
 
     private Button postdiscussion;
     //The request counter to send ?page=1, ?page=2 requests
@@ -75,8 +78,8 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_forum);
         super.onCreate(savedInstanceState);
-        TextView courseName =(TextView)findViewById(R.id.courseName);
-        courseName.setText(COURSE.NAME);
+        TextView courseCode =(TextView)findViewById(R.id.courseCode);
+        courseCode.setText(COURSE.CODE);
 
 
         //Initializing Views
@@ -86,6 +89,18 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
         recyclerView.setLayoutManager(layoutManager);
         startDiscussion = (Button)findViewById( R.id.startDiscussion );
 
+        extras = getIntent().getExtras();
+        if (extras != null) {
+            String act = extras.getString("activity");
+            if (act.contains("BrowseCourses")) {
+                browse = true;
+            } else if (act.contains("Dashboard")) {
+                dashboard = true;
+
+            } else {
+                mycourses = true;
+            }
+        }
         //Initializing our Course list
         listDiscussions = new ArrayList<>();
         requestQueue = Volley.newRequestQueue(this);
@@ -99,6 +114,9 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
 
         //Adding adapter to recyclerview's
         recyclerView.setAdapter(adapter);
+        if(!USER.STUDENT){
+            startDiscussion.setVisibility(View.GONE);
+        }
         startDiscussion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -277,7 +295,16 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
     }
     public void onBackPressed(){
             Intent intent = new Intent(ForumActivity.this, CourseHomePage.class);
-            startActivity(intent);
-            finish();
+        if(browse){
+            intent.putExtra("activity",""+BrowseCourses.class);
+        }
+        else if(mycourses){
+            intent.putExtra("activity",""+MyCourses.class);
+        }
+        else{
+            intent.putExtra("activity",""+Dashboard.class);
+        }
+        startActivity(intent);
+        finish();
     }
 }

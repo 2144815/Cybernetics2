@@ -181,6 +181,15 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
             @Generated
             public void onClick(View v) {
                 Intent intent = new Intent(CourseHomePage.this, ForumActivity.class);
+                if(browse){
+                    intent.putExtra("activity",""+BrowseCourses.class);
+                }
+                else if(mycourses){
+                    intent.putExtra("activity",""+MyCourses.class);
+                }
+                else{
+                    intent.putExtra("activity",""+Dashboard.class);
+                }
                 startActivity(intent);
                 finish();
             }

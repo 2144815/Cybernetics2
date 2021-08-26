@@ -54,15 +54,7 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
       //  holder.numberOfReplies.setText(discussion.getDiscussionReplies());
         holder.status.setText(discussion.getDiscussionStatus());
         holder.topic.setText(discussion.getDiscussionTopic());
-        holder.answer.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View v){
-                Intent in = new Intent(context, a_discussion.class);
-                in.putExtra("theData",  discussion );
-                context.startActivity(in);
 
-            }
-        } );
 
 
 
@@ -81,7 +73,7 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
         public TextView startedBy;
         public TextView numberOfReplies;
         public TextView status;
-        public TextView answer;
+        public TextView time;
 
 
         //Initializing Views
@@ -91,29 +83,14 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
             startedBy = (TextView) itemView.findViewById(R.id.startedBy);
             numberOfReplies = (TextView) itemView.findViewById(R.id.numberOfReplies);
             status = (TextView) itemView.findViewById(R.id.status);
-            answer = (TextView)itemView.findViewById( R.id.tv_answer );
-            /*  itemView.setOnClickListener(new View.OnClickListener() {
+            itemView.setOnClickListener(new View.OnClickListener() {
               @Override
                 @Generated
                 public void onClick(View view) {
-                    LESSON.Code = COURSE.CODE;
-                    LESSON.Text = lessonText.getText().toString();
-                    LESSON.Name = lessonName.getText().toString();
-                    LESSON.Resource = lessonResource.getText().toString();
-                    LESSON.Url = lessonUrl.getText().toString();
-                    LESSON.ID = lessonID.getText().toString();
-
-                    if(USER.STUDENT){
-                        Intent i = new Intent(context, LessonPage.class);
+                        Intent i = new Intent(context, a_discussion.class);
                         context.startActivity(i);
-                    }
-                    else{
-                        Intent i = new Intent(context, LessonPageInstructor.class);
-                        context.startActivity(i);
-                    }
                 }
-            });*/
 
-        }
+        });
     }
-}
+}}
