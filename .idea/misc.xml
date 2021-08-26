@@ -1,25 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DesignSurface">
-    <option name="filePathToZoomLevelMap">
-      <map>
-        <entry key="app/src/main/res/layout/activity_course_home_page.xml" value="0.19322916666666667" />
-        <entry key="app/src/main/res/layout/activity_course_home_page_instructor.xml" value="0.1671171171171171" />
-        <entry key="app/src/main/res/layout/activity_dashboard.xml" value="0.1358695652173913" />
-        <entry key="app/src/main/res/layout/activity_forum.xml" value="0.22" />
-        <entry key="app/src/main/res/layout/activity_lesson_page.xml" value="0.1671171171171171" />
-        <entry key="app/src/main/res/layout/course_card.xml" value="0.18704710144927536" />
-        <entry key="app/src/main/res/layout/discussion_card.xml" value="0.18" />
-        <entry key="app/src/main/res/layout/discussion_dialog.xml" value="0.1671171171171171" />
-        <entry key="app/src/main/res/layout/forum_card.xml" value="0.5" />
-        <entry key="app/src/main/res/layout/lesson_card.xml" value="0.1671171171171171" />
-        <entry key="app/src/main/res/layout/outline_topic_entry.xml" value="0.1671171171171171" />
-        <entry key="app/src/main/res/layout/review_dialog.xml" value="0.1671171171171171" />
-        <entry key="app/src/main/res/layout/subscribe_dialog.xml" value="0.1358695652173913" />
-      </map>
-    </option>
-  </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

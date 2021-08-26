@@ -2,6 +2,7 @@ package com.example.witsonline;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAdapter.ViewHolder> {
     private Context context;
@@ -52,6 +54,18 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
       //  holder.numberOfReplies.setText(discussion.getDiscussionReplies());
         holder.status.setText(discussion.getDiscussionStatus());
         holder.topic.setText(discussion.getDiscussionTopic());
+        holder.answer.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                Intent in = new Intent(context, a_discussion.class);
+                in.putExtra("theData",  discussion );
+                context.startActivity(in);
+
+            }
+        } );
+
+
+
 
     }
 
@@ -67,6 +81,7 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
         public TextView startedBy;
         public TextView numberOfReplies;
         public TextView status;
+        public TextView answer;
 
 
         //Initializing Views
@@ -76,6 +91,7 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
             startedBy = (TextView) itemView.findViewById(R.id.startedBy);
             numberOfReplies = (TextView) itemView.findViewById(R.id.numberOfReplies);
             status = (TextView) itemView.findViewById(R.id.status);
+            answer = (TextView)itemView.findViewById( R.id.tv_answer );
             /*  itemView.setOnClickListener(new View.OnClickListener() {
               @Override
                 @Generated

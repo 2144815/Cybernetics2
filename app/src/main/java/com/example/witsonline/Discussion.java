@@ -1,14 +1,27 @@
 package com.example.witsonline;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Discussion {
+public class Discussion implements Serializable {
     private String student;
     private String text;
     private String topic;
     private int status;
     private int number_of_replies;
     private Date date;
+
+    public Discussion getDiscId() {
+
+
+        return DiscId;
+    }
+
+    private Discussion DiscId;
+
+
+
+
 
     //setters
     public void setDiscussionText(String text){

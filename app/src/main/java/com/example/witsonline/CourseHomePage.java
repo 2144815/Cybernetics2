@@ -45,6 +45,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class CourseHomePage extends AppCompatActivity implements  View.OnScrollChangeListener{
+
     LinearLayout outlineLayout;
     private Button subscribe;
     private Button review;
@@ -99,7 +100,6 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_course_home_page);
         super.onCreate(savedInstanceState);
-
         //To determine which activity we came from (BrowseCourses or MyCourses
         extras = getIntent().getExtras();
         if (extras != null) {

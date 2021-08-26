@@ -7,12 +7,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.style.TtsSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +23,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.resources.TextAppearance;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -43,6 +46,8 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class ForumActivity extends AppCompatActivity implements  View.OnScrollChangeListener{
+
+
     //Creating a list of Courses
     private ArrayList<Discussion> listDiscussions;
     //This is for the review pop up menu
@@ -60,6 +65,8 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
     private TextView topic;
     private TextView text;
 
+
+
     private Button postdiscussion;
     //The request counter to send ?page=1, ?page=2 requests
     private int discussionCount = 1;
@@ -70,13 +77,14 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
         super.onCreate(savedInstanceState);
         TextView courseName =(TextView)findViewById(R.id.courseName);
         courseName.setText(COURSE.NAME);
-        startDiscussion = findViewById(R.id.startDiscussion);
+
 
         //Initializing Views
         recyclerView = (RecyclerView)findViewById(R.id.discussionRecyclerView);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
+        startDiscussion = (Button)findViewById( R.id.startDiscussion );
 
         //Initializing our Course list
         listDiscussions = new ArrayList<>();
@@ -98,8 +106,9 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
             }
         });
 
-
     }
+
+
     @Generated
     private JsonArrayRequest getDataFromServer(int requestCount){
         //Initializing progressbar
@@ -171,6 +180,7 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
         topic = (TextView) viewPopUp.findViewById(R.id.discussionTopic);
         text = (TextView) viewPopUp.findViewById(R.id.discussionText);
 
+
         postdiscussion.setOnClickListener(new View.OnClickListener() {
             @Override
             @Generated
@@ -197,6 +207,7 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
                 }
             }
         });
+
 
     }
     //This function adds the discussion the database
