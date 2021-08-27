@@ -20,14 +20,25 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
-public class a_discussion  extends AppCompatActivity implements  View.OnScrollChangeListener{
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
+public class ADiscussion  extends AppCompatActivity implements  View.OnScrollChangeListener{
     List<Comment> commentList = new ArrayList<Comment>();
     private ImageButton send;
     private EditText Answer;
@@ -75,12 +86,18 @@ public class a_discussion  extends AppCompatActivity implements  View.OnScrollCh
         send.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String time = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss").format(Calendar.getInstance().getTime());
 
                 if(Answer.getText().toString().equals( "" )){
-                    Toast toast = Toast.makeText(a_discussion.this, "Answer cannot be empty", Toast.LENGTH_LONG);
+                    Toast toast = Toast.makeText(ADiscussion.this, "Answer cannot be empty", Toast.LENGTH_LONG);
                     toast.show();
                 }
                 else {
+                   try {
+                        addComment("addComment.php",Answer.getText().toString(),time);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     Answer.setText( "" );
                 }
 
@@ -140,6 +157,50 @@ public class a_discussion  extends AppCompatActivity implements  View.OnScrollCh
         }
         //Notifying the adapter that data has been added or changed
         mAdapter.notifyDataSetChanged();
+    }
+    private void addComment (String phpFile , String text , String time) throws IOException {
+        OkHttpClient client = new OkHttpClient();
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("https://lamp.ms.wits.ac.za/~s2105624/" + phpFile).newBuilder();
+        urlBuilder.addQueryParameter("studentNumber",USER.USERNAME);
+        urlBuilder.addQueryParameter("discussionID", DISCUSSION.DISCUSSION_ID);
+        urlBuilder.addQueryParameter("text", text);
+        urlBuilder.addQueryParameter("time", time);
+        String url = urlBuilder.build().toString();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            @Generated
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            @Generated
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                final String responseData = response.body().string();
+                ADiscussion.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.d("HERE",responseData.toString());
+                        if(responseData.trim().equals("Successful")) {
+                            Toast toast = Toast.makeText(ADiscussion.this, responseData, Toast.LENGTH_LONG);
+                            toast.show();
+                            Intent intent = new Intent(ADiscussion.this, ADiscussion.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                        else{
+                            Toast toast = Toast.makeText(ADiscussion.this, "Couldn't post your discussion ", Toast.LENGTH_LONG);
+                            toast.show();
+                        }
+                    }
+                });
+            }
+        });
     }
 
     private boolean isLastItemDisplaying(RecyclerView recyclerView){

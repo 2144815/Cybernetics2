@@ -94,7 +94,7 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
                     DISCUSSION.DISCUSSION_STUDENT = startedBy.getText().toString();
                     DISCUSSION.DISCUSSION_TEXT = text.getText().toString();
                     DISCUSSION.DISCUSSION_TOPIC = topic.getText().toString();
-                    Intent i = new Intent(context, a_discussion.class);
+                    Intent i = new Intent(context, ADiscussion.class);
                     context.startActivity(i);
                 }
 

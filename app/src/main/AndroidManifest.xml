@@ -16,7 +16,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".a_discussion"></activity>
         <activity
             android:name=".BrowseStudents"
             android:exported="true" />
@@ -52,6 +51,7 @@
         <activity android:name=".MyCourses" />
         <activity android:name=".UserDetails" />
         <activity android:name=".ForumActivity" />
+        <activity android:name=".ADiscussion" />
         <activity
             android:name=".RegisterActivity"
             android:theme="@style/AppTheme.NoActionBar" />
