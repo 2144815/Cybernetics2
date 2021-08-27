@@ -149,8 +149,6 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
                     //If an error occurs that means end of the list has been reached
                     //Toast.makeText(CourseHomePage.this, "No More Items Available", Toast.LENGTH_SHORT).show();
                 });
-        //Returning the request
-        Log.d("HERE", "yes"+jsonArrayRequest.toString());
         return jsonArrayRequest;
     }
 
@@ -171,10 +169,14 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
                 //Getting json
                 json = array.getJSONObject(i);
                 //Adding data to the course object
+                discussion.setDiscussionID(json.getString("discussionID"));
                 discussion.setDiscussionTopic(json.getString("discussionTopic"));
                 discussion.setDiscussionStudent(json.getString("discussionStudentFName"));
                 discussion.setDiscussionStatus(Integer.parseInt(json.getString("discussionStatus")));
                 discussion.setDiscussionReplies(Integer.parseInt(json.getString("discussionReplies")));
+                discussion.setDiscussionText(json.getString("discussionText"));
+                Log.d("HERE",discussion.getDiscussionText());
+
             } catch (JSONException e){
                 e.printStackTrace();
             }

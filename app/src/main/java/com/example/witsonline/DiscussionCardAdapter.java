@@ -3,6 +3,7 @@ package com.example.witsonline;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,11 +54,9 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
         holder.startedBy.setText(discussion.getDiscussionStudent());
       //  holder.numberOfReplies.setText(discussion.getDiscussionReplies());
         holder.status.setText(discussion.getDiscussionStatus());
+        holder.text.setText(discussion.getDiscussionText());
         holder.topic.setText(discussion.getDiscussionTopic());
-
-
-
-
+        holder.id.setText(discussion.getDiscussionID());
 
     }
 
@@ -73,6 +72,8 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
         public TextView startedBy;
         public TextView numberOfReplies;
         public TextView status;
+        public TextView text;
+        public TextView id;
         public TextView time;
 
 
@@ -80,15 +81,21 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
         public ViewHolder(View itemView) {
             super(itemView);
             topic = (TextView) itemView.findViewById(R.id.topic);
+            text = (TextView) itemView.findViewById(R.id.text);
             startedBy = (TextView) itemView.findViewById(R.id.startedBy);
             numberOfReplies = (TextView) itemView.findViewById(R.id.numberOfReplies);
             status = (TextView) itemView.findViewById(R.id.status);
+            id = (TextView) itemView.findViewById(R.id.discussionID);
             itemView.setOnClickListener(new View.OnClickListener() {
-              @Override
+                @Override
                 @Generated
                 public void onClick(View view) {
-                        Intent i = new Intent(context, a_discussion.class);
-                        context.startActivity(i);
+                    DISCUSSION.DISCUSSION_ID = id.getText().toString();
+                    DISCUSSION.DISCUSSION_STUDENT = startedBy.getText().toString();
+                    DISCUSSION.DISCUSSION_TEXT = text.getText().toString();
+                    DISCUSSION.DISCUSSION_TOPIC = topic.getText().toString();
+                    Intent i = new Intent(context, a_discussion.class);
+                    context.startActivity(i);
                 }
 
         });

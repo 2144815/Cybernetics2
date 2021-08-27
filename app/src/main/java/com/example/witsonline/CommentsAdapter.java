@@ -41,7 +41,6 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
         // The method fetches the appropriate data and uses the data to fill in the view holder's layout. For example, if the RecyclerView displays a list of names,
         // the method might find the appropriate name in the list and fill in the view holder's TextView widget.
         holder.TheStudentName.setText( commentList.get((holder.getAdapterPosition())).getUserFullName());
-        holder.TheTime.setText( commentList.get(holder.getAdapterPosition()).getTime());
         holder.TheAnswer.setText( commentList.get((holder.getAdapterPosition())).getComment());
 
 

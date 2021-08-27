@@ -7,14 +7,6 @@ public class Comment {
     private String time;
     private int NoVotes = 0;
 
-    public Comment(String userFullName, Integer discussionId, String comment, String time) {
-        UserFullName = userFullName;
-        this.discussionId = discussionId;
-        Comment = comment;
-        this.time = time;
-
-    }
-
     public String getUserFullName() {
         return UserFullName;
     }

@@ -23,32 +23,12 @@ public class Discussion implements Serializable {
     private int status;
     private int number_of_replies;
     private Date date;
-
-    public Discussion getDiscId() {
-        String webURL = "https://lamp.ms.wits.ac.za/home/s2105624/getDiscId.php?StName=";
-        String JsonResponse;
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest( webURL + student, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
-
-        return DiscId;
-    }
-
-    private Discussion DiscId;
-
-
-
-
+    private String DiscId;
 
     //setters
+    public void setDiscussionID(String id){
+        DiscId = id;
+    }
     public void setDiscussionText(String text){
         this.text = text;
     }
@@ -69,7 +49,9 @@ public class Discussion implements Serializable {
     }
 
     //Getters
-
+    public String getDiscussionID() {
+        return DiscId;
+    }
     public String getDiscussionText(){
         return this.text;
     }
