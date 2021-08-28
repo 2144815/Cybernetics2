@@ -64,8 +64,8 @@ public class ADiscussion  extends AppCompatActivity implements  View.OnScrollCha
         studentName = (TextView)findViewById(R.id.tv_studentName);
         question = (TextView)findViewById(R.id.question);
 
-        studentName.setText(DISCUSSION.DISCUSSION_STUDENT);
-        question.setText(DISCUSSION.DISCUSSION_TEXT);
+        studentName.setText(DISCUSSIONS.DISCUSSION_STUDENT);
+        question.setText(DISCUSSIONS.DISCUSSION_TEXT);
        // question.setText(DISCUSSION.DISCUSSION_TEXT);
         recyclerView = (RecyclerView)findViewById( R.id.comments );
         recyclerView.setHasFixedSize(true);
@@ -115,7 +115,7 @@ public class ADiscussion  extends AppCompatActivity implements  View.OnScrollCha
         setProgressBarIndeterminateVisibility(true);
 
         //JsonArrayRequest of volley
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(webLink + String.valueOf(requestCount) + "&discussionID="+DISCUSSION.DISCUSSION_ID ,
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(webLink + String.valueOf(requestCount) + "&discussionID="+DISCUSSIONS.DISCUSSION_ID ,
                 (response) -> {
                     //Calling method parseData to parse the json responce
                     parseData(response);
@@ -162,7 +162,7 @@ public class ADiscussion  extends AppCompatActivity implements  View.OnScrollCha
         OkHttpClient client = new OkHttpClient();
         HttpUrl.Builder urlBuilder = HttpUrl.parse("https://lamp.ms.wits.ac.za/~s2105624/" + phpFile).newBuilder();
         urlBuilder.addQueryParameter("studentNumber",USER.USERNAME);
-        urlBuilder.addQueryParameter("discussionID", DISCUSSION.DISCUSSION_ID);
+        urlBuilder.addQueryParameter("discussionID", DISCUSSIONS.DISCUSSION_ID);
         urlBuilder.addQueryParameter("text", text);
         urlBuilder.addQueryParameter("time", time);
         String url = urlBuilder.build().toString();

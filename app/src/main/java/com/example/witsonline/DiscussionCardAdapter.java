@@ -90,10 +90,10 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
                 @Override
                 @Generated
                 public void onClick(View view) {
-                    DISCUSSION.DISCUSSION_ID = id.getText().toString();
-                    DISCUSSION.DISCUSSION_STUDENT = startedBy.getText().toString();
-                    DISCUSSION.DISCUSSION_TEXT = text.getText().toString();
-                    DISCUSSION.DISCUSSION_TOPIC = topic.getText().toString();
+                    DISCUSSIONS.DISCUSSION_ID = id.getText().toString();
+                    DISCUSSIONS.DISCUSSION_STUDENT = startedBy.getText().toString();
+                    DISCUSSIONS.DISCUSSION_TEXT = text.getText().toString();
+                    DISCUSSIONS.DISCUSSION_TOPIC = topic.getText().toString();
                     Intent i = new Intent(context, ADiscussion.class);
                     context.startActivity(i);
                 }
