@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,6 +62,10 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
     //Creating a list of tags
     private ArrayList<String> tags;
     private ArrayList<TagV> listTagVs;
+
+    //progress bar for entire page
+    private ProgressBar progressBar;
+    private RelativeLayout relativeLayout;
 
     private ImageView image;
     //This is for the unsubscribe pop up menu
@@ -113,6 +118,9 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
                 mycourses = true;
             }
         }
+
+        progressBar = findViewById(R.id.courseHomePageProgressBar);
+        relativeLayout = findViewById(R.id.CourseHomePageRelLayout);
 
         TextView courseName =(TextView)findViewById(R.id.courseName);
         TextView courseDescription =(TextView)findViewById(R.id.courseDescription);
@@ -195,16 +203,20 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
             }
         });
 
+        //check a student's enrolment as the page loads
         try {
             doPostRequest("enrolment.php");
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         subscribe.setOnClickListener(new View.OnClickListener() {
             @Override
             @Generated
             public void onClick(View v) {
                 if(subscribe.getText().toString().trim().equals("SUBSCRIBE")){
+                    //display forum if student is subscribed to course
+                    imgForum.setVisibility(View.VISIBLE);
                     try {
                         doPostRequest("enrol.php");
                         subscribe.setText("SUBSCRIBED");
@@ -496,12 +508,19 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
                     @Override
                     public void run() {
                         if(responseData.trim().equals("subscribed")){
+                            //display forum if student is subscribed to course
+                            imgForum.setVisibility(View.VISIBLE);
                             subscribe.setText("SUBSCRIBED");
                         }
-                        if(responseData.trim().equals("unsubscribed")){
+                        if(responseData.trim().equals("not subscribed")){
+                            // don't display forum if student is not subscribed to course
+                            imgForum.setVisibility(View.GONE);
                             subscribe.setText("SUBSCRIBE");
-                            btnUnsubscribe.setText("SUBSCRIBE");
+                           // btnUnsubscribe.setText("SUBSCRIBE");
                         }
+                        //Hiding the progressBar
+                        relativeLayout.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.GONE);
                     }
                 });
             }
@@ -524,6 +543,9 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
             @Override
             @Generated
             public void onClick(View v) {
+                // don't display forum if student is not subscribed to course
+                imgForum.setVisibility(View.GONE);
+                subscribe.setText("SUBSCRIBE");
                 try {
                     doPostRequest("unsubscribe.php");
                     Toast toast = Toast.makeText(CourseHomePage.this, "Unsubscribed to "+COURSE.CODE, Toast.LENGTH_LONG);

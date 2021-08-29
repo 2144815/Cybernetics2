@@ -1,5 +1,6 @@
 package com.example.witsonline;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Parcelable;
@@ -7,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -24,6 +26,11 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
 
     //List to store all Courses
     ArrayList<Discussion> discussions;
+
+    //For the dialog to view student's profile
+    private AlertDialog.Builder dialogBuilder;
+    private AlertDialog dialog;
+    private Button btnView, btnCancel;
 
     //Constructor of this class
     public DiscussionCardAdapter(ArrayList<Discussion> discussions, Context context){

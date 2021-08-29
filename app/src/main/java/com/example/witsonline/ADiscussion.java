@@ -147,7 +147,10 @@ public class ADiscussion  extends AppCompatActivity implements  View.OnScrollCha
                 //Getting json
                 json = array.getJSONObject(i);
                 //Adding data to the course object
-                comment.setUserFullName(json.getString("reply_studentFname"));
+                String fullName = "";
+                fullName = fullName + json.getString("reply_studentFname");
+                fullName = fullName + " " + json.getString("reply_studentLname");
+                comment.setUserFullName(fullName);
                 comment.setComment(json.getString("reply_Text"));
             } catch (JSONException e){
                 e.printStackTrace();
