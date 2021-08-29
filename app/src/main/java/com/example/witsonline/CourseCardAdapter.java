@@ -19,9 +19,15 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -45,6 +51,13 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
     private HashMap <String,String> instUsernames = new HashMap<>(); // for viewing instructor's profile
     //List to store all Courses
     ArrayList<CourseV> coursesVs;
+
+
+    //For determining if student is a tutor
+    String tutorURL = "https://lamp.ms.wits.ac.za/home/s2105624/getTutorState.php?studentNumber=";
+    private RequestQueue requestQueue;
+    private boolean tutor;
+    private TextView unsubscribeText;
 
     //Constructor of this class
     public CourseCardAdapter(ArrayList<CourseV> requestVs, Context context){
@@ -263,7 +276,6 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
     }
     @Generated
     public void createNewViewDialogUnsubscribe(){
-
         dialogBuilder = new AlertDialog.Builder(context);
         final View viewPopUp = LayoutInflater.from(context)
                 .inflate(R.layout.unsubscribe_dialog, null);
@@ -273,6 +285,15 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
         dialogBuilder.setView(viewPopUp);
         dialog = dialogBuilder.create();
         dialog.show();
+
+        unsubscribeText = viewPopUp.findViewById(R.id.unsubscribeText);
+
+        if (tutor){
+            unsubscribeText.setText("You are a tutor for this course. Are you sure you want to unsubscribe?");
+        }
+        else{
+            unsubscribeText.setText("Are you sure you want to unsubscribe?");
+        }
 
 
         btnUnsubscribe.setOnClickListener(new View.OnClickListener() {
@@ -312,8 +333,6 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
         urlBuilder.addQueryParameter("courseCode", COURSE.CODE);
         String url = urlBuilder.build().toString();
 
-
-
         Request request = new Request.Builder()
                 .url(url)
                 .build();
@@ -338,6 +357,7 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
                         if (btnViewDialogSubscribe != null) {
                             if (responseData.trim().equals("subscribed")) {
                                 btnViewDialogSubscribe.setText("UNSUBSCRIBE");
+                                getTutorStateData();
                             }
                             if(progressBar!=null){
                                 btnViewDialogSubscribe.setVisibility(View.VISIBLE);
@@ -361,4 +381,55 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
             }
         });
     }
+
+    private void getTutorStateData(){
+        requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(getTutorStateDataFromServer());
+    }
+
+    @Generated
+    private JsonArrayRequest getTutorStateDataFromServer(){
+        //JsonArrayRequest of volley
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(tutorURL + USER.USER_NUM + "&courseCode=" + COURSE.CODE,
+                (response) -> {
+                    //Calling method parseData to parse the json responce
+                    parseTutorStateData(response);
+
+                },
+                (error) -> {
+                    //Toast.makeText(CourseHomePage.this, "No More Items Available", Toast.LENGTH_SHORT).show();
+                });
+        //Returning the request
+        return jsonArrayRequest;
+    }
+
+    //This method will parse json Data
+    @Generated
+    private void parseTutorStateData(JSONArray array){
+        for (int i = 0; i< array.length(); i++){
+
+            JSONObject json = null;
+            try {
+                //Getting json
+                json = array.getJSONObject(i);
+
+                //Adding data to the course object
+                int tutorState = json.getInt("Tutor");
+                //Toast.makeText(this, ""+tutorState, Toast.LENGTH_LONG).show();
+
+                if (tutorState == 1){
+                    tutor = true;
+                }
+                else{
+                    tutor = false;
+                }
+
+            } catch (JSONException e){
+                e.printStackTrace();
+            }
+
+        }
+
+    }
+
 }
