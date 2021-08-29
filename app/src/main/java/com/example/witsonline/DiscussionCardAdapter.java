@@ -78,8 +78,7 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
 
     @Generated
     public void createNewViewProfileDialog(TextView discussionID){
-        //Toast.makeText(context, discussionID.getText(), Toast.LENGTH_SHORT).show();
-        Toast.makeText(context, studentNums.get(discussionID.getText()), Toast.LENGTH_SHORT).show();
+
         dialogBuilder = new AlertDialog.Builder(context);
         final View viewPopUp = LayoutInflater.from(context)
                 .inflate(R.layout.view_profile_dialog, null);
@@ -95,7 +94,7 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
             @Override
             @Generated
             public void onClick(View v) {
-                STUDENT.number = studentNums.get(discussionID.getText());
+                STUDENT.number = studentNums.get(discussionID.getText().toString());
                 Intent intent5 = new Intent(context,UserDetails.class);
                 intent5.putExtra("userType","student");
                 context.startActivity(intent5);
