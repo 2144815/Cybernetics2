@@ -17,6 +17,10 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class Discussion implements Serializable {
+
+    //for view profile
+    private String studentNumber;
+
     private String student;
     private String text;
     private String topic;
@@ -27,7 +31,7 @@ public class Discussion implements Serializable {
 
     //setters
     public void setDiscussionID(String id){
-        DiscId = id;
+        this.DiscId = id;
     }
     public void setDiscussionText(String text){
         this.text = text;
@@ -43,6 +47,9 @@ public class Discussion implements Serializable {
     }
     public  void  setDiscussionReplies(int number_of_replies){
         this.number_of_replies = number_of_replies;
+    }
+    public void setDiscussionStudentNumber(String studnum){
+        this.studentNumber = studnum;
     }
     public  void SetDiscussionDate(Date date){
         this.date = date;
@@ -66,6 +73,9 @@ public class Discussion implements Serializable {
     }
     public Date getDiscussionDate(){
         return this.date;
+    }
+    public String getDiscussionStudentNumber(){
+        return this.studentNumber;
     }
     public String getDiscussionStatus(){
         if(this.status==1){

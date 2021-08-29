@@ -178,6 +178,7 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
                 discussion.setDiscussionStatus(Integer.parseInt(json.getString("discussionStatus")));
                 discussion.setDiscussionReplies(Integer.parseInt(json.getString("discussionReplies")));
                 discussion.setDiscussionText(json.getString("discussionText"));
+                discussion.setDiscussionStudentNumber(json.getString("discussionStudentNumber"));
                 Log.d("HERE",discussion.getDiscussionText());
 
             } catch (JSONException e){
