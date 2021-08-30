@@ -68,7 +68,6 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
         //Getting the particular item from the list
         final Discussion discussion = discussions.get(position);
         studentNums.put(discussion.getDiscussionID(),discussion.getDiscussionStudentNumber());
-        //Toast.makeText(context, studentNumbers.get(discussion.getDiscussionID()), Toast.LENGTH_SHORT).show();
 
         //Showing data on the views
         holder.setIsRecyclable(false);
@@ -78,7 +77,7 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
         holder.text.setText(discussion.getDiscussionText());
         holder.topic.setText(discussion.getDiscussionTopic());
         holder.id.setText(discussion.getDiscussionID());
-        if (discussion.getDiscussionStatus().equals( "Closed" ) && USER.FNAME.equals( discussion.getDiscussionStudent()) == false){
+        /*if (discussion.getDiscussionStatus().equals( "Closed" ) && USER.FNAME.equals( discussion.getDiscussionStudent()) == false){
             holder.menu.setEnabled( false );
         }
         else if (discussion.getDiscussionStatus().equals( "Open" ) && USER.FNAME.equals( discussion.getDiscussionStudent()) == false){
@@ -91,11 +90,20 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
                     showPopupMenu(holder.menu, position,holder);
                 }
             } );
+        } */
+
+        if (USER.USER_NUM.equals(discussion.getDiscussionStudentNumber())){
+            holder.menu.setOnClickListener( new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showPopupMenu(holder.menu, position,holder);
+                }
+            } );
+        }
+        else{
+            holder.menu.setVisibility(View.GONE);
         }
 
-
-
-        //Toast.makeText(context, discussion.getDiscussionStudentNumber(), Toast.LENGTH_SHORT).show();
 
 
     }

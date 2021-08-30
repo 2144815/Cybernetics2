@@ -520,4 +520,10 @@ public class EditProfile extends AppCompatActivity implements View.OnScrollChang
             //Calling the method getData again
         }
     }
+
+    @Override
+    @Generated
+    public void onBackPressed() {
+
+    }
 }

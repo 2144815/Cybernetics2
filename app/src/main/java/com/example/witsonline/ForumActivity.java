@@ -64,6 +64,8 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
     private RequestQueue requestQueue;
     private  Button startDiscussion;
 
+    //for determining whether a student is a tutor or not
+    String tutorURL = "https://lamp.ms.wits.ac.za/home/s2105624/getTutorState.php?studentNumber=";
 
     //TextViews
     private TextView topic;
@@ -112,6 +114,7 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
         requestQueue = Volley.newRequestQueue(this);
         //Calling methods to get data from server
         getData();
+        getTutorStateData();
         //Adding an scroll change listener to recyclerView
         recyclerView.setOnScrollChangeListener(this);
 
@@ -130,16 +133,7 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
             }
         });
 
-
-
-
-
-
-
-
     }
-
-
 
 
     @Generated
@@ -295,6 +289,55 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
             }
         });
     }
+
+    private void getTutorStateData(){
+        requestQueue.add(getTutorStateDataFromServer());
+    }
+
+    @Generated
+    private JsonArrayRequest getTutorStateDataFromServer(){
+        //JsonArrayRequest of volley
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(tutorURL + USER.USER_NUM + "&courseCode=" + COURSE.CODE,
+                (response) -> {
+                    //Calling method parseData to parse the json responce
+                    parseTutorStateData(response);
+
+                },
+                (error) -> {
+                    //Toast.makeText(CourseHomePage.this, "No More Items Available", Toast.LENGTH_SHORT).show();
+                });
+        //Returning the request
+        return jsonArrayRequest;
+    }
+
+    //This method will parse json Data
+    @Generated
+    private void parseTutorStateData(JSONArray array){
+        for (int i = 0; i< array.length(); i++){
+
+            JSONObject json = null;
+            try {
+                //Getting json
+                json = array.getJSONObject(i);
+
+                //Adding data to the course object
+                int tutorState = json.getInt("Tutor");
+                //Toast.makeText(this, ""+tutorState, Toast.LENGTH_LONG).show();
+
+                if (tutorState == 1){
+                    //if student is a tutor, they can't post discussions
+                    startDiscussion.setVisibility(View.GONE);
+                }
+
+
+            } catch (JSONException e){
+                e.printStackTrace();
+            }
+
+        }
+
+    }
+
     //This method will check if the recyclerview has reached the bottom or not
     private boolean isLastItemDisplaying(RecyclerView recyclerView){
         if(recyclerView.getAdapter().getItemCount() != 0){

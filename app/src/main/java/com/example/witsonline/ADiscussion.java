@@ -85,8 +85,10 @@ public class ADiscussion  extends AppCompatActivity implements  View.OnScrollCha
         recyclerView.setAdapter(mAdapter);
 
         if(DISCUSSIONS.getDiscussionStatus().equals( "Closed" )  ){
+            Answer.setText("This discussion is closed.");
             Answer.setEnabled( false );
             send.setEnabled( false );
+            send.setImageResource(R.drawable.ic_baseline_send_24_grey);
         }
         else {
             send.setOnClickListener( new View.OnClickListener() {
