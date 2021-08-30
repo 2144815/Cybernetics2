@@ -53,7 +53,10 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
 
     //Creating a list of Courses
     private ArrayList<Discussion> listDiscussions;
-    //This is for the review pop up menu
+
+    //progress bar for entire page
+    private ProgressBar progressBar;
+    private RelativeLayout relativeLayout;
 
     //CreatingViews
     private RecyclerView recyclerView;
@@ -87,6 +90,10 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
         super.onCreate(savedInstanceState);
         TextView courseCode =(TextView)findViewById(R.id.courseCode);
         courseCode.setText(COURSE.CODE);
+
+        //initialising progress bar and relative layour for entire page
+        progressBar = findViewById(R.id.ForumProgressBar);
+        relativeLayout = findViewById(R.id.ForumRelLayout);
 
 
         //Initializing Views
@@ -335,6 +342,8 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
             }
 
         }
+        relativeLayout.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.GONE);
 
     }
 
