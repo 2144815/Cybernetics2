@@ -16,7 +16,7 @@ import org.json.JSONObject;
 import java.io.Serializable;
 import java.util.Date;
 
-public class Discussion implements Serializable {
+class Discussion implements Serializable {
     private String student;
     private String text;
     private String topic;
@@ -68,7 +68,7 @@ public class Discussion implements Serializable {
         return this.date;
     }
     public String getDiscussionStatus(){
-        if(this.status==1){
+        if(this.status==0){
             return "Closed";
         }
         else{

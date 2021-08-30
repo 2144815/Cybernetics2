@@ -83,26 +83,33 @@ public class ADiscussion  extends AppCompatActivity implements  View.OnScrollCha
 
         mAdapter = new CommentsAdapter(commentList,this);
         recyclerView.setAdapter(mAdapter);
-        send.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String time = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss").format(Calendar.getInstance().getTime());
 
-                if(Answer.getText().toString().equals( "" )){
-                    Toast toast = Toast.makeText(ADiscussion.this, "Answer cannot be empty", Toast.LENGTH_LONG);
-                    toast.show();
-                }
-                else {
-                   try {
-                        addComment("addComment.php",Answer.getText().toString(),time);
-                    } catch (IOException e) {
-                        e.printStackTrace();
+        if((getIntent().getStringExtra( "the Status" )).equals( "Closed" )  ){
+            Answer.setEnabled( false );
+            send.setEnabled( false );
+        }
+        else {
+            send.setOnClickListener( new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String time = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss").format(Calendar.getInstance().getTime());
+                    if(Answer.getText().toString().equals( "" )){
+                        Toast toast = Toast.makeText(ADiscussion.this, "Answer cannot be empty", Toast.LENGTH_LONG);
+                        toast.show();
                     }
-                    Answer.setText( "" );
+                    else {
+                        try {
+                            addComment("addComment.php",Answer.getText().toString(),time);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        Answer.setText( "" );
+                    }
                 }
+            } );
 
-            }
-        } );
+        }
+
 
     }
     @Generated

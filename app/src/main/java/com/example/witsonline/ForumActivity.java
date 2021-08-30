@@ -2,15 +2,18 @@ package com.example.witsonline;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.style.TtsSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 
 import android.widget.ProgressBar;
@@ -61,9 +64,11 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
     private RequestQueue requestQueue;
     private  Button startDiscussion;
 
+
     //TextViews
     private TextView topic;
     private TextView text;
+
     private boolean browse = false;
     private boolean mycourses = false;
     private boolean dashboard = false;
@@ -88,6 +93,7 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         startDiscussion = (Button)findViewById( R.id.startDiscussion );
+
 
         extras = getIntent().getExtras();
         if (extras != null) {
@@ -124,7 +130,16 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
             }
         });
 
+
+
+
+
+
+
+
     }
+
+
 
 
     @Generated

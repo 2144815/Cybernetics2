@@ -1,18 +1,24 @@
 package com.example.witsonline;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.IOException;
@@ -24,6 +30,7 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
 
     //List to store all Courses
     ArrayList<Discussion> discussions;
+    private PopupMenu popup;
 
     //Constructor of this class
     public DiscussionCardAdapter(ArrayList<Discussion> discussions, Context context){
@@ -57,8 +64,43 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
         holder.text.setText(discussion.getDiscussionText());
         holder.topic.setText(discussion.getDiscussionTopic());
         holder.id.setText(discussion.getDiscussionID());
+        if (discussion.getDiscussionStatus().equals( "Closed" ) && USER.FNAME.equals( discussion.getDiscussionStudent()) == false){
+            holder.menu.setEnabled( false );
+        }
+        else if (discussion.getDiscussionStatus().equals( "Open" ) && USER.FNAME.equals( discussion.getDiscussionStudent()) == false){
+            holder.menu.setEnabled( false );
+        }
+        else{
+            holder.menu.setOnClickListener( new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showPopupMenu(holder.menu, position,holder);
+                }
+            } );
+        }
+
+
 
     }
+
+    private void showPopupMenu(View v, int position,ViewHolder holder) {
+        PopupMenu popup = new PopupMenu(v.getContext(),v );
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.discussion_menu, popup.getMenu());
+
+        if(holder.status.getText().equals( "Closed" )){
+            popup.getMenu().findItem(R.id.Open_Close_DiscChoice).setTitle( "Open Discussion" );
+
+        }
+
+
+        
+        popup.setOnMenuItemClickListener(new DiscMenuClickListener(position, context,holder,discussions));
+        popup.show();
+
+
+    }
+
 
     @Override
     @Generated
@@ -75,6 +117,7 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
         public TextView text;
         public TextView id;
         public TextView time;
+        public AppCompatImageButton menu;
 
 
         //Initializing Views
@@ -86,6 +129,8 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
             numberOfReplies = (TextView) itemView.findViewById(R.id.numberOfReplies);
             status = (TextView) itemView.findViewById(R.id.status);
             id = (TextView) itemView.findViewById(R.id.discussionID);
+            menu = itemView.findViewById( R.id.disc_menu );
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 @Generated
@@ -95,6 +140,8 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
                     DISCUSSIONS.DISCUSSION_TEXT = text.getText().toString();
                     DISCUSSIONS.DISCUSSION_TOPIC = topic.getText().toString();
                     Intent i = new Intent(context, ADiscussion.class);
+                    i.putExtra( "the student name", startedBy.getText().toString() );
+                    i.putExtra( "the Status", status.getText().toString() );
                     context.startActivity(i);
                 }
 
