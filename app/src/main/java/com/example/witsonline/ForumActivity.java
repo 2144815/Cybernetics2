@@ -184,12 +184,16 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
                 //Getting json
                 json = array.getJSONObject(i);
                 //Adding data to the course object
+                String fullName = "";
                 discussion.setDiscussionID(json.getString("discussionID"));
                 discussion.setDiscussionTopic(json.getString("discussionTopic"));
-                discussion.setDiscussionStudent(json.getString("discussionStudentFName"));
+                fullName = fullName + json.getString("discussionStudentFName");
+                fullName = fullName + " " + json.getString("discussionStudentLName");
+                discussion.setDiscussionStudent(fullName);
                 discussion.setDiscussionStatus(Integer.parseInt(json.getString("discussionStatus")));
                 discussion.setDiscussionReplies(Integer.parseInt(json.getString("discussionReplies")));
                 discussion.setDiscussionText(json.getString("discussionText"));
+                discussion.setDiscussionStudentNumber(json.getString("discussionStudentNumber"));
                 Log.d("HERE",discussion.getDiscussionText());
 
             } catch (JSONException e){

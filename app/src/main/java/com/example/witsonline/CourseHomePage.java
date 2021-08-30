@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,14 +59,22 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
     private ArrayList<ReviewV> listReviewVs;
     private ImageView imgEditCourse;
 
+    //for determining whether a student is a tutor or not
+    private boolean tutor;
+
     //Creating a list of tags
     private ArrayList<String> tags;
     private ArrayList<TagV> listTagVs;
+
+    //progress bar for entire page
+    private ProgressBar progressBar;
+    private RelativeLayout relativeLayout;
 
     private ImageView image;
     //This is for the unsubscribe pop up menu
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
+    private TextView unsubscribeText;
     private Button btnUnsubscribe, btnCancel;
 
     //This is for the review pop up menu
@@ -86,6 +95,7 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
     String webURL = "https://lamp.ms.wits.ac.za/home/s2105624/loadReviews.php?page=";
     String tagURL = "https://lamp.ms.wits.ac.za/home/s2105624/tagretrieve.php?ccode=";
     String instrURL = "https://lamp.ms.wits.ac.za/home/s2105624/getInstructorName.php?Instructor_Username=";
+    String tutorURL = "https://lamp.ms.wits.ac.za/home/s2105624/getTutorState.php?studentNumber=";
 
     //Volley Request Queue
     private RequestQueue requestQueue;
@@ -113,6 +123,9 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
                 mycourses = true;
             }
         }
+
+        progressBar = findViewById(R.id.courseHomePageProgressBar);
+        relativeLayout = findViewById(R.id.CourseHomePageRelLayout);
 
         TextView courseName =(TextView)findViewById(R.id.courseName);
         TextView courseDescription =(TextView)findViewById(R.id.courseDescription);
@@ -195,16 +208,20 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
             }
         });
 
+        //check a student's enrolment as the page loads
         try {
             doPostRequest("enrolment.php");
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         subscribe.setOnClickListener(new View.OnClickListener() {
             @Override
             @Generated
             public void onClick(View v) {
                 if(subscribe.getText().toString().trim().equals("SUBSCRIBE")){
+                    //display forum if student is subscribed to course
+                    imgForum.setVisibility(View.VISIBLE);
                     try {
                         doPostRequest("enrol.php");
                         subscribe.setText("SUBSCRIBED");
@@ -325,6 +342,21 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
         //Returning the request
         return jsonArrayRequest;
     }
+    @Generated
+    private JsonArrayRequest getTutorStateDataFromServer(){
+        //JsonArrayRequest of volley
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(tutorURL + USER.USER_NUM + "&courseCode=" + COURSE.CODE,
+                (response) -> {
+                    //Calling method parseData to parse the json responce
+                    parseTutorStateData(response);
+
+                },
+                (error) -> {
+                    //Toast.makeText(CourseHomePage.this, "No More Items Available", Toast.LENGTH_SHORT).show();
+                });
+        //Returning the request
+        return jsonArrayRequest;
+    }
 
     //This method will get Data from the web api
     private void getData(){
@@ -342,6 +374,10 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
     private void getInstrData(){
         //Adding the method to the queue by calling the method getTagData
         requestQueue.add(getInstrDataFromServer());
+    }
+
+    private void getTutorStateData(){
+        requestQueue.add(getTutorStateDataFromServer());
     }
 
     @Generated
@@ -389,6 +425,35 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
                 String lname = json.getString("Instructor_LName");
 
                 courseInstructor.setText("By: "+ fname + " " + lname);
+
+            } catch (JSONException e){
+                e.printStackTrace();
+            }
+
+        }
+
+    }
+
+    //This method will parse json Data
+    @Generated
+    private void parseTutorStateData(JSONArray array){
+        for (int i = 0; i< array.length(); i++){
+
+            JSONObject json = null;
+            try {
+                //Getting json
+                json = array.getJSONObject(i);
+
+                //Adding data to the course object
+                int tutorState = json.getInt("Tutor");
+                //Toast.makeText(this, ""+tutorState, Toast.LENGTH_LONG).show();
+
+                if (tutorState == 1){
+                    tutor = true;
+                }
+                else{
+                    tutor = false;
+                }
 
             } catch (JSONException e){
                 e.printStackTrace();
@@ -496,12 +561,20 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
                     @Override
                     public void run() {
                         if(responseData.trim().equals("subscribed")){
+                            //display forum if student is subscribed to course
+                            imgForum.setVisibility(View.VISIBLE);
                             subscribe.setText("SUBSCRIBED");
+                            getTutorStateData(); //to determine if student is a tutor
                         }
-                        if(responseData.trim().equals("unsubscribed")){
+                        if(responseData.trim().equals("not subscribed")){
+                            // don't display forum if student is not subscribed to course
+                            imgForum.setVisibility(View.GONE);
                             subscribe.setText("SUBSCRIBE");
-                            btnUnsubscribe.setText("SUBSCRIBE");
+                           // btnUnsubscribe.setText("SUBSCRIBE");
                         }
+                        //Hiding the progressBar
+                        relativeLayout.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.GONE);
                     }
                 });
             }
@@ -515,6 +588,14 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
 
         btnUnsubscribe = (Button) viewPopUp.findViewById(R.id.unSubscribe);
         btnCancel = (Button) viewPopUp.findViewById(R.id.unsubscribeCancel);
+        unsubscribeText = viewPopUp.findViewById(R.id.unsubscribeText);
+
+        if (tutor){
+            unsubscribeText.setText("You are a tutor for this course. Are you sure you want to unsubscribe?");
+        }
+        else{
+            unsubscribeText.setText("Are you sure you want to unsubscribe?");
+        }
 
         dialogBuilder.setView(viewPopUp);
         dialog = dialogBuilder.create();
@@ -524,6 +605,9 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
             @Override
             @Generated
             public void onClick(View v) {
+                // don't display forum if student is not subscribed to course
+                imgForum.setVisibility(View.GONE);
+                subscribe.setText("SUBSCRIBE");
                 try {
                     doPostRequest("unsubscribe.php");
                     Toast toast = Toast.makeText(CourseHomePage.this, "Unsubscribed to "+COURSE.CODE, Toast.LENGTH_LONG);
