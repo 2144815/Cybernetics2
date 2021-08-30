@@ -10,4 +10,15 @@ public class DISCUSSIONS {
     public static int DISCUSSION_NUM_REPLIES;
     public static Date DISCUSSION_DATE;
     public static String DISCUSSION_ID;
+
+    public static String getDiscussionStatus() {
+        if(DISCUSSION_STATUS==1){
+            return "Open";
+        }
+        else{
+            return"Closed";
+        }
+    }
+
+
 }

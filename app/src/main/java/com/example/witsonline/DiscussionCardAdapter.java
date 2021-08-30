@@ -139,9 +139,14 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
                     DISCUSSIONS.DISCUSSION_STUDENT = startedBy.getText().toString();
                     DISCUSSIONS.DISCUSSION_TEXT = text.getText().toString();
                     DISCUSSIONS.DISCUSSION_TOPIC = topic.getText().toString();
+                    if((status.getText().toString()).equals( "Closed" )){
+                        DISCUSSIONS.DISCUSSION_STATUS = 0;
+                    }
+                    else{
+                        DISCUSSIONS.DISCUSSION_STATUS = 1;
+                    }
+
                     Intent i = new Intent(context, ADiscussion.class);
-                    i.putExtra( "the student name", startedBy.getText().toString() );
-                    i.putExtra( "the Status", status.getText().toString() );
                     context.startActivity(i);
                 }
 

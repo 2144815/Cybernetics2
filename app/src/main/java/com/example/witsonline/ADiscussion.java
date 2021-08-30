@@ -84,7 +84,7 @@ public class ADiscussion  extends AppCompatActivity implements  View.OnScrollCha
         mAdapter = new CommentsAdapter(commentList,this);
         recyclerView.setAdapter(mAdapter);
 
-        if((getIntent().getStringExtra( "the Status" )).equals( "Closed" )  ){
+        if(DISCUSSIONS.getDiscussionStatus().equals( "Closed" )  ){
             Answer.setEnabled( false );
             send.setEnabled( false );
         }
