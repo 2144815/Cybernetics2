@@ -88,8 +88,7 @@ public class DiscMenuClickListener implements PopupMenu.OnMenuItemClickListener 
                         }
                     } );
                     return  true;
-                case R.id.delete:
-                    return true;
+
                 default:
                     //
             }
