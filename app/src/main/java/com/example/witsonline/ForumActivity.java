@@ -367,17 +367,23 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
         }
     }
     public void onBackPressed(){
-            Intent intent = new Intent(ForumActivity.this, CourseHomePage.class);
-        if(browse){
-            intent.putExtra("activity",""+BrowseCourses.class);
-        }
-        else if(mycourses){
-            intent.putExtra("activity",""+MyCourses.class);
-        }
+        Intent intent = new Intent(ForumActivity.this, CourseHomePage.class);
+        Intent intent2 = new Intent(ForumActivity.this, CourseHomePageInstructor.class);
+        if(USER.STUDENT) {
+            if(browse){
+                intent.putExtra("activity",""+BrowseCourses.class);
+            }
+            else if(mycourses){
+                intent.putExtra("activity",""+MyCourses.class);
+            }
+            else{
+                intent.putExtra("activity",""+Dashboard.class);
+            }
+            startActivity(intent);
+            }
         else{
-            intent.putExtra("activity",""+Dashboard.class);
+            startActivity(intent2);
         }
-        startActivity(intent);
         finish();
     }
 }

@@ -51,7 +51,10 @@ public class ADiscussion  extends AppCompatActivity implements  View.OnScrollCha
     private int commentsCount = 1;
     private RequestQueue requestQueue;
     private String webLink = "https://lamp.ms.wits.ac.za/home/s2105624/getReplies.php?page=";
-
+    private boolean browse = false;
+    private boolean mycourses = false;
+    private boolean dashboard = false;
+    Bundle extras;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
@@ -66,6 +69,19 @@ public class ADiscussion  extends AppCompatActivity implements  View.OnScrollCha
 
         studentName.setText(DISCUSSIONS.DISCUSSION_STUDENT);
         question.setText(DISCUSSIONS.DISCUSSION_TEXT);
+
+        extras = getIntent().getExtras();
+        if (extras != null) {
+            String act = extras.getString("activity");
+            if (act.contains("BrowseCourses")) {
+                browse = true;
+            } else if (act.contains("Dashboard")) {
+                dashboard = true;
+
+            } else {
+                mycourses = true;
+            }
+        }
        // question.setText(DISCUSSION.DISCUSSION_TEXT);
         recyclerView = (RecyclerView)findViewById( R.id.comments );
         recyclerView.setHasFixedSize(true);
@@ -101,7 +117,15 @@ public class ADiscussion  extends AppCompatActivity implements  View.OnScrollCha
                     }
                     else {
                         try {
-                            addComment("addComment.php",Answer.getText().toString(),time);
+                            String phpFile = "addComment.php";
+                            String phpFile2 = "addInstructorComment.php";
+                            if(USER.STUDENT) {
+                                addComment(phpFile, Answer.getText().toString(), time,"studentNumber");
+                            }
+                            else{
+                                addComment(phpFile2, Answer.getText().toString(), time,"username");
+
+                            }
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -148,6 +172,7 @@ public class ADiscussion  extends AppCompatActivity implements  View.OnScrollCha
     }
     @Generated
     private void parseData(JSONArray array){
+        Log.d("HER",array.toString());
         for (int i = 0; i< array.length(); i++){
             // Creating the Course object
             Comment comment = new Comment();
@@ -157,8 +182,8 @@ public class ADiscussion  extends AppCompatActivity implements  View.OnScrollCha
                 json = array.getJSONObject(i);
                 //Adding data to the course object
                 String fullName = "";
-                fullName = fullName + json.getString("reply_studentFname");
-                fullName = fullName + " " + json.getString("reply_studentLname");
+                fullName = fullName + json.getString("userFname");
+                fullName = fullName + " " + json.getString("userLname");
                 comment.setUserFullName(fullName);
                 comment.setComment(json.getString("reply_Text"));
             } catch (JSONException e){
@@ -170,10 +195,11 @@ public class ADiscussion  extends AppCompatActivity implements  View.OnScrollCha
         //Notifying the adapter that data has been added or changed
         mAdapter.notifyDataSetChanged();
     }
-    private void addComment (String phpFile , String text , String time) throws IOException {
+
+    private void addComment (String phpFile , String text , String time, String user) throws IOException {
         OkHttpClient client = new OkHttpClient();
         HttpUrl.Builder urlBuilder = HttpUrl.parse("https://lamp.ms.wits.ac.za/~s2105624/" + phpFile).newBuilder();
-        urlBuilder.addQueryParameter("studentNumber",USER.USERNAME);
+        urlBuilder.addQueryParameter(user,USER.USERNAME);
         urlBuilder.addQueryParameter("discussionID", DISCUSSIONS.DISCUSSION_ID);
         urlBuilder.addQueryParameter("text", text);
         urlBuilder.addQueryParameter("time", time);
@@ -206,7 +232,7 @@ public class ADiscussion  extends AppCompatActivity implements  View.OnScrollCha
                             finish();
                         }
                         else{
-                            Toast toast = Toast.makeText(ADiscussion.this, "Couldn't post your discussion ", Toast.LENGTH_LONG);
+                            Toast toast = Toast.makeText(ADiscussion.this, "Couldn't post your answer ", Toast.LENGTH_LONG);
                             toast.show();
                         }
                     }
@@ -235,6 +261,15 @@ public class ADiscussion  extends AppCompatActivity implements  View.OnScrollCha
     }
     public void onBackPressed(){
         Intent intent = new Intent(this, ForumActivity.class);
+        if(browse){
+            intent.putExtra("activity",""+BrowseCourses.class);
+        }
+        else if(mycourses){
+            intent.putExtra("activity",""+MyCourses.class);
+        }
+        else{
+            intent.putExtra("activity",""+Dashboard.class);
+        }
         startActivity(intent);
         finish();
     }
