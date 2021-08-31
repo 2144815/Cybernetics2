@@ -57,11 +57,11 @@
 
                 <TextView
                     android:id="@+id/tvTime"
-                    android:layout_width="84dp"
-                    android:layout_height="16dp"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentRight="true"
-                    android:layout_marginStart="119dp"
+                    android:layout_marginStart="80dp"
                     android:layout_toEndOf="@+id/tv_studentName"
                     android:text="Time" />
 

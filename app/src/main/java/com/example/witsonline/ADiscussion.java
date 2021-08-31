@@ -70,6 +70,14 @@ public class ADiscussion  extends AppCompatActivity implements  View.OnScrollCha
         studentName.setText(DISCUSSIONS.DISCUSSION_STUDENT);
         question.setText(DISCUSSIONS.DISCUSSION_TEXT);
 
+        TextView txtTime = (TextView)findViewById(R.id.tvTime);
+
+        SimpleDateFormat dtDate = new SimpleDateFormat("dd-MMM-yyyy");
+        SimpleDateFormat dtTime = new SimpleDateFormat("HH:mm");
+
+        String strTime = dtDate.format(DISCUSSIONS.DISCUSSION_DATE) + '\n' + dtTime.format(DISCUSSIONS.DISCUSSION_DATE);
+        txtTime.setText(strTime);
+
         extras = getIntent().getExtras();
         if (extras != null) {
             String act = extras.getString("activity");

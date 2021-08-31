@@ -52,7 +52,7 @@ public class Discussion implements Serializable {
     public void setDiscussionStudentNumber(String studnum){
         this.studentNumber = studnum;
     }
-    public  void SetDiscussionDate(Date date){
+    public  void setDiscussionDate(Date date){
         this.date = date;
     }
 
