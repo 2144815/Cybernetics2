@@ -36,9 +36,11 @@ import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.sql.Time;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import okhttp3.Call;
@@ -95,7 +97,7 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
         progressBar = findViewById(R.id.ForumProgressBar);
         relativeLayout = findViewById(R.id.ForumRelLayout);
 
-
+        Log.d("HERE","landed");
         //Initializing Views
         recyclerView = (RecyclerView)findViewById(R.id.discussionRecyclerView);
         recyclerView.setHasFixedSize(true);
@@ -159,10 +161,19 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
                     parseData(response);
                     //Hiding the progressBar
                     progressBar.setVisibility(View.GONE);
+                    if(listDiscussions.isEmpty()){
+                        TextView noDiscussions = (TextView)findViewById(R.id.noDiscussionItems);
+                        noDiscussions.setVisibility(View.VISIBLE);
+                    }
                 },
                 (error) -> {
                     progressBar.setVisibility(View.GONE);
                     //If an error occurs that means end of the list has been reached
+
+                    if(listDiscussions.isEmpty()){
+                        TextView noDiscussions = (TextView)findViewById(R.id.noDiscussionItems);
+                        noDiscussions.setVisibility(View.VISIBLE);
+                    }
                     //Toast.makeText(CourseHomePage.this, "No More Items Available", Toast.LENGTH_SHORT).show();
                 });
         return jsonArrayRequest;
@@ -195,17 +206,26 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
                 discussion.setDiscussionReplies(Integer.parseInt(json.getString("discussionReplies")));
                 discussion.setDiscussionText(json.getString("discussionText"));
                 discussion.setDiscussionStudentNumber(json.getString("discussionStudentNumber"));
+                String date = json.getString("discussionTime");
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Date dtDate = format.parse(date);
+                discussion.setDiscussionDate(dtDate);
                 Log.d("HERE",discussion.getDiscussionText());
 
-            } catch (JSONException e){
+            } catch (JSONException | ParseException e){
                 e.printStackTrace();
+                Log.d("HERE","error occured");
+
             }
             //Adding the request object to the list
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
+            //Log.d("HERE",format.format(discussion.getDiscussionDate()));
             listDiscussions.add(discussion);
         }
         //Notifying the adapter that data has been added or changed
         adapter.notifyDataSetChanged();
     }
+
     //This is the dialog for adding new discussions in the forum
     public void createNewViewDialogDiscussion(){
         AlertDialog.Builder dialogBuilder= new AlertDialog.Builder(this);

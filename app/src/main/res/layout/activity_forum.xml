@@ -82,6 +82,15 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_gravity="center" />
+            <TextView
+                android:id="@+id/noDiscussionItems"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:visibility="invisible"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="No Discussions Available"
+                android:textSize="30dp" />
         </RelativeLayout>
     </LinearLayout>
     </RelativeLayout>

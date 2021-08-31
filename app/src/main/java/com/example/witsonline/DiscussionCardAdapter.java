@@ -25,6 +25,8 @@ import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,6 +45,7 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
     private Button btnView, btnCancel;
     private HashMap<String,String> studentNums = new HashMap<>();
 
+    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
 
     //Constructor of this class
     public DiscussionCardAdapter(ArrayList<Discussion> discussions, Context context){
@@ -77,6 +80,7 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
         holder.text.setText(discussion.getDiscussionText());
         holder.topic.setText(discussion.getDiscussionTopic());
         holder.id.setText(discussion.getDiscussionID());
+        holder.time.setText(format.format(discussion.getDiscussionDate()));
         /*if (discussion.getDiscussionStatus().equals( "Closed" ) && USER.FNAME.equals( discussion.getDiscussionStudent()) == false){
             holder.menu.setEnabled( false );
         }
@@ -187,6 +191,7 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
             text = (TextView) itemView.findViewById(R.id.text);
             id = (TextView) itemView.findViewById(R.id.discussionID);
             startedBy = (TextView) itemView.findViewById(R.id.startedBy);
+            time = (TextView)itemView.findViewById(R.id.timeHolder);
             startedBy.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -206,6 +211,11 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
                     DISCUSSIONS.DISCUSSION_STUDENT = startedBy.getText().toString();
                     DISCUSSIONS.DISCUSSION_TEXT = text.getText().toString();
                     DISCUSSIONS.DISCUSSION_TOPIC = topic.getText().toString();
+                    try {
+                        DISCUSSIONS.DISCUSSION_DATE = format.parse(time.getText().toString());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                     if((status.getText().toString()).equals( "Closed" )){
                         DISCUSSIONS.DISCUSSION_STATUS = 0;
                     }

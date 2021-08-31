@@ -130,6 +130,13 @@
                         android:layout_height="30dp"
                         android:clickable="false"
                         android:text="0" />
+                    <TextView
+                        android:id="@+id/timeHolder"
+                        android:visibility="gone"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:clickable="false"
+                        android:text="0" />
                 </LinearLayout>
 
                 <LinearLayout
