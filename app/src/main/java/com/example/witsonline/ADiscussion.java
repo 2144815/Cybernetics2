@@ -180,7 +180,6 @@ public class ADiscussion  extends AppCompatActivity implements  View.OnScrollCha
     }
     @Generated
     private void parseData(JSONArray array){
-        Log.d("HER",array.toString());
         for (int i = 0; i< array.length(); i++){
             // Creating the Course object
             Comment comment = new Comment();
@@ -231,7 +230,6 @@ public class ADiscussion  extends AppCompatActivity implements  View.OnScrollCha
                 ADiscussion.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Log.d("HERE",responseData.toString());
                         if(responseData.trim().equals("Successful")) {
                             Toast toast = Toast.makeText(ADiscussion.this, responseData, Toast.LENGTH_LONG);
                             toast.show();
