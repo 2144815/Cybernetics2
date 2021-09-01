@@ -44,6 +44,7 @@ public class ADiscussion  extends AppCompatActivity implements  View.OnScrollCha
     private EditText Answer;
     private TextView studentName;
     private TextView question;
+    private TextView NoAnswers;
     private Discussion discussion;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -60,24 +61,20 @@ public class ADiscussion  extends AppCompatActivity implements  View.OnScrollCha
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_adiscussion );
         //assign values
-
-
         send = (ImageButton)findViewById(R.id.btn_Send );
-        Answer = (EditText)findViewById( R.id.editTextAnswer );
+        Answer = (EditText)findViewById( R.id.editTextAnswer);
         studentName = (TextView)findViewById(R.id.tv_studentName);
         question = (TextView)findViewById(R.id.question);
-
+        NoAnswers = (TextView)findViewById( R.id.NoReplies );
         studentName.setText(DISCUSSIONS.DISCUSSION_STUDENT);
         question.setText(DISCUSSIONS.DISCUSSION_TEXT);
+        NoAnswers.setText(" "+DISCUSSIONS.DISCUSSION_NUM_REPLIES+" Answers");
 
         TextView txtTime = (TextView)findViewById(R.id.tvTime);
-
         SimpleDateFormat dtDate = new SimpleDateFormat("dd-MMM-yyyy");
         SimpleDateFormat dtTime = new SimpleDateFormat("HH:mm");
-
         String strTime = dtDate.format(DISCUSSIONS.DISCUSSION_DATE) + '\n' + dtTime.format(DISCUSSIONS.DISCUSSION_DATE);
         txtTime.setText(strTime);
-
         extras = getIntent().getExtras();
         if (extras != null) {
             String act = extras.getString("activity");
@@ -104,10 +101,9 @@ public class ADiscussion  extends AppCompatActivity implements  View.OnScrollCha
         getData();
         //Adding an scroll change listener to recyclerView
         recyclerView.setOnScrollChangeListener(this);
-
         mAdapter = new CommentsAdapter(commentList,this);
         recyclerView.setAdapter(mAdapter);
-
+        //
         if(DISCUSSIONS.getDiscussionStatus().equals( "Closed" )  ){
             Answer.setText("This discussion is closed.");
             Answer.setEnabled( false );
@@ -132,16 +128,15 @@ public class ADiscussion  extends AppCompatActivity implements  View.OnScrollCha
                             }
                             else{
                                 addComment(phpFile2, Answer.getText().toString(), time,"username");
-
                             }
+
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        Answer.setText( "" );
+                        Answer.setText("");
                     }
                 }
             } );
-
         }
 
 
@@ -196,7 +191,7 @@ public class ADiscussion  extends AppCompatActivity implements  View.OnScrollCha
             } catch (JSONException e){
                 e.printStackTrace();
             }
-            //Adding the request object to the list
+            //Adding the request object to the listb
             commentList.add(comment);
         }
         //Notifying the adapter that data has been added or changed
@@ -211,11 +206,9 @@ public class ADiscussion  extends AppCompatActivity implements  View.OnScrollCha
         urlBuilder.addQueryParameter("text", text);
         urlBuilder.addQueryParameter("time", time);
         String url = urlBuilder.build().toString();
-
         Request request = new Request.Builder()
                 .url(url)
                 .build();
-
         client.newCall(request).enqueue(new Callback() {
             @Override
             @Generated
@@ -226,13 +219,18 @@ public class ADiscussion  extends AppCompatActivity implements  View.OnScrollCha
             @Override
             @Generated
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+
                 final String responseData = response.body().string();
+
+
                 ADiscussion.this.runOnUiThread(new Runnable() {
+
                     @Override
                     public void run() {
                         if(responseData.trim().equals("Successful")) {
                             Toast toast = Toast.makeText(ADiscussion.this, responseData, Toast.LENGTH_LONG);
                             toast.show();
+                            DISCUSSIONS.updateNoReplies();
                             Intent intent = new Intent(ADiscussion.this, ADiscussion.class);
                             startActivity(intent);
                             finish();
@@ -243,6 +241,7 @@ public class ADiscussion  extends AppCompatActivity implements  View.OnScrollCha
                         }
                     }
                 });
+
             }
         });
     }

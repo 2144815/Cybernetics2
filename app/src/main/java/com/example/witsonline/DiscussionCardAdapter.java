@@ -81,6 +81,8 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
         holder.topic.setText(discussion.getDiscussionTopic());
         holder.id.setText(discussion.getDiscussionID());
         holder.time.setText(format.format(discussion.getDiscussionDate()));
+        holder.numberOfReplies.setText(Integer.toString(discussion.getDiscussionReplies()));
+
         /*if (discussion.getDiscussionStatus().equals( "Closed" ) && USER.FNAME.equals( discussion.getDiscussionStudent()) == false){
             holder.menu.setEnabled( false );
         }
@@ -192,6 +194,7 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
             id = (TextView) itemView.findViewById(R.id.discussionID);
             startedBy = (TextView) itemView.findViewById(R.id.startedBy);
             time = (TextView)itemView.findViewById(R.id.timeHolder);
+            numberOfReplies = (TextView)itemView.findViewById( R.id.numberOfReplies ) ;
             startedBy.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -200,9 +203,7 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
             });
             numberOfReplies = (TextView) itemView.findViewById(R.id.numberOfReplies);
             status = (TextView) itemView.findViewById(R.id.status);
-
             menu = itemView.findViewById( R.id.disc_menu );
-
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 @Generated
@@ -211,6 +212,7 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
                     DISCUSSIONS.DISCUSSION_STUDENT = startedBy.getText().toString();
                     DISCUSSIONS.DISCUSSION_TEXT = text.getText().toString();
                     DISCUSSIONS.DISCUSSION_TOPIC = topic.getText().toString();
+                    DISCUSSIONS.DISCUSSION_NUM_REPLIES = numberOfReplies.getText().toString();
                     try {
                         DISCUSSIONS.DISCUSSION_DATE = format.parse(time.getText().toString());
                     } catch (ParseException e) {

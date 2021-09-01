@@ -62,6 +62,9 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
 
 
     }
+    public void UpdateReplies(){
+
+    }
 
     @Override
     public int getItemCount() {
