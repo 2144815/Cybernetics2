@@ -1,11 +1,14 @@
 package com.example.witsonline;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -26,6 +29,7 @@ import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 import okhttp3.Call;
@@ -38,7 +42,15 @@ import okhttp3.Response;
 public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyViewHolder> {
     List<Comment> commentList;
     Context context;
+
+    //to view student's profile
+    private AlertDialog.Builder dialogBuilder;
+    private AlertDialog dialog;
+    private Button btnView, btnCancel;
+    private HashMap<String, String> usernames = new HashMap<>();
+
     private RequestQueue requestQueue;
+
     public CommentsAdapter(List<Comment> commentList, Context context) {
         this.commentList = commentList;
         this.context = context;
@@ -57,6 +69,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull MyViewHolder holder, int position) {
+        final Comment comment = commentList.get(position);
         //here we can create clickListerns and assign values
         //onBindViewHolder(): RecyclerView calls this method to associate a ViewHolder with data.
         // The method fetches the appropriate data and uses the data to fill in the view holder's layout. For example, if the RecyclerView displays a list of names,
@@ -64,7 +77,8 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
         holder.TheStudentName.setText(commentList.get((holder.getAdapterPosition())).getUserFullName());
         holder.TheAnswer.setText(commentList.get((holder.getAdapterPosition())).getComment());
         requestQueue = Volley.newRequestQueue(context);
-        holder.role.setText(commentList.get((holder.getAdapterPosition())).getUserRole());
+        holder.role.setText(comment.getUserRole());
+        holder.id.setText(comment.getId());
         holder.upvote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,11 +94,59 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
             }
         });
 
-    }
-    public void UpdateReplies(){
+        usernames.put(comment.getId(),comment.getUsername());
+
 
     }
-   //This method will parse json Data
+
+    public void UpdateReplies() {
+
+    }
+    //This method will parse json Data
+
+    @Generated
+    public void createNewViewProfileDialog(TextView replyID, TextView role) {
+
+        dialogBuilder = new AlertDialog.Builder(context);
+        final View viewPopUp = LayoutInflater.from(context)
+                .inflate(R.layout.view_profile_dialog, null);
+
+        btnView = (Button) viewPopUp.findViewById(R.id.btnView);
+        btnCancel = (Button) viewPopUp.findViewById(R.id.btnViewCancel);
+
+        dialogBuilder.setView(viewPopUp);
+        dialog = dialogBuilder.create();
+        dialog.show();
+
+        btnView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            @Generated
+            public void onClick(View v) {
+                if (role.getText().toString().equals("Instructor")) {
+                    INSTRUCTOR.USERNAME = usernames.get(replyID.getText().toString());
+                    Intent intent5 = new Intent(context, UserDetails.class);
+                    intent5.putExtra("userType", "instructor");
+                    context.startActivity(intent5);
+                    dialog.dismiss();
+                } else {
+                    STUDENT.number = usernames.get(replyID.getText().toString());
+                    Intent intent5 = new Intent(context, UserDetails.class);
+                    intent5.putExtra("userType", "student");
+                    context.startActivity(intent5);
+                    dialog.dismiss();
+                }
+
+            }
+        });
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            @Generated
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+    }
 
 
     @Override
@@ -100,19 +162,27 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
         TextView TheAnswer;
         TextView NoVotes;
         TextView role;
+        TextView id;
         AppCompatImageButton upvote;
         AppCompatImageButton downVote;
 
 
         public MyViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
+            id = itemView.findViewById(R.id.replyID);
+            role = itemView.findViewById(R.id.role);
             TheStudentName = itemView.findViewById(R.id.tv_studentFullName);
+            TheStudentName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    createNewViewProfileDialog(id, role);
+                }
+            });
             TheTime = itemView.findViewById(R.id.time);
             TheAnswer = itemView.findViewById(R.id.Answer);
             NoVotes = itemView.findViewById(R.id.tv_NoVotes);
             upvote = itemView.findViewById(R.id.btn_Upvote);
             downVote = itemView.findViewById(R.id.btn_downVote);
-            role = itemView.findViewById(R.id.role);
 
         }
     }

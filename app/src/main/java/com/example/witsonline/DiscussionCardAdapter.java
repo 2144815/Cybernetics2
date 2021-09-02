@@ -210,6 +210,7 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
                 public void onClick(View view) {
                     DISCUSSIONS.DISCUSSION_ID = id.getText().toString();
                     DISCUSSIONS.DISCUSSION_STUDENT = startedBy.getText().toString();
+                    DISCUSSIONS.DISCUSSION_STUDENT_NUMBER = studentNums.get(DISCUSSIONS.DISCUSSION_ID);
                     DISCUSSIONS.DISCUSSION_TEXT = text.getText().toString();
                     DISCUSSIONS.DISCUSSION_TOPIC = topic.getText().toString();
                     DISCUSSIONS.DISCUSSION_NUM_REPLIES = numberOfReplies.getText().toString();

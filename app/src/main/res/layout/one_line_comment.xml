@@ -131,6 +131,13 @@
                     app:srcCompat="@drawable/ic_baseline_keyboard_arrow_down_24" />
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/replyID"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#F0F2F5"
+                android:text="" />
+
         </RelativeLayout>
 
         <View

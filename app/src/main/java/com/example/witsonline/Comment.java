@@ -8,7 +8,14 @@ public class Comment {
     private String role;
     private String username;
     private int NoVotes = 0;
+    private String id;
 
+    public String getId(){
+        return id;
+    }
+    public void setId(String id){
+        this.id = id;
+    }
     public String getUsername() {
         return username;
     }

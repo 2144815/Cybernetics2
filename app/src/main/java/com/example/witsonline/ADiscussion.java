@@ -1,5 +1,6 @@
 package com.example.witsonline;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -9,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -49,8 +51,15 @@ public class ADiscussion extends AppCompatActivity implements View.OnScrollChang
 
     //to check if user is student or instructor
     private final Matcher m = Pattern.compile("-?\\d+").matcher("");
+
     //to store the tutors for the course
     private Set<String> courseTutors = new HashSet<>();
+
+    //to view student's profile
+    private android.app.AlertDialog.Builder alertDialogBuilder;
+    private android.app.AlertDialog dialog;
+    private Button btnView, btnCancel;
+
     private RelativeLayout relativeLayout;
     private ProgressBar progressBar;
     List<Comment> commentList = new ArrayList<Comment>();
@@ -95,9 +104,14 @@ public class ADiscussion extends AppCompatActivity implements View.OnScrollChang
         question = (TextView) findViewById(R.id.question);
         NoAnswers = (TextView) findViewById(R.id.NoReplies);
         studentName.setText(DISCUSSIONS.DISCUSSION_STUDENT);
+        studentName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createNewViewProfileDialog();
+            }
+        });
         question.setText(DISCUSSIONS.DISCUSSION_TEXT);
         NoAnswers.setText(" " + DISCUSSIONS.DISCUSSION_NUM_REPLIES + " Answers");
-
         TextView txtTime = (TextView) findViewById(R.id.tvTime);
         SimpleDateFormat dtDate = new SimpleDateFormat("dd-MMM-yyyy");
         SimpleDateFormat dtTime = new SimpleDateFormat("HH:mm");
@@ -198,6 +212,8 @@ public class ADiscussion extends AppCompatActivity implements View.OnScrollChang
                     progressBar.setVisibility(View.GONE);
                 },
                 (error) -> {
+                    relativeLayout.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.GONE);
                     //If an error occurs that means end of the list has been reached
                     //Toast.makeText(CourseHomePage.this, "No More Items Available", Toast.LENGTH_SHORT).show();
                 });
@@ -209,13 +225,16 @@ public class ADiscussion extends AppCompatActivity implements View.OnScrollChang
     private void parseData(JSONArray array) {
 
         for (int i = 0; i < array.length(); i++) {
-            // Creating the Course object
+            //updating the number of replies
+            //DISCUSSIONS.updateNoReplies();
             comment = new Comment();
             JSONObject json = null;
             try {
                 //Getting json
                 json = array.getJSONObject(i);
                 //Adding data to the course object
+                String id = json.getString("reply_ID");
+                comment.setId(id);
                 String fullName = "";
                 fullName = fullName + json.getString("userFname");
                 fullName = fullName + " " + json.getString("userLname");
@@ -224,7 +243,7 @@ public class ADiscussion extends AppCompatActivity implements View.OnScrollChang
                 String username = json.getString("username");
                 comment.setUsername(username);
                 //check if instructor or student
-                if (byRegex(username)) {
+                if (byRegex(username,m)) {
                     comment.setUserRole("Student");
                     //figure out if student is a tutor
                     if (courseTutors.contains(username)){
@@ -290,7 +309,7 @@ public class ADiscussion extends AppCompatActivity implements View.OnScrollChang
 
 
 
-    private boolean byRegex(String str) {
+    private boolean byRegex(String str, Matcher m) {
         return m.reset(str).matches();
     }
 
@@ -342,6 +361,39 @@ public class ADiscussion extends AppCompatActivity implements View.OnScrollChang
         });
     }
 
+    @Generated
+    public void createNewViewProfileDialog(){
+        alertDialogBuilder= new android.app.AlertDialog.Builder(this);
+        final View viewPopUp = LayoutInflater.from(this)
+                .inflate(R.layout.view_profile_dialog, null);
+
+        btnView = (Button) viewPopUp.findViewById(R.id.btnView);
+        btnCancel = (Button) viewPopUp.findViewById(R.id.btnViewCancel);
+
+        alertDialogBuilder.setView(viewPopUp);
+        dialog = alertDialogBuilder.create();
+        dialog.show();
+
+        btnView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            @Generated
+            public void onClick(View v) {
+                STUDENT.number = DISCUSSIONS.DISCUSSION_STUDENT_NUMBER;
+                Intent intent5 = new Intent(ADiscussion.this,UserDetails.class);
+                intent5.putExtra("userType","student");
+                startActivity(intent5);
+                dialog.dismiss();
+            }
+        });
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            @Generated
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+    }
 
     private boolean isLastItemDisplaying(RecyclerView recyclerView) {
         if (recyclerView.getAdapter().getItemCount() != 0) {

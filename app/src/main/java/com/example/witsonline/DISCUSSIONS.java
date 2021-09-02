@@ -10,6 +10,7 @@ public class DISCUSSIONS {
     public static String DISCUSSION_NUM_REPLIES;
     public static Date DISCUSSION_DATE;
     public static String DISCUSSION_ID;
+    public static String DISCUSSION_STUDENT_NUMBER;
 
     public static String getDiscussionStatus() {
         if(DISCUSSION_STATUS==1){
