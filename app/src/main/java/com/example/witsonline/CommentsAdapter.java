@@ -29,6 +29,7 @@ import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 
@@ -79,6 +80,10 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
         requestQueue = Volley.newRequestQueue(context);
         holder.role.setText(comment.getUserRole());
         holder.id.setText(comment.getId());
+        SimpleDateFormat dtDate = new SimpleDateFormat("dd-MMM-yyyy");
+        SimpleDateFormat dtTime = new SimpleDateFormat("HH:mm");
+        String strTime = dtDate.format(comment.getTime()) + '\n' + dtTime.format(comment.getTime());
+        holder.TheTime.setText(strTime);
         holder.upvote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

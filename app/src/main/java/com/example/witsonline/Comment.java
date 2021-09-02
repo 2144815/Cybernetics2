@@ -1,10 +1,12 @@
 package com.example.witsonline;
 
+import java.util.Date;
+
 public class Comment {
     private String UserFullName;
     private int discussionId;
     private String Comment;
-    private String time;
+    private Date time;
     private String role;
     private String username;
     private int NoVotes = 0;
@@ -52,11 +54,11 @@ public class Comment {
         Comment = comment;
     }
 
-    public String getTime() {
-        return "At: "+time;
+    public Date getTime() {
+        return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(Date time) {
         this.time = time;
     }
 

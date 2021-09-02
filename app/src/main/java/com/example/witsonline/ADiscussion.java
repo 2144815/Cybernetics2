@@ -30,6 +30,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -242,6 +243,10 @@ public class ADiscussion extends AppCompatActivity implements View.OnScrollChang
                 comment.setComment(json.getString("reply_Text"));
                 String username = json.getString("username");
                 comment.setUsername(username);
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                comment.setTime(format.parse(json.getString("reply_Time")));
+                Log.d("HERE",format.format(comment.getTime()));
+
                 //check if instructor or student
                 if (byRegex(username,m)) {
                     comment.setUserRole("Student");
@@ -253,7 +258,7 @@ public class ADiscussion extends AppCompatActivity implements View.OnScrollChang
                     comment.setUserRole("Instructor");
                 }
 
-            } catch (JSONException e) {
+            } catch (JSONException | ParseException e) {
                 e.printStackTrace();
             }
             commentList.add(comment);
