@@ -105,7 +105,7 @@ public class ADiscussion  extends AppCompatActivity implements  View.OnScrollCha
         recyclerView.setOnScrollChangeListener(this);
         mAdapter = new CommentsAdapter(commentList,this);
         recyclerView.setAdapter(mAdapter);
-        //
+        //Closed discussion
         if(DISCUSSIONS.getDiscussionStatus().equals( "Closed" )  ){
             Answer.setText("This discussion is closed.");
             Answer.setEnabled( false );
