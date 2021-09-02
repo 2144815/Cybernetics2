@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,9 +38,7 @@ import okhttp3.Response;
 public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyViewHolder> {
     List<Comment> commentList;
     Context context;
-
     private RequestQueue requestQueue;
-    String tutorURL = "https://lamp.ms.wits.ac.za/home/s2105624/getTutorState.php?studentNumber=";
     public CommentsAdapter(List<Comment> commentList, Context context) {
         this.commentList = commentList;
         this.context = context;
@@ -65,6 +64,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
         holder.TheStudentName.setText(commentList.get((holder.getAdapterPosition())).getUserFullName());
         holder.TheAnswer.setText(commentList.get((holder.getAdapterPosition())).getComment());
         requestQueue = Volley.newRequestQueue(context);
+        holder.role.setText(commentList.get((holder.getAdapterPosition())).getUserRole());
         holder.upvote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,7 +79,6 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
                 holder.NoVotes.setText(String.valueOf(commentList.get((holder.getAdapterPosition())).getNoVotes()));
             }
         });
-        getTutorStateData(commentList.get(holder.getAdapterPosition()).getUsername(), holder.role);
 
     }
     public void UpdateReplies(){
@@ -116,55 +115,6 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
             role = itemView.findViewById(R.id.role);
 
         }
-    }
-    @Generated
-    private void getTutorStateData(String username, TextView role){
-        requestQueue.add(getTutorStateDataFromServer(username,role));
-    }
-
-    @Generated
-    private JsonArrayRequest getTutorStateDataFromServer(String username,TextView role){
-        //JsonArrayRequest of volley
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(tutorURL + username+ "&courseCode=" + COURSE.CODE,
-                (response) -> {
-                    //Calling method parseData to parse the json responce
-                    parseTutorStateData(response,role);
-
-                },
-                (error) -> {
-                    //Toast.makeText(CourseHomePage.this, "No More Items Available", Toast.LENGTH_SHORT).show();
-                });
-        //Returning the request
-        return jsonArrayRequest;
-    }
-
-    private void parseTutorStateData(JSONArray array,TextView role){
-        if(array.length()==0){
-            role.setText("Instructor");
-        }
-        for (int i = 0; i< array.length(); i++){
-
-            JSONObject json = null;
-            try {
-                //Getting json
-                json = array.getJSONObject(i);
-
-                //Adding data to the course object
-                Integer tutorState = json.getInt("Tutor");
-                if(tutorState==1){
-                    role.setText("Tutor");
-                }
-                else {
-                    role.setText("Student");
-                }
-                //Toast.makeText(this, ""+tutorState, Toast.LENGTH_LONG).show();
-            } catch (JSONException e){
-                e.printStackTrace();
-            }
-
-        }
-
-
     }
 
 }

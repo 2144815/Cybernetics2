@@ -7,12 +7,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,7 +31,12 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -38,7 +45,14 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class ADiscussion  extends AppCompatActivity implements  View.OnScrollChangeListener{
+public class ADiscussion extends AppCompatActivity implements View.OnScrollChangeListener {
+
+    //to check if user is student or instructor
+    private final Matcher m = Pattern.compile("-?\\d+").matcher("");
+    //to store the tutors for the course
+    private Set<String> courseTutors = new HashSet<>();
+    private RelativeLayout relativeLayout;
+    private ProgressBar progressBar;
     List<Comment> commentList = new ArrayList<Comment>();
     private ImageButton send;
     private EditText Answer;
@@ -52,27 +66,39 @@ public class ADiscussion  extends AppCompatActivity implements  View.OnScrollCha
     private int commentsCount = 1;
     private Comment comment;
     private RequestQueue requestQueue;
-    String tutorURL = "https://lamp.ms.wits.ac.za/home/s2105624/getTutorState.php?studentNumber=";
     private String webLink = "https://lamp.ms.wits.ac.za/home/s2105624/getReplies.php?page=";
+    String tutorListURL = "https://lamp.ms.wits.ac.za/home/s2105624/getTutors.php?courseCode="; //list of tutors for course
     private boolean browse = false;
     private boolean mycourses = false;
     private boolean dashboard = false;
     Bundle extras;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate( savedInstanceState );
-        setContentView( R.layout.activity_adiscussion );
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_adiscussion);
+
+        //get list of tutors
+        requestQueue = Volley.newRequestQueue(this);
+        getTutorData();
+
+        //initialize relative layout and progress bar
+        relativeLayout = findViewById(R.id.repliesRelativeLayout);
+        progressBar = findViewById(R.id.commentProgressBar);
+        progressBar.setVisibility(View.VISIBLE);
+
+
         //assign values
-        send = (ImageButton)findViewById(R.id.btn_Send );
-        Answer = (EditText)findViewById( R.id.editTextAnswer);
-        studentName = (TextView)findViewById(R.id.tv_studentName);
-        question = (TextView)findViewById(R.id.question);
-        NoAnswers = (TextView)findViewById( R.id.NoReplies );
+        send = (ImageButton) findViewById(R.id.btn_Send);
+        Answer = (EditText) findViewById(R.id.editTextAnswer);
+        studentName = (TextView) findViewById(R.id.tv_studentName);
+        question = (TextView) findViewById(R.id.question);
+        NoAnswers = (TextView) findViewById(R.id.NoReplies);
         studentName.setText(DISCUSSIONS.DISCUSSION_STUDENT);
         question.setText(DISCUSSIONS.DISCUSSION_TEXT);
-        NoAnswers.setText(" "+DISCUSSIONS.DISCUSSION_NUM_REPLIES+" Answers");
+        NoAnswers.setText(" " + DISCUSSIONS.DISCUSSION_NUM_REPLIES + " Answers");
 
-        TextView txtTime = (TextView)findViewById(R.id.tvTime);
+        TextView txtTime = (TextView) findViewById(R.id.tvTime);
         SimpleDateFormat dtDate = new SimpleDateFormat("dd-MMM-yyyy");
         SimpleDateFormat dtTime = new SimpleDateFormat("HH:mm");
         String strTime = dtDate.format(DISCUSSIONS.DISCUSSION_DATE) + '\n' + dtTime.format(DISCUSSIONS.DISCUSSION_DATE);
@@ -89,47 +115,43 @@ public class ADiscussion  extends AppCompatActivity implements  View.OnScrollCha
                 mycourses = true;
             }
         }
-       // question.setText(DISCUSSION.DISCUSSION_TEXT);
-        recyclerView = (RecyclerView)findViewById( R.id.comments );
+        // question.setText(DISCUSSION.DISCUSSION_TEXT);
+        recyclerView = (RecyclerView) findViewById(R.id.comments);
         recyclerView.setHasFixedSize(true);
         //use a liner layout manager
-        layoutManager = new LinearLayoutManager( this );
-        recyclerView.setLayoutManager( layoutManager );
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
         //specify an adapter
-        recyclerView.setAdapter( mAdapter );
+        recyclerView.setAdapter(mAdapter);
         commentList = new ArrayList<>();
-        requestQueue = Volley.newRequestQueue(this);
         //Calling methods to get data from server
         getData();
         //Adding an scroll change listener to recyclerView
         recyclerView.setOnScrollChangeListener(this);
-        mAdapter = new CommentsAdapter(commentList,this);
+        mAdapter = new CommentsAdapter(commentList, this);
         recyclerView.setAdapter(mAdapter);
         //Closed discussion
-        if(DISCUSSIONS.getDiscussionStatus().equals( "Closed" )  ){
+        if (DISCUSSIONS.getDiscussionStatus().equals("Closed")) {
             Answer.setText("This discussion is closed.");
-            Answer.setEnabled( false );
-            send.setEnabled( false );
+            Answer.setEnabled(false);
+            send.setEnabled(false);
             send.setImageResource(R.drawable.ic_baseline_send_24_grey);
-        }
-        else {
-            send.setOnClickListener( new View.OnClickListener() {
+        } else {
+            send.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     String time = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss").format(Calendar.getInstance().getTime());
-                    if(Answer.getText().toString().equals( "" )){
+                    if (Answer.getText().toString().equals("")) {
                         Toast toast = Toast.makeText(ADiscussion.this, "Answer cannot be empty", Toast.LENGTH_LONG);
                         toast.show();
-                    }
-                    else {
+                    } else {
                         try {
                             String phpFile = "addComment.php";
                             String phpFile2 = "addInstructorComment.php";
-                            if(USER.STUDENT) {
-                                addComment(phpFile, Answer.getText().toString(), time,"studentNumber");
-                            }
-                            else{
-                                addComment(phpFile2, Answer.getText().toString(), time,"username");
+                            if (USER.STUDENT) {
+                                addComment(phpFile, Answer.getText().toString(), time, "studentNumber");
+                            } else {
+                                addComment(phpFile2, Answer.getText().toString(), time, "username");
                             }
 
                         } catch (IOException e) {
@@ -138,46 +160,55 @@ public class ADiscussion  extends AppCompatActivity implements  View.OnScrollCha
                         Answer.setText("");
                     }
                 }
-            } );
+            });
         }
 
-
     }
+
+    //This method will get Data from the web api
+    private void getData() {
+        //Adding the method to the queue by calling the method getDatafromServer
+        requestQueue.add(getDataFromServer(commentsCount));
+        //Incrementing the course counter
+        commentsCount++;
+    }
+
     @Generated
-    private JsonArrayRequest getDataFromServer(int requestCount){
+    private JsonArrayRequest getDataFromServer(int requestCount) {
         //Initializing progressbar
-        final ProgressBar progressBar = (ProgressBar) findViewById(R.id.commentProgressBar);
+        //final ProgressBar progressBar = (ProgressBar) findViewById(R.id.commentProgressBar);
 
         //Displaying ProgressBar
-        progressBar.setVisibility(View.VISIBLE);
+        //progressBar.setVisibility(View.VISIBLE);
         setProgressBarIndeterminateVisibility(true);
 
         //JsonArrayRequest of volley
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(webLink + String.valueOf(requestCount) + "&discussionID="+DISCUSSIONS.DISCUSSION_ID ,
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(webLink + String.valueOf(requestCount) + "&discussionID=" + DISCUSSIONS.DISCUSSION_ID,
                 (response) -> {
                     //Calling method parseData to parse the json responce
                     parseData(response);
+                    /*final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            // Do something after 0.5s = 500ms
+                        }
+                    }, 500); */
+                    relativeLayout.setVisibility(View.VISIBLE);
                     progressBar.setVisibility(View.GONE);
-                    //Hiding the progressBar
                 },
                 (error) -> {
-                    progressBar.setVisibility(View.GONE);
                     //If an error occurs that means end of the list has been reached
                     //Toast.makeText(CourseHomePage.this, "No More Items Available", Toast.LENGTH_SHORT).show();
                 });
         return jsonArrayRequest;
     }
 
-    //This method will get Data from the web api
-    private void getData(){
-        //Adding the method to the queue by calling the method getDatafromServer
-        requestQueue.add(getDataFromServer(commentsCount));
-        //Incrementing the course counter
-        commentsCount++;
-    }
+
     @Generated
-    private void parseData(JSONArray array){
-        for (int i = 0; i< array.length(); i++){
+    private void parseData(JSONArray array) {
+
+        for (int i = 0; i < array.length(); i++) {
             // Creating the Course object
             comment = new Comment();
             JSONObject json = null;
@@ -190,25 +221,84 @@ public class ADiscussion  extends AppCompatActivity implements  View.OnScrollCha
                 fullName = fullName + " " + json.getString("userLname");
                 comment.setUserFullName(fullName);
                 comment.setComment(json.getString("reply_Text"));
-                comment.setUsername(json.getString("username"));
-            } catch (JSONException e){
+                String username = json.getString("username");
+                comment.setUsername(username);
+                //check if instructor or student
+                if (byRegex(username)) {
+                    comment.setUserRole("Student");
+                    //figure out if student is a tutor
+                    if (courseTutors.contains(username)){
+                        comment.setUserRole("Tutor");
+                    }
+                } else {
+                    comment.setUserRole("Instructor");
+                }
+
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
-            //Adding the request object to the listb
-           // getTutorStateData(comment.getUsername());
             commentList.add(comment);
             mAdapter.notifyDataSetChanged();
 
         }
+
         //Notifying the adapter that data has been added or changed
     }
-    //This method will parse json Data
+
+    //This method will get Data from the web api
+    private void getTutorData() {
+        //Adding the method to the queue by calling the method getDatafromServer
+        requestQueue.add(getTutorDataFromServer());
+    }
+
+    @Generated
+    private JsonArrayRequest getTutorDataFromServer() {
+
+        //JsonArrayRequest of volley
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(tutorListURL + COURSE.CODE,
+                (response) -> {
+                    //Calling method parseData to parse the json responce
+                    parseTutorData(response);
+
+                },
+                (error) -> {
+                    //If an error occurs that means end of the list has been reached
+                    //Toast.makeText(CourseHomePage.this, "No More Items Available", Toast.LENGTH_SHORT).show();
+                });
+        return jsonArrayRequest;
+    }
+
+    private void parseTutorData(JSONArray array) {
+
+        for (int i = 0; i < array.length(); i++) {
+
+            JSONObject json = null;
+            try {
+                //Getting json
+                json = array.getJSONObject(i);
+
+                //Adding data to the course object
+                String  studentNumber = json.getString("Enrolment_Student");
+                courseTutors.add(studentNumber);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
 
 
-    private void addComment (String phpFile , String text , String time, String user) throws IOException {
+
+    private boolean byRegex(String str) {
+        return m.reset(str).matches();
+    }
+
+
+    private void addComment(String phpFile, String text, String time, String user) throws IOException {
         OkHttpClient client = new OkHttpClient();
         HttpUrl.Builder urlBuilder = HttpUrl.parse("https://lamp.ms.wits.ac.za/~s2105624/" + phpFile).newBuilder();
-        urlBuilder.addQueryParameter(user,USER.USERNAME);
+        urlBuilder.addQueryParameter(user, USER.USERNAME);
         urlBuilder.addQueryParameter("discussionID", DISCUSSIONS.DISCUSSION_ID);
         urlBuilder.addQueryParameter("text", text);
         urlBuilder.addQueryParameter("time", time);
@@ -234,15 +324,14 @@ public class ADiscussion  extends AppCompatActivity implements  View.OnScrollCha
 
                     @Override
                     public void run() {
-                        if(responseData.trim().equals("Successful")) {
+                        if (responseData.trim().equals("Successful")) {
                             Toast toast = Toast.makeText(ADiscussion.this, responseData, Toast.LENGTH_LONG);
                             toast.show();
                             DISCUSSIONS.updateNoReplies();
                             Intent intent = new Intent(ADiscussion.this, ADiscussion.class);
                             startActivity(intent);
                             finish();
-                        }
-                        else{
+                        } else {
                             Toast toast = Toast.makeText(ADiscussion.this, "Couldn't post your answer ", Toast.LENGTH_LONG);
                             toast.show();
                         }
@@ -253,34 +342,35 @@ public class ADiscussion  extends AppCompatActivity implements  View.OnScrollCha
         });
     }
 
-    private boolean isLastItemDisplaying(RecyclerView recyclerView){
-        if(recyclerView.getAdapter().getItemCount() != 0){
+
+    private boolean isLastItemDisplaying(RecyclerView recyclerView) {
+        if (recyclerView.getAdapter().getItemCount() != 0) {
             int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
-            if (lastVisibleItemPosition != RecyclerView.NO_POSITION && lastVisibleItemPosition == recyclerView.getAdapter().getItemCount() -1){
+            if (lastVisibleItemPosition != RecyclerView.NO_POSITION && lastVisibleItemPosition == recyclerView.getAdapter().getItemCount() - 1) {
                 return true;
             }
         }
         return false;
     }
+
     @Override
     @Generated
     public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
         //if Scrolled at last then
-        if(isLastItemDisplaying(recyclerView)){
+        if (isLastItemDisplaying(recyclerView)) {
             //Calling the method getData again
             getData();
         }
     }
-    public void onBackPressed(){
+
+    public void onBackPressed() {
         Intent intent = new Intent(this, ForumActivity.class);
-        if(browse){
-            intent.putExtra("activity",""+BrowseCourses.class);
-        }
-        else if(mycourses){
-            intent.putExtra("activity",""+MyCourses.class);
-        }
-        else{
-            intent.putExtra("activity",""+Dashboard.class);
+        if (browse) {
+            intent.putExtra("activity", "" + BrowseCourses.class);
+        } else if (mycourses) {
+            intent.putExtra("activity", "" + MyCourses.class);
+        } else {
+            intent.putExtra("activity", "" + Dashboard.class);
         }
         startActivity(intent);
         finish();
