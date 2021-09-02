@@ -148,6 +148,12 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
                         COURSE.INSTRUCTOR_NAME = courseInstructor.getText().toString();
                         COURSE.CODE = courseCode.getText().toString();
                         COURSE.DESCRIPTION = courseDescription.getText().toString();
+                        if (COURSE.TUTORS != null){
+                            COURSE.TUTORS.clear();
+                        }else{
+                            COURSE.TUTORS = new HashSet<>();
+                        }
+
                         Intent i = new Intent(context, CourseHomePageInstructor.class);
                         context.startActivity(i);
                     }
