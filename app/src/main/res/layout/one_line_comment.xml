@@ -6,6 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="4dp">
 
+
     <LinearLayout
         android:layout_width="408dp"
         android:layout_height="123dp"
@@ -22,7 +23,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="36dp">
+            android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/imageView2"
@@ -32,16 +33,29 @@
                 android:layout_marginLeft="5dp"
                 app:srcCompat="@drawable/user" />
 
-            <TextView
-                android:id="@+id/tv_studentFullName"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_toEndOf="@+id/imageView2"
-                android:text="Student Name"
-                android:textStyle="bold" />
-
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_toEndOf= "@+id/imageView2">
+                <TextView
+                    android:id="@+id/tv_studentFullName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="5dp"
+                    android:text="Student Name"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/role"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="3dp"
+                    android:text="Role"
+                    android:textSize="10dp"
+                    android:textColor="@color/color1"
+                    android:textStyle="italic" />
+            </LinearLayout>
             <TextView
                 android:id="@+id/time"
                 android:layout_width="79dp"
@@ -51,7 +65,6 @@
                 android:layout_marginStart="138dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="18dp"
-                android:layout_toEndOf="@+id/tv_studentFullName"
                 android:text="Time" />
 
         </RelativeLayout>
@@ -91,12 +104,12 @@
 
                 <TextView
                     android:id="@+id/tv_NoVotes"
-                    android:layout_width="match_parent"
-                    android:layout_height="17dp"
-                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="13dp"
                     android:gravity="center_vertical"
                     android:paddingLeft="15dp"
-                    android:text="0" />
+                    android:text="0"
+                    android:visibility="gone" />
 
                 <ImageButton
                     android:id="@+id/btn_downVote"
@@ -117,4 +130,5 @@
 
 
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,8 +5,22 @@ public class Comment {
     private int discussionId;
     private String Comment;
     private String time;
+    private String role;
+    private String username;
     private int NoVotes = 0;
 
+    public String getUsername() {
+        return username;
+    }
+    public void setUsername(String username) {
+        this.username =username;
+    }
+    public String getUserRole() {
+        return role;
+    }
+    public void setUserRole(String role) {
+        this.role =role;
+    }
     public String getUserFullName() {
         return UserFullName;
     }

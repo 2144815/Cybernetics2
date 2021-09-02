@@ -50,7 +50,9 @@ public class ADiscussion  extends AppCompatActivity implements  View.OnScrollCha
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private int commentsCount = 1;
+    private Comment comment;
     private RequestQueue requestQueue;
+    String tutorURL = "https://lamp.ms.wits.ac.za/home/s2105624/getTutorState.php?studentNumber=";
     private String webLink = "https://lamp.ms.wits.ac.za/home/s2105624/getReplies.php?page=";
     private boolean browse = false;
     private boolean mycourses = false;
@@ -155,8 +157,8 @@ public class ADiscussion  extends AppCompatActivity implements  View.OnScrollCha
                 (response) -> {
                     //Calling method parseData to parse the json responce
                     parseData(response);
-                    //Hiding the progressBar
                     progressBar.setVisibility(View.GONE);
+                    //Hiding the progressBar
                 },
                 (error) -> {
                     progressBar.setVisibility(View.GONE);
@@ -177,7 +179,7 @@ public class ADiscussion  extends AppCompatActivity implements  View.OnScrollCha
     private void parseData(JSONArray array){
         for (int i = 0; i< array.length(); i++){
             // Creating the Course object
-            Comment comment = new Comment();
+            comment = new Comment();
             JSONObject json = null;
             try {
                 //Getting json
@@ -188,15 +190,20 @@ public class ADiscussion  extends AppCompatActivity implements  View.OnScrollCha
                 fullName = fullName + " " + json.getString("userLname");
                 comment.setUserFullName(fullName);
                 comment.setComment(json.getString("reply_Text"));
+                comment.setUsername(json.getString("username"));
             } catch (JSONException e){
                 e.printStackTrace();
             }
             //Adding the request object to the listb
+           // getTutorStateData(comment.getUsername());
             commentList.add(comment);
+            mAdapter.notifyDataSetChanged();
+
         }
         //Notifying the adapter that data has been added or changed
-        mAdapter.notifyDataSetChanged();
     }
+    //This method will parse json Data
+
 
     private void addComment (String phpFile , String text , String time, String user) throws IOException {
         OkHttpClient client = new OkHttpClient();

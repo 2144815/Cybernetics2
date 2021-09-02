@@ -17,9 +17,12 @@
         <entry key="app/src/main/res/layout/lesson_card.xml" value="0.1671171171171171" />
         <entry key="app/src/main/res/layout/logout_dialog.xml" value="0.1" />
         <entry key="app/src/main/res/layout/one_line_comment.xml" value="0.11277173913043478" />
+        <entry key="app/src/main/res/layout/open_close_disc_dialog.xml" value="0.10733695652173914" />
         <entry key="app/src/main/res/layout/outline_topic_entry.xml" value="0.1671171171171171" />
+        <entry key="app/src/main/res/layout/review_card.xml" value="0.10733695652173914" />
         <entry key="app/src/main/res/layout/review_dialog.xml" value="0.1671171171171171" />
         <entry key="app/src/main/res/layout/subscribe_dialog.xml" value="0.1358695652173913" />
+        <entry key="app/src/main/res/layout/unsubscribe_dialog.xml" value="0.10733695652173914" />
       </map>
     </option>
   </component>
