@@ -41,7 +41,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -55,6 +57,9 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
 
     //Creating a list of Courses
     private ArrayList<Discussion> listDiscussions;
+
+    //For storing the course tutors
+    String tutorListURL = "https://lamp.ms.wits.ac.za/home/s2105624/getTutors.php?courseCode=";
 
     //progress bar for entire page
     private ProgressBar progressBar;
@@ -122,6 +127,7 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
         listDiscussions = new ArrayList<>();
         requestQueue = Volley.newRequestQueue(this);
         //Calling methods to get data from server
+        getTutorData();
         getData();
         getTutorStateData();
         //Adding an scroll change listener to recyclerView
@@ -365,6 +371,50 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
         relativeLayout.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.GONE);
 
+    }
+
+    //This method will get Data from the web api
+    private void getTutorData() {
+        //Adding the method to the queue by calling the method getDatafromServer
+        requestQueue.add(getTutorDataFromServer());
+    }
+
+    @Generated
+    private JsonArrayRequest getTutorDataFromServer() {
+
+        //JsonArrayRequest of volley
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(tutorListURL + COURSE.CODE,
+                (response) -> {
+                    //Calling method parseData to parse the json responce
+                    parseTutorData(response);
+
+                },
+                (error) -> {
+                    //If an error occurs that means end of the list has been reached
+                    //Toast.makeText(CourseHomePage.this, "No More Items Available", Toast.LENGTH_SHORT).show();
+                });
+        return jsonArrayRequest;
+    }
+
+    private void parseTutorData(JSONArray array) {
+
+        for (int i = 0; i < array.length(); i++) {
+
+            JSONObject json = null;
+            try {
+                //Getting json
+                json = array.getJSONObject(i);
+
+                //Adding data to the course object
+                String studentNumber = json.getString("Enrolment_Student");
+                COURSE.TUTORS.add(studentNumber);
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
     }
 
     //This method will check if the recyclerview has reached the bottom or not

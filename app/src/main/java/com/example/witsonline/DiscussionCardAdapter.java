@@ -1,7 +1,6 @@
 package com.example.witsonline;
 
 
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -24,12 +23,22 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAdapter.ViewHolder> {
     private Context context;
@@ -38,17 +47,16 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
     ArrayList<Discussion> discussions;
     private PopupMenu popup;
 
-
     //to view student's profile
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
     private Button btnView, btnCancel;
-    private HashMap<String,String> studentNums = new HashMap<>();
+    private HashMap<String, String> studentNums = new HashMap<>();
 
     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
 
     //Constructor of this class
-    public DiscussionCardAdapter(ArrayList<Discussion> discussions, Context context){
+    public DiscussionCardAdapter(ArrayList<Discussion> discussions, Context context) {
         super();
         //Getting all requests
         this.discussions = discussions;
@@ -70,12 +78,12 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         //Getting the particular item from the list
         final Discussion discussion = discussions.get(position);
-        studentNums.put(discussion.getDiscussionID(),discussion.getDiscussionStudentNumber());
+        studentNums.put(discussion.getDiscussionID(), discussion.getDiscussionStudentNumber());
 
         //Showing data on the views
         holder.setIsRecyclable(false);
         holder.startedBy.setText(discussion.getDiscussionStudent());
-      //  holder.numberOfReplies.setText(discussion.getDiscussionReplies());
+        //  holder.numberOfReplies.setText(discussion.getDiscussionReplies());
         holder.status.setText(discussion.getDiscussionStatus());
         holder.text.setText(discussion.getDiscussionText());
         holder.topic.setText(discussion.getDiscussionTopic());
@@ -98,24 +106,22 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
             } );
         } */
 
-        if (USER.USER_NUM.equals(discussion.getDiscussionStudentNumber())){
-            holder.menu.setOnClickListener( new View.OnClickListener() {
+        if (USER.USER_NUM.equals(discussion.getDiscussionStudentNumber())) {
+            holder.menu.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    showPopupMenu(holder.menu, position,holder);
+                    showPopupMenu(holder.menu, position, holder);
                 }
-            } );
-        }
-        else{
+            });
+        } else {
             holder.menu.setVisibility(View.GONE);
         }
-
 
 
     }
 
     @Generated
-    public void createNewViewProfileDialog(TextView discussionID){
+    public void createNewViewProfileDialog(TextView discussionID) {
 
         dialogBuilder = new AlertDialog.Builder(context);
         final View viewPopUp = LayoutInflater.from(context)
@@ -133,8 +139,8 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
             @Generated
             public void onClick(View v) {
                 STUDENT.number = studentNums.get(discussionID.getText().toString());
-                Intent intent5 = new Intent(context,UserDetails.class);
-                intent5.putExtra("userType","student");
+                Intent intent5 = new Intent(context, UserDetails.class);
+                intent5.putExtra("userType", "student");
                 context.startActivity(intent5);
                 dialog.dismiss();
             }
@@ -150,19 +156,18 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
     }
 
 
-    private void showPopupMenu(View v, int position,ViewHolder holder) {
-        PopupMenu popup = new PopupMenu(v.getContext(),v );
+    private void showPopupMenu(View v, int position, ViewHolder holder) {
+        PopupMenu popup = new PopupMenu(v.getContext(), v);
         MenuInflater inflater = popup.getMenuInflater();
         inflater.inflate(R.menu.discussion_menu, popup.getMenu());
 
-        if(holder.status.getText().equals( "Closed" )){
-            popup.getMenu().findItem(R.id.Open_Close_DiscChoice).setTitle( "Open Discussion" );
+        if (holder.status.getText().equals("Closed")) {
+            popup.getMenu().findItem(R.id.Open_Close_DiscChoice).setTitle("Open Discussion");
 
         }
 
 
-        
-        popup.setOnMenuItemClickListener(new DiscMenuClickListener(position, context,holder,discussions));
+        popup.setOnMenuItemClickListener(new DiscMenuClickListener(position, context, holder, discussions));
         popup.show();
 
 
@@ -173,8 +178,9 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
     public int getItemCount() {
         return discussions.size();
     }
+
     @Generated
-    class ViewHolder extends RecyclerView.ViewHolder{
+    class ViewHolder extends RecyclerView.ViewHolder {
         //Views
         public TextView topic;
         public TextView startedBy;
@@ -193,8 +199,8 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
             text = (TextView) itemView.findViewById(R.id.text);
             id = (TextView) itemView.findViewById(R.id.discussionID);
             startedBy = (TextView) itemView.findViewById(R.id.startedBy);
-            time = (TextView)itemView.findViewById(R.id.timeHolder);
-            numberOfReplies = (TextView)itemView.findViewById( R.id.numberOfReplies ) ;
+            time = (TextView) itemView.findViewById(R.id.timeHolder);
+            numberOfReplies = (TextView) itemView.findViewById(R.id.numberOfReplies);
             startedBy.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -203,7 +209,7 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
             });
             numberOfReplies = (TextView) itemView.findViewById(R.id.numberOfReplies);
             status = (TextView) itemView.findViewById(R.id.status);
-            menu = itemView.findViewById( R.id.disc_menu );
+            menu = itemView.findViewById(R.id.disc_menu);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 @Generated
@@ -219,10 +225,9 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-                    if((status.getText().toString()).equals( "Closed" )){
+                    if ((status.getText().toString()).equals("Closed")) {
                         DISCUSSIONS.DISCUSSION_STATUS = 0;
-                    }
-                    else{
+                    } else {
                         DISCUSSIONS.DISCUSSION_STATUS = 1;
                     }
 
@@ -230,6 +235,8 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
                     context.startActivity(i);
                 }
 
-        });
+            });
+        }
     }
-}}
+
+}

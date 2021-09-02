@@ -1,6 +1,10 @@
 package com.example.witsonline;
 
+import java.io.StringBufferInputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
 @Generated
 public class COURSE {
 
@@ -16,6 +20,7 @@ public class COURSE {
 	public static String temp;
 	public static String TAGS;
 	public static String VISIBILITY;
+	public static Set<String> TUTORS;
 
 //      public static ArrayList<Content> CONTENT;
 

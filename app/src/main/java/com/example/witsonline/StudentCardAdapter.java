@@ -147,6 +147,7 @@ public class StudentCardAdapter extends RecyclerView.Adapter<StudentCardAdapter.
                     if(tutorState.getText().toString().equals("1")){
                         try {
                             doPostRequest("unAssignTutor.php");
+                            COURSE.TUTORS.remove(STUDENT.number);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }

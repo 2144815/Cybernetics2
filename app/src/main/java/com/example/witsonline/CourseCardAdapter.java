@@ -32,6 +32,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -165,6 +166,11 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
                     COURSE.INSTRUCTOR_NAME = courseInstructor.getText().toString();
                     COURSE.CODE = courseCode.getText().toString();
                     COURSE.DESCRIPTION = courseDescription.getText().toString();
+                    if (COURSE.TUTORS != null){
+                        COURSE.TUTORS.clear();
+                    }else{
+                        COURSE.TUTORS = new HashSet<>();
+                    }
 
                     if(USER.STUDENT){
                         try {

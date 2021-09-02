@@ -54,9 +54,6 @@ public class ADiscussion extends AppCompatActivity implements View.OnScrollChang
     //to check if user is student or instructor
     private final Matcher m = Pattern.compile("-?\\d+").matcher("");
 
-    //to store the tutors for the course
-    private Set<String> courseTutors = new HashSet<>();
-
     //to view student's profile
     private android.app.AlertDialog.Builder alertDialogBuilder;
     private android.app.AlertDialog dialog;
@@ -78,7 +75,6 @@ public class ADiscussion extends AppCompatActivity implements View.OnScrollChang
     private Comment comment;
     private RequestQueue requestQueue;
     private String webLink = "https://lamp.ms.wits.ac.za/home/s2105624/getReplies.php?page=";
-    String tutorListURL = "https://lamp.ms.wits.ac.za/home/s2105624/getTutors.php?courseCode="; //list of tutors for course
     private boolean browse = false;
     private boolean mycourses = false;
     private boolean dashboard = false;
@@ -91,7 +87,7 @@ public class ADiscussion extends AppCompatActivity implements View.OnScrollChang
 
         //get list of tutors
         requestQueue = Volley.newRequestQueue(this);
-        getTutorData();
+        //getTutorData();
 
         //initialize relative layout and progress bar
         relativeLayout = findViewById(R.id.repliesRelativeLayout);
@@ -202,6 +198,7 @@ public class ADiscussion extends AppCompatActivity implements View.OnScrollChang
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(webLink + String.valueOf(requestCount) + "&discussionID=" + DISCUSSIONS.DISCUSSION_ID,
                 (response) -> {
                     //Calling method parseData to parse the json responce
+                    //getTutorData();
                     parseData(response);
                     /*final Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
@@ -250,10 +247,11 @@ public class ADiscussion extends AppCompatActivity implements View.OnScrollChang
 
                 //check if instructor or student
                 if (byRegex(username,m)) {
-                    comment.setUserRole("Student");
                     //figure out if student is a tutor
-                    if (courseTutors.contains(username)){
+                    if (COURSE.TUTORS.contains(username)){
                         comment.setUserRole("Tutor");
+                    }else{
+                        comment.setUserRole("Student");
                     }
                 } else {
                     comment.setUserRole("Instructor");
@@ -270,51 +268,6 @@ public class ADiscussion extends AppCompatActivity implements View.OnScrollChang
 
         //Notifying the adapter that data has been added or changed
     }
-
-    //This method will get Data from the web api
-    private void getTutorData() {
-        //Adding the method to the queue by calling the method getDatafromServer
-        requestQueue.add(getTutorDataFromServer());
-    }
-
-    @Generated
-    private JsonArrayRequest getTutorDataFromServer() {
-
-        //JsonArrayRequest of volley
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(tutorListURL + COURSE.CODE,
-                (response) -> {
-                    //Calling method parseData to parse the json responce
-                    parseTutorData(response);
-
-                },
-                (error) -> {
-                    //If an error occurs that means end of the list has been reached
-                    //Toast.makeText(CourseHomePage.this, "No More Items Available", Toast.LENGTH_SHORT).show();
-                });
-        return jsonArrayRequest;
-    }
-
-    private void parseTutorData(JSONArray array) {
-
-        for (int i = 0; i < array.length(); i++) {
-
-            JSONObject json = null;
-            try {
-                //Getting json
-                json = array.getJSONObject(i);
-
-                //Adding data to the course object
-                String  studentNumber = json.getString("Enrolment_Student");
-                courseTutors.add(studentNumber);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-        }
-    }
-
-
 
     private boolean byRegex(String str, Matcher m) {
         return m.reset(str).matches();
