@@ -55,7 +55,7 @@ public class Comment {
     }
 
     public Date getTime() {
-        return time;
+        return this.time;
     }
 
     public void setTime(Date time) {

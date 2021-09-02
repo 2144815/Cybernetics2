@@ -34,6 +34,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -262,6 +263,7 @@ public class ADiscussion extends AppCompatActivity implements View.OnScrollChang
                 e.printStackTrace();
             }
             commentList.add(comment);
+            commentList.sort(Comparator.comparing(o -> o.getTime()));
             mAdapter.notifyDataSetChanged();
 
         }
