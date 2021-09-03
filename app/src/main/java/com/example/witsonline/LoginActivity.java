@@ -29,6 +29,7 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -40,10 +41,10 @@ public class LoginActivity extends AppCompatActivity {
     private Button btnLogin;
     private RadioButton rbStudent;
     private RadioButton rbInstructor;
-    ArrayList<ArrayList<String> >  student = new ArrayList<>();
     private ArrayList<String> studentNumbers = new ArrayList<>();
     private ArrayList<String> instructorUsernames = new ArrayList<>();
-    private ArrayList<ArrayList<String> > instructor = new ArrayList<>();
+    private HashMap<String, String> studentDetails = new HashMap<>();
+    private HashMap<String, String> instDetails = new HashMap<>();
     String URL = "https://lamp.ms.wits.ac.za/home/s2105624/";
 
     @Override
@@ -131,7 +132,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (rbStudent.isChecked()) {
 
-                    if (!validateStudentUsername(user,student) | !validateStudentPassword(password,student,studIndex)) {
+                    if (!validateStudentUsername(user,studentDetails) | !validateStudentPassword(password,user,studentDetails)) {
                         //error messages will be shown
                     } else {
                         USER.USERNAME = user.getEditText().getText().toString().trim();
@@ -143,7 +144,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
                 } else {
-                    if (!validateInstructorUsername(user, instructor) | !validateInstructorPassword(password,instructor,instructorIndex)) {
+                    if (!validateInstructorUsername(user, instDetails) | !validateInstructorPassword(password,user,instDetails)) {
                         //error messages will be shown
                     } else {
                         USER.USERNAME = user.getEditText().getText().toString().trim();
@@ -165,16 +166,21 @@ public class LoginActivity extends AppCompatActivity {
     int instructorIndex = -1;
     MD5Hash m;
 
-    public boolean validateInstructorUsername(TextInputLayout userText,ArrayList<ArrayList<String>> instructorList) {
+    public boolean validateInstructorUsername(TextInputLayout userText,HashMap<String,String>instDetails) {
         String usernameInput = userText.getEditText().getText().toString().trim();
         boolean userExists = false;
-        for (int i = 0; i < instructorList.size(); i++) {
+       /* for (int i = 0; i < instructorList.size(); i++) {
             if (usernameInput.equals(instructorList.get(i).get(0))) {
                 userExists = true;
                 instructorIndex = i;
                 USER.USER_NUM=instructorList.get(i).get(0);
                 USER.STUDENT=false;
             }
+        } */
+        if (instDetails.containsKey(usernameInput)){
+            userExists = true;
+            USER.USER_NUM= usernameInput;
+            USER.STUDENT=false;
         }
         if (usernameInput.isEmpty()) {
             userText.setError("Field can't be empty");
@@ -191,11 +197,12 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    public boolean validateInstructorPassword(TextInputLayout passwordText,ArrayList<ArrayList<String>> instructorList,int index) {
+    public boolean validateInstructorPassword(TextInputLayout passwordText,TextInputLayout userText,HashMap<String,String>instDetails) {
         String passwordInput = passwordText.getEditText().getText().toString().trim();
+        String username = userText.getEditText().getText().toString().trim();
         boolean correctPassword = false;
-        if (!passwordInput.isEmpty() && index != -1){
-            if (m.md5(passwordInput).equals(instructorList.get(index).get(1))) {
+        if (!passwordInput.isEmpty() && instDetails.containsKey(username)){
+            if (m.md5(passwordInput).equals(instDetails.get(username))) {
                 correctPassword = true;
             }
         }
@@ -215,16 +222,13 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-    public boolean validateStudentUsername(TextInputLayout userText,ArrayList<ArrayList<String>> StudentList) {
+    public boolean validateStudentUsername(TextInputLayout userText,HashMap<String,String>studDetails) {
         String usernameInput = userText.getEditText().getText().toString().trim();
         boolean userExists = false;
-        for (int i = 0; i < StudentList.size(); i++) {
-            if (usernameInput.equals(StudentList.get(i).get(0))) {
-                userExists = true;
-                studIndex = i;
-                USER.USER_NUM=StudentList.get(i).get(0);
-                USER.STUDENT=true;
-            }
+        if (studDetails.containsKey(usernameInput)){
+            userExists = true;
+            USER.USER_NUM=usernameInput;
+            USER.STUDENT=true;
         }
         if (usernameInput.isEmpty()) {
             userText.setError("Field can't be empty");
@@ -241,11 +245,12 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    public boolean validateStudentPassword(TextInputLayout passwordText,ArrayList<ArrayList<String>> StudentList,int index) {
+    public boolean validateStudentPassword(TextInputLayout passwordText,TextInputLayout userText,HashMap<String,String>studDetails) {
         String passwordInput = passwordText.getEditText().getText().toString().trim();
+        String username = userText.getEditText().getText().toString().trim();
         boolean correctPassword = false;
-        if (!passwordInput.isEmpty() && index != -1 ){
-            if (m.md5(passwordInput).equals(StudentList.get(index).get(1))) {
+        if (!passwordInput.isEmpty() && studDetails.containsKey(username) ){
+            if (m.md5(passwordInput).equals(studDetails.get(username))) {
                 correctPassword = true;
             }
         }
@@ -271,14 +276,11 @@ public class LoginActivity extends AppCompatActivity {
         try {
             JSONArray all = new JSONArray(json);
             for (int i = 0; i < all.length();i++){
-                ArrayList<String>studDetails = new ArrayList<>(2);
                 JSONObject obj = all.getJSONObject(i);
                 String username = obj.getString("Student_Number");
                 String password = obj.getString("Student_Password");
                 studentNumbers.add(username);
-                studDetails.add(username);
-                studDetails.add(password);
-                student.add(studDetails);
+                studentDetails.put(username,password);
             }
         }
         catch (JSONException e) {
@@ -286,24 +288,17 @@ public class LoginActivity extends AppCompatActivity {
         }
 
     }
-    //For testing
-    public ArrayList<ArrayList<String> > getStudent(){
-        return student;
-    }
 
     public void getInstructorLogin(String json){
 
         try {
             JSONArray all = new JSONArray(json);
             for (int i = 0; i < all.length();i++){
-                ArrayList<String>instructorDetails = new ArrayList<>(2);
                 JSONObject obj = all.getJSONObject(i);
                 String username = obj.getString("Instructor_Username");
                 String password = obj.getString("Instructor_Password");
                 instructorUsernames.add(username);
-                instructorDetails.add(username);
-                instructorDetails.add(password);
-                instructor.add(instructorDetails);
+                instDetails.put(username,password);
             }
         }
         catch (JSONException e) {

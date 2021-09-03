@@ -109,7 +109,11 @@ public class ADiscussion extends AppCompatActivity implements View.OnScrollChang
             }
         });
         question.setText(DISCUSSIONS.DISCUSSION_TEXT);
-        NoAnswers.setText(" " + DISCUSSIONS.DISCUSSION_NUM_REPLIES + " Answers");
+        if (DISCUSSIONS.DISCUSSION_NUM_REPLIES.equals("1")){
+            NoAnswers.setText(" " + DISCUSSIONS.DISCUSSION_NUM_REPLIES + " Answer");
+        }else{
+            NoAnswers.setText(" " + DISCUSSIONS.DISCUSSION_NUM_REPLIES + " Answers");
+        }
         TextView txtTime = (TextView) findViewById(R.id.tvTime);
         SimpleDateFormat dtDate = new SimpleDateFormat("dd-MMM-yyyy");
         SimpleDateFormat dtTime = new SimpleDateFormat("HH:mm");
