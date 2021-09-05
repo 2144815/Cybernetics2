@@ -109,6 +109,7 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
         if (USER.USER_NUM.equals(discussion.getDiscussionStudentNumber())) {
             holder.menu.setOnClickListener(new View.OnClickListener() {
                 @Override
+                @Generated
                 public void onClick(View v) {
                     showPopupMenu(holder.menu, position, holder);
                 }
@@ -155,7 +156,7 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
 
     }
 
-
+    @Generated
     private void showPopupMenu(View v, int position, ViewHolder holder) {
         PopupMenu popup = new PopupMenu(v.getContext(), v);
         MenuInflater inflater = popup.getMenuInflater();
@@ -203,6 +204,7 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
             numberOfReplies = (TextView) itemView.findViewById(R.id.numberOfReplies);
             startedBy.setOnClickListener(new View.OnClickListener() {
                 @Override
+                @Generated
                 public void onClick(View v) {
                     createNewViewProfileDialog(id);
                 }

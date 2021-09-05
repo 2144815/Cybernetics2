@@ -299,6 +299,7 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
         PHPRequestBuilder requestBuilder = new PHPRequestBuilder(URL, method);
         requestBuilder.doRequest(Dashboard.this, new ResponseHandler() {
             @Override
+            @Generated
             public void processResponse(String response) throws JSONException {
                 setFeaturedCourses(response, courses);
             }

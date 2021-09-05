@@ -143,6 +143,7 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
         }
         startDiscussion.setOnClickListener(new View.OnClickListener() {
             @Override
+            @Generated
             public void onClick(View view) {
                 createNewViewDialogDiscussion();
             }
@@ -186,6 +187,7 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
     }
 
     //This method will get Data from the web api
+    @Generated
     private void getData(){
         //Adding the method to the queue by calling the method getDatafromServer
         requestQueue.add(getDataFromServer(discussionCount));
@@ -233,6 +235,7 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
     }
 
     //This is the dialog for adding new discussions in the forum
+    @Generated
     public void createNewViewDialogDiscussion(){
         AlertDialog.Builder dialogBuilder= new AlertDialog.Builder(this);
         final View viewPopUp = LayoutInflater.from(this)
@@ -277,6 +280,7 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
 
     }
     //This function adds the discussion the database
+    @Generated
     private void addDiscussion (String phpFile, String topic , String text , String time) throws IOException {
         OkHttpClient client = new OkHttpClient();
         HttpUrl.Builder urlBuilder = HttpUrl.parse("https://lamp.ms.wits.ac.za/~s2105624/" + phpFile).newBuilder();
@@ -304,6 +308,7 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
                 final String responseData = response.body().string();
                 ForumActivity.this.runOnUiThread(new Runnable() {
                     @Override
+                    @Generated
                     public void run() {
                         Log.d("HERE",responseData.toString());
                         if(responseData.trim().equals("Successful")) {
@@ -322,7 +327,7 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
             }
         });
     }
-
+    @Generated
     private void getTutorStateData(){
         requestQueue.add(getTutorStateDataFromServer());
     }
@@ -374,6 +379,7 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
     }
 
     //This method will get Data from the web api
+    @Generated
     private void getTutorData() {
         //Adding the method to the queue by calling the method getDatafromServer
         requestQueue.add(getTutorDataFromServer());
@@ -395,8 +401,8 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
                 });
         return jsonArrayRequest;
     }
-
-    private void parseTutorData(JSONArray array) {
+    @Generated
+    public void parseTutorData(JSONArray array) {
 
         for (int i = 0; i < array.length(); i++) {
 
@@ -418,7 +424,7 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
     }
 
     //This method will check if the recyclerview has reached the bottom or not
-    private boolean isLastItemDisplaying(RecyclerView recyclerView){
+    public boolean isLastItemDisplaying(RecyclerView recyclerView){
         if(recyclerView.getAdapter().getItemCount() != 0){
             int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
             if (lastVisibleItemPosition != RecyclerView.NO_POSITION && lastVisibleItemPosition == recyclerView.getAdapter().getItemCount() -1){
@@ -436,6 +442,7 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
             getData();
         }
     }
+    @Generated
     public void onBackPressed(){
         Intent intent = new Intent(ForumActivity.this, CourseHomePage.class);
         Intent intent2 = new Intent(ForumActivity.this, CourseHomePageInstructor.class);

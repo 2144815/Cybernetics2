@@ -77,6 +77,7 @@ public class LessonPage extends AppCompatActivity {
         getLifecycle().addObserver(youTubePlayerView);
         youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
             @Override
+            @Generated
             public void onReady(@NonNull YouTubePlayer youTubePlayer) {
                 String videoId = getVideoIdFromYoutubeUrl(LESSON.Url);
                 youTubePlayer.cueVideo(videoId, 0);

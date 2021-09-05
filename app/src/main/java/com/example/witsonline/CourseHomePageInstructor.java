@@ -430,7 +430,7 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
         adapter.notifyDataSetChanged();
     }
     //This method will check if the recyclerview has reached the bottom or not
-    private boolean isLastItemDisplaying(RecyclerView recyclerView){
+    public boolean isLastItemDisplaying(RecyclerView recyclerView){
         if(recyclerView.getAdapter().getItemCount() != 0){
             int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
             if (lastVisibleItemPosition != RecyclerView.NO_POSITION && lastVisibleItemPosition == recyclerView.getAdapter().getItemCount() -1){

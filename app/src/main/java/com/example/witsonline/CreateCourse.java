@@ -199,6 +199,7 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
         ArrayAdapter<String> adapter = new ArrayAdapter(CreateCourse.this,android.R.layout.simple_spinner_item,faculties){
 
             @Override
+            @Generated
             public boolean isEnabled(int position){
                 if(position == 0)
                 {
@@ -231,12 +232,14 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
         spinner.setSelection(0,false);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
+            @Generated
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 facultyPos = position;
                 facultySelected = true;
             }
 
             @Override
+            @Generated
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
@@ -510,6 +513,7 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
                 int finalI = i;
                 topicName.setOnClickListener(new View.OnClickListener() {
                     @Override
+                    @Generated
                     public void onClick(View view) {
                         dialogAddOutline(outlineTopics[finalI], finalI);
                     }
@@ -538,6 +542,7 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
                 int finalI = i;
                 topicName.setOnClickListener(new View.OnClickListener() {
                     @Override
+                    @Generated
                     public void onClick(View view) {
                         dialogAddTag(topicName.getText().toString(), finalI);
                     }
@@ -570,6 +575,7 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
             outline.getEditText().setText(currentOutline);
             btnAddOutline.setOnClickListener(new View.OnClickListener() {
                 @Override
+                @Generated
                 public void onClick(View v) {
                     if (validateCourseOutlineOrTag(outline, allOutlines)&&!outline.getEditText().getText().toString().equals(currentOutline)) {
                         //error dislayes
@@ -584,6 +590,7 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
             });
             btnDeleteOutline.setOnClickListener(new View.OnClickListener() {
                 @Override
+                @Generated
                 public void onClick(View v) {
                     allOutlines.remove(index);
                     addOutlineTopics(convert(allOutlines));
@@ -595,6 +602,7 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
         else {
             btnAddOutline.setOnClickListener(new View.OnClickListener() {
                 @Override
+                @Generated
                 public void onClick(View v) {
                     if (validateCourseOutlineOrTag(outline, allOutlines)) {
                         //error dislayes
@@ -637,6 +645,7 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
             tag.getEditText().setText(currentTag);
             btnAddTag.setOnClickListener(new View.OnClickListener() {
                 @Override
+                @Generated
                 public void onClick(View v) {
                     if (validateCourseOutlineOrTag(tag, allTags)&&!tag.getEditText().getText().toString().equals(currentTag)) {
                         //error dislayes
@@ -649,6 +658,7 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
             });
             btnDeleteTag.setOnClickListener(new View.OnClickListener() {
                 @Override
+                @Generated
                 public void onClick(View v) {
                     allTags.remove(index);
                     addTags(convert(allTags));
@@ -660,6 +670,7 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
         else {
             btnAddTag.setOnClickListener(new View.OnClickListener() {
                 @Override
+                @Generated
                 public void onClick(View v) {
                     if (validateCourseOutlineOrTag(tag, allTags)) {
                         //error dislayes
@@ -672,6 +683,7 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
             });
             btnDeleteTag.setOnClickListener(new View.OnClickListener() {
                 @Override
+                @Generated
                 public void onClick(View v) {
                     dialog.dismiss();
                 }

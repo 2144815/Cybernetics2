@@ -161,6 +161,7 @@ public class BrowseLessons extends AppCompatActivity implements View.OnScrollCha
     }
 
     //This method will get Data from the web api
+    @Generated
     private void getData(){
         //Adding the method to the queue by calling the method getDatafromServer
         requestQueue.add(getDataFromServer(courseCount));

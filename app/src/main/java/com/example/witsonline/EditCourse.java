@@ -158,6 +158,7 @@ public class EditCourse extends AppCompatActivity {
         req.doRequest(EditCourse.this, "courseCodes",
                 new ResponseHandler() {
                     @Override
+                    @Generated
                     public void processResponse(String response) {
                         getCourseCodes(response);
                     }
@@ -165,6 +166,7 @@ public class EditCourse extends AppCompatActivity {
         //store the visibility
         rgVisibility.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
+            @Generated
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == R.id.privateVisibility){
                     visibility = "Private";
@@ -227,16 +229,19 @@ public class EditCourse extends AppCompatActivity {
 
                     StringRequest request = new StringRequest(Request.Method.POST, updateURL, new Response.Listener<String>() {
                         @Override
+                        @Generated
                         public void onResponse(String response) {
                             System.out.println(response);
                         }
                     }, new Response.ErrorListener() {
                         @Override
+                        @Generated
                         public void onErrorResponse(VolleyError error) {
                             System.out.println(error.getMessage());
                         }
                     }) {
                         @Override
+                        @Generated
                         protected Map<String, String> getParams() throws AuthFailureError {
                             Map<String, String> parameters = new HashMap<>();
                             parameters.put("code", COURSE.CODE);
@@ -313,6 +318,7 @@ public class EditCourse extends AppCompatActivity {
                 int finalI = i;
                 topicName.setOnClickListener(new View.OnClickListener() {
                     @Override
+                    @Generated
                     public void onClick(View view) {
                         dialogAddOutline(outlineTopics[finalI], finalI);
                     }
@@ -341,6 +347,7 @@ public class EditCourse extends AppCompatActivity {
                 int finalI = i;
                 topicName.setOnClickListener(new View.OnClickListener() {
                     @Override
+                    @Generated
                     public void onClick(View view) {
                         dialogAddTag(topicName.getText().toString(), finalI);
                     }
@@ -373,6 +380,7 @@ public class EditCourse extends AppCompatActivity {
             outline.getEditText().setText(currentOutline);
             btnAddOutline.setOnClickListener(new View.OnClickListener() {
                 @Override
+                @Generated
                 public void onClick(View v) {
                     if (validateCourseOutlineOrTag(outline, allOutlines)&&!outline.getEditText().getText().toString().equals(currentOutline)) {
                         //error dislayes

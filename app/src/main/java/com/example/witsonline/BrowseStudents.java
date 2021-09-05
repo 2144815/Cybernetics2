@@ -45,6 +45,7 @@ public class BrowseStudents extends AppCompatActivity implements  View.OnScrollC
     //The request counter to send ?page=1, ?page=2 requests
     private int reviewCount = 1;
     @Override
+    @Generated
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse_students);
@@ -138,7 +139,7 @@ public class BrowseStudents extends AppCompatActivity implements  View.OnScrollC
     }
 
     //This method will check if the recyclerview has reached the bottom or not
-    private boolean isLastItemDisplaying(RecyclerView recyclerView){
+    public boolean isLastItemDisplaying(RecyclerView recyclerView){
         if(recyclerView.getAdapter().getItemCount() != 0){
             int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
             if (lastVisibleItemPosition != RecyclerView.NO_POSITION && lastVisibleItemPosition == recyclerView.getAdapter().getItemCount() -1){

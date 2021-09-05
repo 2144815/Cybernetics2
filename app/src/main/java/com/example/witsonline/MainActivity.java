@@ -248,7 +248,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //Sets Of Courses//
-
+    @Generated
     public void thels(String json){
         try {
             JSONArray all = new JSONArray(json);

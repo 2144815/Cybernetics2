@@ -110,7 +110,7 @@ public class ReviewCardAdapter extends RecyclerView.Adapter<ReviewCardAdapter.Vi
     public int getItemCount() {
         return reviewVs.size();
     }
-
+    @Generated
     class ViewHolder extends RecyclerView.ViewHolder{
         //Views
         public TextView studentName;

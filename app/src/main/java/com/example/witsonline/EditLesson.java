@@ -120,6 +120,7 @@ public class EditLesson extends AppCompatActivity {
                         }
                     }) {
                         @Override
+                        @Generated
                         protected Map<String, String> getParams() throws AuthFailureError {
                             Map<String, String> parameters = new HashMap<>();
                             parameters.put("name", editLessonName.getEditText().getText().toString().trim());

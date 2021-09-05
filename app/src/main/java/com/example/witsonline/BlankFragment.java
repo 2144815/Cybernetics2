@@ -37,6 +37,7 @@ public class BlankFragment extends Fragment {
      * @return A new instance of fragment BlankFragment.
      */
     // TODO: Rename and change types and number of parameters
+    @Generated
     public static BlankFragment newInstance(String param1, String param2) {
         BlankFragment fragment = new BlankFragment();
         Bundle args = new Bundle();

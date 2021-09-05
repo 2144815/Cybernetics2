@@ -359,23 +359,24 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
     }
 
     //This method will get Data from the web api
+    @Generated
     private void getData(){
         //Adding the method to the queue by calling the method getDatafromServer
         requestQueue.add(getDataFromServer(reviewCount));
         //Incrementing the course counter
         reviewCount++;
     }
-
+    @Generated
     private void getTagData(){
         //Adding the method to the queue by calling the method getTagData
         requestQueue.add(getTagDataFromServer());
     }
-
+    @Generated
     private void getInstrData(){
         //Adding the method to the queue by calling the method getTagData
         requestQueue.add(getInstrDataFromServer());
     }
-
+    @Generated
     private void getTutorStateData(){
         requestQueue.add(getTutorStateDataFromServer());
     }
@@ -492,7 +493,7 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
         adapter.notifyDataSetChanged();
     }
     //This method will check if the recyclerview has reached the bottom or not
-    private boolean isLastItemDisplaying(RecyclerView recyclerView){
+    public boolean isLastItemDisplaying(RecyclerView recyclerView){
         if(recyclerView.getAdapter().getItemCount() != 0){
             int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
             if (lastVisibleItemPosition != RecyclerView.NO_POSITION && lastVisibleItemPosition == recyclerView.getAdapter().getItemCount() -1){
@@ -559,6 +560,7 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
                 final String responseData = response.body().string();
                 CourseHomePage.this.runOnUiThread(new Runnable() {
                     @Override
+                    @Generated
                     public void run() {
                         if(responseData.trim().equals("subscribed")){
                             //display forum if student is subscribed to course
@@ -724,6 +726,7 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
                 final String responseData = response.body().string();
                 CourseHomePage.this.runOnUiThread(new Runnable() {
                     @Override
+                    @Generated
                     public void run() {
                         updateRatings(String.valueOf(postReviewRating),reviewDescription);
                         overridePendingTransition(0, 0);
@@ -736,6 +739,7 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
             }
         });
     }
+    @Generated
     public void updateRatings(  String rating , String description){
         ReviewV reviewV = new ReviewV();
         reviewV.setReviewDescription(description);

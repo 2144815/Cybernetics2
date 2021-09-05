@@ -11,7 +11,7 @@ public class DISCUSSIONS {
     public static Date DISCUSSION_DATE;
     public static String DISCUSSION_ID;
     public static String DISCUSSION_STUDENT_NUMBER;
-
+    @Generated
     public static String getDiscussionStatus() {
         if(DISCUSSION_STATUS==1){
             return "Open";
@@ -20,6 +20,7 @@ public class DISCUSSIONS {
             return"Closed";
         }
     }
+    @Generated
     public static void updateNoReplies(){
         int x = (Integer.valueOf( DISCUSSION_NUM_REPLIES )+1);
         DISCUSSION_NUM_REPLIES = String.valueOf( x );

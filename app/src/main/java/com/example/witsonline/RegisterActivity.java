@@ -64,6 +64,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         rgRegister.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
+            @Generated
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == R.id.student) {
                     userText.setHint("Student Number");
@@ -153,6 +154,7 @@ public class RegisterActivity extends AppCompatActivity {
                 final String responseData = response.body().string();
                 RegisterActivity.this.runOnUiThread(new Runnable() {
                     @Override
+                    @Generated
                     public void run() {
                         Log.d("HERE", responseData);
                         if (responseData.equals("Successful")) {

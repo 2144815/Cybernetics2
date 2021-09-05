@@ -72,6 +72,7 @@ public class EditProfile extends AppCompatActivity implements View.OnScrollChang
 
 
     @Override
+    @Generated
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
@@ -185,6 +186,7 @@ public class EditProfile extends AppCompatActivity implements View.OnScrollChang
                             }
                         }) {
                             @Override
+                            @Generated
                             protected Map<String, String> getParams() throws AuthFailureError {
                                 Map<String, String> parameters = new HashMap<>();
                                 parameters.put("unum", USER.USER_NUM);
@@ -215,6 +217,7 @@ public class EditProfile extends AppCompatActivity implements View.OnScrollChang
                             }
                         }) {
                             @Override
+                            @Generated
                             protected Map<String, String> getParams() throws AuthFailureError {
                                 Map<String, String> parameters = new HashMap<>();
                                 parameters.put("unum", USER.USER_NUM);

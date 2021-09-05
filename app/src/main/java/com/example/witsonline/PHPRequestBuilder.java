@@ -42,11 +42,13 @@ public class PHPRequestBuilder {
 
         client.newCall(request).enqueue(new Callback() {
             @Override
+            @Generated
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 e.printStackTrace();
             }
 
             @Override
+            @Generated
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if (response.isSuccessful()) {
                     String myResponse = Objects.requireNonNull(response.body()).string();

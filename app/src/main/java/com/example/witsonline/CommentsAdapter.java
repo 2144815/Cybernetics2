@@ -60,6 +60,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
     @NonNull
     @NotNull
     @Override
+    @Generated
     public MyViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         //Inflator
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.one_line_comment, parent, false);
@@ -69,6 +70,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
     }
 
     @Override
+    @Generated
     public void onBindViewHolder(@NonNull @NotNull MyViewHolder holder, int position) {
         final Comment comment = commentList.get(position);
         //here we can create clickListerns and assign values
@@ -86,6 +88,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
         holder.TheTime.setText(strTime);
         holder.upvote.setOnClickListener(new View.OnClickListener() {
             @Override
+            @Generated
             public void onClick(View v) {
                 commentList.get((holder.getAdapterPosition())).setNoVotes(1);
                 holder.NoVotes.setText(String.valueOf(commentList.get((holder.getAdapterPosition())).getNoVotes()));
@@ -93,6 +96,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
         });
         holder.downVote.setOnClickListener(new View.OnClickListener() {
             @Override
+            @Generated
             public void onClick(View v) {
                 commentList.get((holder.getAdapterPosition())).setNoVotes(-1);
                 holder.NoVotes.setText(String.valueOf(commentList.get((holder.getAdapterPosition())).getNoVotes()));
@@ -103,7 +107,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
 
 
     }
-
+    @Generated
     public void UpdateReplies() {
 
     }
@@ -159,7 +163,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
         return commentList.size();
     }
 
-
+    @Generated
     public class MyViewHolder extends RecyclerView.ViewHolder {
         //this is a reference to the one line layout
         TextView TheStudentName;
@@ -179,6 +183,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
             TheStudentName = itemView.findViewById(R.id.tv_studentFullName);
             TheStudentName.setOnClickListener(new View.OnClickListener() {
                 @Override
+                @Generated
                 public void onClick(View v) {
                     createNewViewProfileDialog(id, role);
                 }

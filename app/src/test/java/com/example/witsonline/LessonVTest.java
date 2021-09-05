@@ -50,6 +50,13 @@ public class LessonVTest {
         String output=temp.getLessonUrl();
         assertEquals(expected,output);
     }
+    @Test
+    public void setLessonID() {
+        LessonV temp=new LessonV();
+        temp.setLessonID("test");
+        String output=temp.getLessonID();
+        assertEquals("test",output);
+    }
 
     @Test
     public void getLessonName_WithNullValue() {
@@ -129,6 +136,12 @@ public class LessonVTest {
         temp.setLessonUrl("test");
         String output=temp.getLessonUrl();
         assertEquals(expected,output);
+    }
+    @Test
+    public void getLessonID() {
+        LessonV temp=new LessonV();
+        String output=temp.getLessonID();
+        assertEquals(null,output);
     }
 
 

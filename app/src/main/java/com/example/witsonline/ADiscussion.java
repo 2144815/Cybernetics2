@@ -81,6 +81,7 @@ public class ADiscussion extends AppCompatActivity implements View.OnScrollChang
     Bundle extras;
 
     @Override
+    @Generated
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_adiscussion);
@@ -104,6 +105,7 @@ public class ADiscussion extends AppCompatActivity implements View.OnScrollChang
         studentName.setText(DISCUSSIONS.DISCUSSION_STUDENT);
         studentName.setOnClickListener(new View.OnClickListener() {
             @Override
+            @Generated
             public void onClick(View v) {
                 createNewViewProfileDialog();
             }
@@ -155,6 +157,7 @@ public class ADiscussion extends AppCompatActivity implements View.OnScrollChang
         } else {
             send.setOnClickListener(new View.OnClickListener() {
                 @Override
+                @Generated
                 public void onClick(View v) {
                     String time = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss").format(Calendar.getInstance().getTime());
                     if (Answer.getText().toString().equals("")) {
@@ -182,6 +185,7 @@ public class ADiscussion extends AppCompatActivity implements View.OnScrollChang
     }
 
     //This method will get Data from the web api
+    @Generated
     private void getData() {
         //Adding the method to the queue by calling the method getDatafromServer
         requestQueue.add(getDataFromServer(commentsCount));
@@ -272,12 +276,12 @@ public class ADiscussion extends AppCompatActivity implements View.OnScrollChang
 
         //Notifying the adapter that data has been added or changed
     }
-
-    private boolean byRegex(String str, Matcher m) {
+    @Generated
+    public boolean byRegex(String str, Matcher m) {
         return m.reset(str).matches();
     }
 
-
+    @Generated
     private void addComment(String phpFile, String text, String time, String user) throws IOException {
         OkHttpClient client = new OkHttpClient();
         HttpUrl.Builder urlBuilder = HttpUrl.parse("https://lamp.ms.wits.ac.za/~s2105624/" + phpFile).newBuilder();
@@ -306,6 +310,7 @@ public class ADiscussion extends AppCompatActivity implements View.OnScrollChang
                 ADiscussion.this.runOnUiThread(new Runnable() {
 
                     @Override
+                    @Generated
                     public void run() {
                         if (responseData.trim().equals("Successful")) {
                             Toast toast = Toast.makeText(ADiscussion.this, responseData, Toast.LENGTH_LONG);
@@ -359,7 +364,7 @@ public class ADiscussion extends AppCompatActivity implements View.OnScrollChang
 
     }
 
-    private boolean isLastItemDisplaying(RecyclerView recyclerView) {
+    public boolean isLastItemDisplaying(RecyclerView recyclerView) {
         if (recyclerView.getAdapter().getItemCount() != 0) {
             int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
             if (lastVisibleItemPosition != RecyclerView.NO_POSITION && lastVisibleItemPosition == recyclerView.getAdapter().getItemCount() - 1) {
@@ -378,7 +383,7 @@ public class ADiscussion extends AppCompatActivity implements View.OnScrollChang
             getData();
         }
     }
-
+    @Generated
     public void onBackPressed() {
         Intent intent = new Intent(this, ForumActivity.class);
         if (browse) {

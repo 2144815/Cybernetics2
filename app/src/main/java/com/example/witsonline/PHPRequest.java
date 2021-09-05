@@ -31,11 +31,13 @@ public class PHPRequest {
 
         client.newCall(request).enqueue(new Callback() {
             @Override
+            @Generated
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 e.printStackTrace();
             }
 
             @Override
+            @Generated
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if (response.isSuccessful()){
 
@@ -44,6 +46,7 @@ public class PHPRequest {
 
                     a.runOnUiThread(new Runnable() {
                         @Override
+                        @Generated
                         public void run() {
                             try {
                                 rh.processResponse(myResponse);

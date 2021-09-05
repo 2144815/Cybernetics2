@@ -118,7 +118,7 @@ public class StudentCardAdapter extends RecyclerView.Adapter<StudentCardAdapter.
     public int getItemCount() { return studentVs.size(); }
 
 
-
+    @Generated
     public class ViewHolder extends RecyclerView.ViewHolder{
         //views
         public TextView studentName;
@@ -127,12 +127,14 @@ public class StudentCardAdapter extends RecyclerView.Adapter<StudentCardAdapter.
         public TextView tutorState;
 
         //Initializing Views
+
         public ViewHolder(View itemView){
             super(itemView);
             studentNumber = (TextView) itemView.findViewById(R.id.studentCardNumber);
             studentName = (TextView) itemView.findViewById(R.id.studentCardName);
             studentName.setOnClickListener(new View.OnClickListener() {
                 @Override
+                @Generated
                 public void onClick(View v) {
                     createNewViewProfileDialog(studentNumber);
                 }
@@ -142,6 +144,7 @@ public class StudentCardAdapter extends RecyclerView.Adapter<StudentCardAdapter.
 
             assignTutor.setOnClickListener(new View.OnClickListener() {
                 @Override
+                @Generated
                 public void onClick(View v) {
                     STUDENT.number = studentNumber.getText().toString();
                     if(tutorState.getText().toString().equals("1")){

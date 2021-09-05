@@ -393,7 +393,7 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
             }
         });
     }
-
+    @Generated
     private void getTutorStateData(){
         requestQueue = Volley.newRequestQueue(context);
         requestQueue.add(getTutorStateDataFromServer());

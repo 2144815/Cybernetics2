@@ -70,6 +70,13 @@ public class CourseVTest {
         String output=temp.getImageUrl();
         assertEquals(expected,output);
     }
+    @Test
+    public void setInstName() {
+        CourseV temp=new CourseV();
+        temp.setInstName("test");
+        String output=temp.getInstName();
+        assertEquals("test",output);
+    }
 
     @Test
     public void getCourseNameWithNullValue() {
@@ -182,5 +189,11 @@ public class CourseVTest {
         temp.setCourseOutline("test");
         String output=temp.getCourseOutline();
         assertEquals(expected,output);
+    }
+    @Test
+    public void getInstName() {
+        CourseV temp=new CourseV();
+        String output=temp.getInstName();
+        assertEquals(null,output);
     }
 }

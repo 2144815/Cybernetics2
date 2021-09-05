@@ -42,6 +42,20 @@ public class ReviewVTest {
         assertEquals(expected,output);
 
     }
+    @Test
+    public void setStudentNumber() {
+        ReviewV temp= new ReviewV();
+        temp.setStudentNumber("test");
+        String output=temp.getStudentNumber();
+        assertEquals("test",output);
+    }
+    @Test
+    public void setReviewID() {
+        ReviewV temp= new ReviewV();
+        temp.setReviewID("test");
+        String output=temp.getReviewID();
+        assertEquals("test",output);
+    }
 
     @Test
     public void getStudentFNameWithNullValue() {
@@ -106,6 +120,18 @@ public class ReviewVTest {
         String expected="5";
         String output=temp.getReviewRating();
         assertEquals(expected,output);
+    }
+    @Test
+    public void getReviewID() {
+        ReviewV temp= new ReviewV();
+        String output=temp.getReviewID();
+        assertEquals(null,output);
+    }
+    @Test
+    public void getStudentNumber() {
+        ReviewV temp= new ReviewV();
+        String output=temp.getStudentNumber();
+        assertEquals(null,output);
     }
 
 }

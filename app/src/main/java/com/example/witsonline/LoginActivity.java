@@ -88,6 +88,7 @@ public class LoginActivity extends AppCompatActivity {
 
         ClickableSpan cs = new ClickableSpan() {
             @Override
+            @Generated
             public void onClick(@NonNull View widget) {
 
                 Intent i = new Intent(LoginActivity.this, RegisterActivity.class);
@@ -287,6 +288,13 @@ public class LoginActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+    }
+
+    public ArrayList<String> getStudentNumbers(){
+        return studentNumbers;
+    }
+    public ArrayList<String>  getInstructorUsernames(){
+        return instructorUsernames;
     }
 
     public void getInstructorLogin(String json){

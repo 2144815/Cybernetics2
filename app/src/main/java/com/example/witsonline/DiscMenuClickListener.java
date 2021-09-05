@@ -52,6 +52,7 @@ public class DiscMenuClickListener implements PopupMenu.OnMenuItemClickListener 
 
 
     @Override
+    @Generated
     public boolean onMenuItemClick(MenuItem item) {
         AlertDialog.Builder dialogBuilder= new AlertDialog.Builder(context);
 
@@ -72,6 +73,7 @@ public class DiscMenuClickListener implements PopupMenu.OnMenuItemClickListener 
                     dialog.show();
                     yes.setOnClickListener( new View.OnClickListener() {
                         @Override
+                        @Generated
                         public void onClick(View v) {
                             updateDiscStatus("Closed");
                             Intent i = new Intent(context, ForumActivity.class);
@@ -82,6 +84,7 @@ public class DiscMenuClickListener implements PopupMenu.OnMenuItemClickListener 
                     } );
                     no.setOnClickListener( new View.OnClickListener() {
                         @Override
+                        @Generated
                         public void onClick(View v) {
                             Intent i = new Intent(context, ForumActivity.class);
                             context.startActivity(i);
@@ -100,6 +103,7 @@ public class DiscMenuClickListener implements PopupMenu.OnMenuItemClickListener 
                     dialog.show();
                     yes.setOnClickListener( new View.OnClickListener() {
                         @Override
+                        @Generated
                         public void onClick(View v) {
                             updateDiscStatus("Open");
                             int duration = Toast.LENGTH_SHORT;
@@ -111,6 +115,7 @@ public class DiscMenuClickListener implements PopupMenu.OnMenuItemClickListener 
                     } );
                     no.setOnClickListener( new View.OnClickListener() {
                         @Override
+                        @Generated
                         public void onClick(View v) {
                             Intent i = new Intent(context, ForumActivity.class);
                             context.startActivity(i);
@@ -120,6 +125,7 @@ public class DiscMenuClickListener implements PopupMenu.OnMenuItemClickListener 
         }
         return false;
     }
+    @Generated
     private void updateDiscStatus(String NewStatus) {
 
         if( NewStatus.equals("Closed")){
@@ -131,7 +137,7 @@ public class DiscMenuClickListener implements PopupMenu.OnMenuItemClickListener 
 
 
     }
-
+    @Generated
     private void OpenDisussion(String phpFile, String newStatus) {
 
         OkHttpClient client = new OkHttpClient();
@@ -161,7 +167,7 @@ public class DiscMenuClickListener implements PopupMenu.OnMenuItemClickListener 
             }
         });
     }
-
+    @Generated
     private void CloseDiscussion(String phpFile, String newStatus) {
         OkHttpClient client = new OkHttpClient();
         HttpUrl.Builder urlBuilder = HttpUrl.parse("https://lamp.ms.wits.ac.za/~s2105624/" + phpFile).newBuilder();

@@ -104,6 +104,7 @@ public class LessonPageInstructor extends AppCompatActivity {
         getLifecycle().addObserver(youTubePlayerView);
         youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
             @Override
+            @Generated
             public void onReady(@NonNull YouTubePlayer youTubePlayer) {
                 String videoId = getVideoIdFromYoutubeUrl(LESSON.Url);
                 youTubePlayer.cueVideo(videoId, 0);
@@ -204,6 +205,7 @@ public class LessonPageInstructor extends AppCompatActivity {
                 // download the pdf resource
                 downloadButton.setOnClickListener(new View.OnClickListener() {
                     @Override
+                    @Generated
                     public void onClick(View v) {
                         try {
                             downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
