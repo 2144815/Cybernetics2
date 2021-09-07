@@ -1,5 +1,6 @@
 package com.example.witsonline;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
@@ -11,6 +12,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,6 +38,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -79,6 +84,7 @@ public class ADiscussion extends AppCompatActivity implements View.OnScrollChang
     private boolean mycourses = false;
     private boolean dashboard = false;
     Bundle extras;
+    Menu menu;
 
     @Override
     @Generated
@@ -395,5 +401,45 @@ public class ADiscussion extends AppCompatActivity implements View.OnScrollChang
         }
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate( R.menu.sort_comments_menu,menu);
+
+
+
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull @NotNull MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.menu_sortByVotes:
+                // sort by votes
+
+
+                Toast.makeText( ADiscussion.this, "Sorted by votes", Toast.LENGTH_SHORT ).show();
+                return true;
+
+            case R.id.menu_sortByRoles:
+                //sort by Roles
+                Collections.sort(commentList, Comment.CommentRolesComparator);
+                mAdapter.notifyDataSetChanged();
+                Toast.makeText( ADiscussion.this, "Sorted by Roles", Toast.LENGTH_SHORT ).show();
+                return true;
+
+            case R.id.menu_sortByDate:
+                //sort by date(Default)
+
+                Collections.sort(commentList, Comment.CommentDatesComparator);
+                mAdapter.notifyDataSetChanged();
+                Toast.makeText( ADiscussion.this, "Sorted by Date", Toast.LENGTH_SHORT ).show();
+                return true;
+        }
+
+        return super.onOptionsItemSelected( item );
     }
 }
