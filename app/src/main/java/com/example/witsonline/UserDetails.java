@@ -133,12 +133,12 @@ public class UserDetails extends AppCompatActivity {
                 json = array.getJSONObject(i);
 
                 //getting student profile data
-                USER.EMAIL = json.getString("Student_Email");
-                email.getEditText().setText(USER.EMAIL);
-                USER.FNAME = json.getString("Student_FName");
-                firstName.getEditText().setText(USER.FNAME);
-                USER.LNAME = json.getString("Student_LName");
-                lastName.getEditText().setText(USER.LNAME);
+                STUDENT.email = json.getString("Student_Email");
+                email.getEditText().setText(STUDENT.email);
+                STUDENT.fName = json.getString("Student_FName");
+                firstName.getEditText().setText(STUDENT.fName);
+                STUDENT.lName = json.getString("Student_LName");
+                lastName.getEditText().setText(STUDENT.lName);
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -184,12 +184,12 @@ public class UserDetails extends AppCompatActivity {
                 json = array.getJSONObject(i);
 
                 //getting student profile data
-                USER.EMAIL = json.getString("Instructor_Email");
-                email.getEditText().setText(USER.EMAIL);
-                USER.FNAME = json.getString("Instructor_FName");
-                firstName.getEditText().setText(USER.FNAME);
-                USER.LNAME = json.getString("Instructor_LName");
-                lastName.getEditText().setText(USER.LNAME);
+                INSTRUCTOR.EMAIL = json.getString("Instructor_Email");
+                email.getEditText().setText(INSTRUCTOR.EMAIL);
+                INSTRUCTOR.FNAME = json.getString("Instructor_FName");
+                firstName.getEditText().setText(INSTRUCTOR.FNAME);
+                INSTRUCTOR.LNAME = json.getString("Instructor_LName");
+                lastName.getEditText().setText(INSTRUCTOR.LNAME);
 
             } catch (JSONException e) {
                 e.printStackTrace();
