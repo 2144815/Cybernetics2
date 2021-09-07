@@ -70,13 +70,13 @@
             </LinearLayout>
             <TextView
                 android:id="@+id/time"
-                android:layout_width="79dp"
+                android:layout_width="85dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginStart="138dp"
                 android:layout_marginTop="5dp"
-                android:layout_marginRight="18dp"
+                android:layout_marginRight="22dp"
                 android:text="Time" />
 
         </RelativeLayout>
