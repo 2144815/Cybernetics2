@@ -101,6 +101,11 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
         if(!holder.courseImage.equals("null")){
             Glide.with(context).load(holder.courseImage).into(holder.image);
         }
+        String visibility = courseV.getCourseVisibility();
+        if(visibility.equals("Public")){
+            holder.courseLock.setVisibility(View.GONE);
+        }
+
 
         //add course to visibility hash map
        // if (!courseVisibilites.containsKey(courseV.getCourseCode()) && courseV.getCourseVisibility() != null){
@@ -145,16 +150,6 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
             courseVisibility = (TextView) itemView.findViewById(R.id.course_Visibility);
             image = (ImageView)itemView.findViewById(R.id.courseImage) ;
             courseLock = (ImageView)itemView.findViewById(R.id.lock_icon);
-            Toast.makeText(context,courseVisibility.getText().toString(), Toast.LENGTH_SHORT).show();
-            if (courseVisibility.getText().toString().equals("Public")){
-                courseLock.setVisibility(View.GONE);
-            }
-           /* if (courseVisibilites.get(courseCode.getText().toString()) != null &&
-                    courseVisibilites.get(courseCode.getText().toString()).equals("Public")){
-                Toast.makeText(context, courseVisibilites.get(courseCode.getText().toString()), Toast.LENGTH_SHORT).show();
-                courseLock.setVisibility(View.GONE);
-                Toast.makeText(context,""+courseVisibilites.toString(), Toast.LENGTH_SHORT).show();
-            } */
             courseInstructor.setOnClickListener(new View.OnClickListener() {
                 @Override
                 @Generated

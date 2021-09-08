@@ -80,14 +80,6 @@
                     android:visibility="invisible"
                     android:text="Course Description...." />
 
-                <TextView
-                    android:id="@+id/course_Visibility"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:textSize="1dp"
-                    android:background="#F0F2F5"
-                    android:text="Course Visibility" />
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
@@ -103,6 +95,14 @@
                         android:layout_height="30dp"
                         android:text="Course Instructor" />
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/course_Visibility"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:textSize="1dp"
+                    android:background="#F0F2F5"
+                    android:text="Course Visibility" />
 
                 <RatingBar
                     android:id="@+id/courseRating"
