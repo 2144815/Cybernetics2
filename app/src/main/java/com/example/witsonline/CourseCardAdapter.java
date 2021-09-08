@@ -48,6 +48,7 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
     private ProgressBar progressBar;
     private Button btnViewDialogSubscribe, btnViewDialogViewCourse;
     private Button btnUnsubscribe, btnCancel;
+    private HashMap <String,String> courseVisibilites = new HashMap<>(); // for storing course visibility
     private Button btnView, btnProfileCancel; // for viewing instructor's profile
     private HashMap <String,String> instUsernames = new HashMap<>(); // for viewing instructor's profile
     //List to store all Courses
@@ -89,6 +90,7 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
         holder.setIsRecyclable(false);
         holder.courseName.setText(courseV.getCourseName());
         holder.courseDescription.setText(courseV.getCourseDescription());
+        holder.courseVisibility.setText(courseV.getCourseVisibility());
         //holder.courseInstructor.setText(courseV.getCourseInstructor());
         holder.courseInstructor.setText(courseV.getInstName());
         holder.courseCode.setText(courseV.getCourseCode());
@@ -99,6 +101,13 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
         if(!holder.courseImage.equals("null")){
             Glide.with(context).load(holder.courseImage).into(holder.image);
         }
+
+        //add course to visibility hash map
+       // if (!courseVisibilites.containsKey(courseV.getCourseCode()) && courseV.getCourseVisibility() != null){
+       //     courseVisibilites.put(courseV.getCourseCode(),courseV.getCourseVisibility());
+        //    //Toast.makeText(context, courseV.getCourseCode(), Toast.LENGTH_SHORT).show();
+       // }
+
 
         //for view profile, we need the instructor's username
         instUsernames.put(courseV.getCourseCode(),courseV.getCourseInstructor());
@@ -122,6 +131,8 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
         public String courseImage;
         public ImageView image;
         public RatingBar courseRatingBar;
+        public ImageView courseLock;
+        public TextView courseVisibility;
 
         //Initializing Views
         public ViewHolder(View itemView) {
@@ -131,7 +142,19 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
             courseInstructor = (TextView) itemView.findViewById(R.id.courseInstructor);
             courseCode = (TextView) itemView.findViewById(R.id.codeContainer);
             courseRatingBar = (RatingBar)itemView.findViewById(R.id.courseRating);
+            courseVisibility = (TextView) itemView.findViewById(R.id.course_Visibility);
             image = (ImageView)itemView.findViewById(R.id.courseImage) ;
+            courseLock = (ImageView)itemView.findViewById(R.id.lock_icon);
+            Toast.makeText(context,courseVisibility.getText().toString(), Toast.LENGTH_SHORT).show();
+            if (courseVisibility.getText().toString().equals("Public")){
+                courseLock.setVisibility(View.GONE);
+            }
+           /* if (courseVisibilites.get(courseCode.getText().toString()) != null &&
+                    courseVisibilites.get(courseCode.getText().toString()).equals("Public")){
+                Toast.makeText(context, courseVisibilites.get(courseCode.getText().toString()), Toast.LENGTH_SHORT).show();
+                courseLock.setVisibility(View.GONE);
+                Toast.makeText(context,""+courseVisibilites.toString(), Toast.LENGTH_SHORT).show();
+            } */
             courseInstructor.setOnClickListener(new View.OnClickListener() {
                 @Override
                 @Generated
@@ -192,7 +215,6 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
                     }
                 }
             });
-
         }
     }
 

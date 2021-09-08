@@ -210,6 +210,7 @@ public class MyCourses extends AppCompatActivity implements View.OnScrollChangeL
                 courseV.setCourseInstructor(json.getString("courseInstructor"));
                 courseV.setCourseCode(json.getString("courseCode"));
                 courseV.setCourseRating(json.getString("courseRating"));
+                courseV.setCourseVisibility(json.getString("courseVisibility"));
                 courseV.setCourseOutline(json.getString("courseOutline"));
                 courseV.setImageUrl(json.getString("courseImageUrl"));
                 if (USER.STUDENT) {
