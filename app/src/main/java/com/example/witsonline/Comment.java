@@ -20,10 +20,13 @@ public class Comment {
             //If if returns zero, then both comments have the same nummber of votes
             int decider = 0;
             if(C1.getTime().after( C2.getTime() )){
-                decider = -1;
+                decider = 1;
             }
             else if(C1.getTime().before( C2.getTime() )){
-                decider = 1;
+                decider = -1;
+            }
+            else if(C1.getTime().after( C2.getTime() ) == false){
+                decider = 0;
             }
             return decider;
         }
