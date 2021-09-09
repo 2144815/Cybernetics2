@@ -56,30 +56,41 @@ public class Comment {
                 switch (C2.getUserRole()){
                     case "Student":
                         i = -1;
+
+                        break;
                     case "Instructor":
                         i = 0;
+                        break;
                     case "Tutor":
                         i = -1;
+                        break;
                 }
             }
             else if(C1.getUserRole().equals( "Tutor" )){
                 switch (C2.getUserRole()){
                     case "Instructor":
                         i = 1;
+                        break;
                     case "Student":
                         i = -1;
+                        break;
                     case "Tutor":
                         i = 0;
+                        break;
                 }
             }
             else if(C1.getUserRole().equals( "Student" )){
                 switch (C2.getUserRole()){
                     case "Instructor":
                         i = 1;
+                        break;
                     case "Student":
                         i = 0;
+                        break;
                     case "Tutor":
                         i = 1;
+                        Log.d("the log", "we got here!");
+                        break;
                 }
             }
 
