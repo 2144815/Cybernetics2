@@ -9,6 +9,7 @@ public class CourseV {
     private String strCourseRating;
     private String strCourseOutline;
     private String strImageUrl;
+    private String strVisibility;
 
 
     public void setCourseName(String courseName){
@@ -20,6 +21,7 @@ public class CourseV {
     public void setCourseCode(String courseCode){this.strCourseCode = courseCode;}
     public void setCourseRating(String courseRating){ this.strCourseRating = courseRating;}
     public void setCourseOutline(String courseOutline){this.strCourseOutline = courseOutline;};
+    public void setCourseVisibility(String visibility){this.strVisibility = visibility;};
     public void setImageUrl(String imageUrl){this.strImageUrl = imageUrl;};
 
 
@@ -36,6 +38,7 @@ public class CourseV {
         return strInstName;
     }
     public String getCourseCode(){ return strCourseCode; }
+    public String getCourseVisibility(){ return strVisibility;}
     public String getImageUrl(){ return strImageUrl; }
     public String getCourseRating(){
 
