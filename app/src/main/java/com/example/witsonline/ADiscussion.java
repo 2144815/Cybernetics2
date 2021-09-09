@@ -419,8 +419,8 @@ public class ADiscussion extends AppCompatActivity implements View.OnScrollChang
         switch(item.getItemId()){
             case R.id.menu_sortByVotes:
                 // sort by votes
-
-
+                Collections.sort(commentList, Comment.CommentVotesComparator);
+                mAdapter.notifyDataSetChanged();
                 Toast.makeText( ADiscussion.this, "Sorted by votes", Toast.LENGTH_SHORT ).show();
                 return true;
 

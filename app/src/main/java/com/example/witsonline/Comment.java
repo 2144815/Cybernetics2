@@ -1,5 +1,7 @@
 package com.example.witsonline;
 
+import android.util.Log;
+
 import java.util.Comparator;
 import java.util.Date;
 
@@ -16,7 +18,30 @@ public class Comment {
             //If it returns a positive number, C1 has more votes
             //If it returns a negative number, C2 has more votes
             //If if returns zero, then both comments have the same nummber of votes
-            return C1.getTime().compareTo( C2.getTime() );
+            int decider = 0;
+            if(C1.getTime().after( C2.getTime() )){
+                decider = -1;
+            }
+            else if(C1.getTime().before( C2.getTime() )){
+                decider = 1;
+            }
+            return decider;
+        }
+    };
+    public static Comparator<Comment> CommentVotesComparator = new Comparator<com.example.witsonline.Comment>() {
+        @Override
+        public int compare(com.example.witsonline.Comment C1, com.example.witsonline.Comment C2) {
+            //If it returns a positive number, C1 has more votes
+            //If it returns a negative number, C2 has more votes
+            //If if returns zero, then both comments have the same nummber of votes
+            int decider = 0;
+            if(C1.getNoVotes()>C2.getNoVotes()){
+                decider = -1;
+            }
+            else if(C1.getNoVotes()<C2.getNoVotes()){
+                decider = 1;
+            }
+            return decider;
         }
     };
     public static Comparator<Comment> CommentRolesComparator = new Comparator<com.example.witsonline.Comment>() {
@@ -57,9 +82,6 @@ public class Comment {
                         i = 1;
                 }
             }
-
-
-
 
             return i;
         }
