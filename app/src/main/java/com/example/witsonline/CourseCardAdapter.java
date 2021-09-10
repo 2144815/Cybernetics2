@@ -48,13 +48,9 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
     private ProgressBar progressBar;
     private Button btnViewDialogSubscribe, btnViewDialogViewCourse;
     private Button btnUnsubscribe, btnCancel;
-    private HashMap <String,String> courseVisibilites = new HashMap<>(); // for storing course visibility
     private Button btnView, btnProfileCancel; // for viewing instructor's profile
-    private HashMap <String,String> instUsernames = new HashMap<>(); // for viewing instructor's profile
-    //List to store all Courses
-    ArrayList<CourseV> coursesVs;
-
-
+    private HashMap<String, String> instUsernames = new HashMap<>(); // for viewing instructor's profile
+    ArrayList<CourseV> coursesVs; //List to store all Courses
     //For determining if student is a tutor
     String tutorURL = "https://lamp.ms.wits.ac.za/home/s2105624/getTutorState.php?studentNumber=";
     private RequestQueue requestQueue;
@@ -62,7 +58,7 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
     private TextView unsubscribeText;
 
     //Constructor of this class
-    public CourseCardAdapter(ArrayList<CourseV> requestVs, Context context){
+    public CourseCardAdapter(ArrayList<CourseV> requestVs, Context context) {
         super();
         //Getting all requests
         this.coursesVs = requestVs;
@@ -96,26 +92,26 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
         holder.courseCode.setText(courseV.getCourseCode());
         holder.courseRatingBar.setRating(Float.parseFloat(courseV.getCourseRating()));
         holder.courseOutline = courseV.getCourseOutline();
-        holder.courseRating= courseV.getCourseRating();
-        holder.courseImage =courseV.getImageUrl();
-        if(!holder.courseImage.equals("null")){
+        holder.courseRating = courseV.getCourseRating();
+        holder.courseImage = courseV.getImageUrl();
+        if (!holder.courseImage.equals("null")) {
             Glide.with(context).load(holder.courseImage).into(holder.image);
         }
         String visibility = courseV.getCourseVisibility();
-        if(visibility.equals("Public")){
+        if (visibility.equals("Public")) {
             holder.courseLock.setVisibility(View.GONE);
         }
 
 
         //add course to visibility hash map
-       // if (!courseVisibilites.containsKey(courseV.getCourseCode()) && courseV.getCourseVisibility() != null){
-       //     courseVisibilites.put(courseV.getCourseCode(),courseV.getCourseVisibility());
+        // if (!courseVisibilites.containsKey(courseV.getCourseCode()) && courseV.getCourseVisibility() != null){
+        //     courseVisibilites.put(courseV.getCourseCode(),courseV.getCourseVisibility());
         //    //Toast.makeText(context, courseV.getCourseCode(), Toast.LENGTH_SHORT).show();
-       // }
+        // }
 
 
         //for view profile, we need the instructor's username
-        instUsernames.put(courseV.getCourseCode(),courseV.getCourseInstructor());
+        instUsernames.put(courseV.getCourseCode(), courseV.getCourseInstructor());
 
     }
 
@@ -124,8 +120,9 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
     public int getItemCount() {
         return coursesVs.size();
     }
+
     @Generated
-    class ViewHolder extends RecyclerView.ViewHolder{
+    class ViewHolder extends RecyclerView.ViewHolder {
         //Views
         public TextView courseName;
         public TextView courseDescription;
@@ -146,29 +143,28 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
             courseDescription = (TextView) itemView.findViewById(R.id.courseDescription);
             courseInstructor = (TextView) itemView.findViewById(R.id.courseInstructor);
             courseCode = (TextView) itemView.findViewById(R.id.codeContainer);
-            courseRatingBar = (RatingBar)itemView.findViewById(R.id.courseRating);
+            courseRatingBar = (RatingBar) itemView.findViewById(R.id.courseRating);
             courseVisibility = (TextView) itemView.findViewById(R.id.course_Visibility);
-            image = (ImageView)itemView.findViewById(R.id.courseImage) ;
-            courseLock = (ImageView)itemView.findViewById(R.id.lock_icon);
+            image = (ImageView) itemView.findViewById(R.id.courseImage);
+            courseLock = (ImageView) itemView.findViewById(R.id.lock_icon);
             courseInstructor.setOnClickListener(new View.OnClickListener() {
                 @Override
                 @Generated
                 public void onClick(View v) {
-                    if (USER.STUDENT){
+                    if (USER.STUDENT) {
                         createNewViewProfileDialog(courseCode);
-                    }
-                    else{
+                    } else {
                         COURSE.NAME = courseName.getText().toString();
                         COURSE.OUTLINE = courseOutline;
                         COURSE.IMAGE = courseImage;
-                        COURSE.RATING =courseRating;
+                        COURSE.RATING = courseRating;
                         //COURSE.INSTRUCTOR = courseInstructor.getText().toString();
                         COURSE.INSTRUCTOR_NAME = courseInstructor.getText().toString();
                         COURSE.CODE = courseCode.getText().toString();
                         COURSE.DESCRIPTION = courseDescription.getText().toString();
-                        if (COURSE.TUTORS != null){
+                        if (COURSE.TUTORS != null) {
                             COURSE.TUTORS.clear();
-                        }else{
+                        } else {
                             COURSE.TUTORS = new HashSet<>();
                         }
 
@@ -181,40 +177,55 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
                 @Override
                 @Generated
                 public void onClick(View view) {
-
+                    //assign course variables
                     COURSE.NAME = courseName.getText().toString();
                     COURSE.OUTLINE = courseOutline;
                     COURSE.IMAGE = courseImage;
-                    COURSE.RATING =courseRating;
+                    COURSE.RATING = courseRating;
                     //COURSE.INSTRUCTOR = courseInstructor.getText().toString();
                     COURSE.INSTRUCTOR_NAME = courseInstructor.getText().toString();
                     COURSE.CODE = courseCode.getText().toString();
                     COURSE.DESCRIPTION = courseDescription.getText().toString();
-                    if (COURSE.TUTORS != null){
+                    if (COURSE.TUTORS != null) {
                         COURSE.TUTORS.clear();
-                    }else{
+                    } else {
                         COURSE.TUTORS = new HashSet<>();
                     }
 
-                    if(USER.STUDENT){
+                    if (USER.STUDENT) {
                         try {
                             doPostRequest("enrolment.php");
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        createNewViewDialog(courseCode);
-                    }
-                    else{
+                        //allow student to view course home page if course is public or subscribed to it
+                        String strContext = context.toString();
+                        if (courseVisibility.getText().toString().equals("Public") || strContext.contains("MyCourses")
+                                || !strContext.contains("BrowseCourses")) {
+                            boolean featuredCourse = USER.SUBSCRIBED_TO_FEAT_COURSE.containsKey(COURSE.CODE);
+                            if (featuredCourse && USER.SUBSCRIBED_TO_FEAT_COURSE.get(COURSE.CODE).equals("false")) {
+                                Toast.makeText(context, "This course is private", Toast.LENGTH_SHORT).show();
+                            } else {
+                                createNewViewDialog(courseCode);
+                            }
+
+                        } else {
+                            Toast.makeText(context, "This course is private", Toast.LENGTH_SHORT).show();
+                        }
+
+                    } else {
                         Intent i = new Intent(context, CourseHomePageInstructor.class);
                         context.startActivity(i);
                     }
+
+
                 }
             });
         }
     }
 
     @Generated
-    public void createNewViewProfileDialog(TextView courseCode){
+    public void createNewViewProfileDialog(TextView courseCode) {
         dialogBuilder = new AlertDialog.Builder(context);
         final View viewPopUp = LayoutInflater.from(context)
                 .inflate(R.layout.view_profile_dialog, null);
@@ -231,8 +242,8 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
             @Generated
             public void onClick(View v) {
                 INSTRUCTOR.USERNAME = instUsernames.get(courseCode.getText());
-                Intent intent5 = new Intent(context,UserDetails.class);
-                intent5.putExtra("userType","instructor");
+                Intent intent5 = new Intent(context, UserDetails.class);
+                intent5.putExtra("userType", "instructor");
                 context.startActivity(intent5);
                 dialog.dismiss();
             }
@@ -248,7 +259,7 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
     }
 
     @Generated
-    public void createNewViewDialog(TextView courseCode){
+    public void createNewViewDialog(TextView courseCode) {
         dialogBuilder = new AlertDialog.Builder(context);
         final View viewPopUp = LayoutInflater.from(context)
                 .inflate(R.layout.subscribe_dialog, null);
@@ -269,42 +280,42 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
             @Override
             @Generated
             public void onClick(View v) {
-                if(btnViewDialogSubscribe.getText().toString().trim().equals("SUBSCRIBE")){
+                if (btnViewDialogSubscribe.getText().toString().trim().equals("SUBSCRIBE")) {
                     try {
                         doPostRequest("enrol.php");
                         btnViewDialogSubscribe.setText("UNSUBSCRIBE");
-                        Toast toast = Toast.makeText(context, "Subscribed to "+ COURSE.CODE, Toast.LENGTH_LONG);
+                        Toast toast = Toast.makeText(context, "Subscribed to " + COURSE.CODE, Toast.LENGTH_LONG);
                         toast.show();
                         dialog.dismiss();
-                        Intent intent = new Intent(context,BrowseCourses.class);
-                        intent.putExtra("activity",""+context);
+                        Intent intent = new Intent(context, BrowseCourses.class);
+                        intent.putExtra("activity", "" + context);
                         context.startActivity(intent);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                }
-                else{
+                } else {
                     dialog.dismiss();
                     createNewViewDialogUnsubscribe();
                 }
             }
         });
-       btnViewDialogViewCourse.setOnClickListener(new View.OnClickListener() {
+        btnViewDialogViewCourse.setOnClickListener(new View.OnClickListener() {
             @Override
             @Generated
             public void onClick(View v) {
                 //INSTRUCTOR.USERNAME = instUsernames.get(courseCode.getText());
                 dialog.dismiss();
                 Intent i = new Intent(context, CourseHomePage.class);
-                i.putExtra("activity",""+context);
-                i.putExtra("username",instUsernames.get(courseCode.getText()));
+                i.putExtra("activity", "" + context);
+                i.putExtra("username", instUsernames.get(courseCode.getText()));
                 context.startActivity(i);
             }
         });
 
     }
+
     @Generated
-    public void createNewViewDialogUnsubscribe(){
+    public void createNewViewDialogUnsubscribe() {
         dialogBuilder = new AlertDialog.Builder(context);
         final View viewPopUp = LayoutInflater.from(context)
                 .inflate(R.layout.unsubscribe_dialog, null);
@@ -317,10 +328,9 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
 
         unsubscribeText = viewPopUp.findViewById(R.id.unsubscribeText);
 
-        if (tutor){
+        if (tutor) {
             unsubscribeText.setText("You are a tutor for this course. Are you sure you want to unsubscribe?");
-        }
-        else{
+        } else {
             unsubscribeText.setText("Are you sure you want to unsubscribe?");
         }
 
@@ -332,11 +342,11 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
                 try {
                     doPostRequest("unsubscribe.php");
                     btnViewDialogSubscribe.setText("SUBSCRIBE");
-                    Toast toast = Toast.makeText(context, "Unsubscribed to "+ COURSE.CODE, Toast.LENGTH_LONG);
+                    Toast toast = Toast.makeText(context, "Unsubscribed to " + COURSE.CODE, Toast.LENGTH_LONG);
                     toast.show();
                     dialog.dismiss();
-                    Intent intent = new Intent(context,MyCourses.class);
-                    intent.putExtra("activity",""+context);
+                    Intent intent = new Intent(context, MyCourses.class);
+                    intent.putExtra("activity", "" + context);
                     context.startActivity(intent);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -353,12 +363,13 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
 
 
     }
+
     @Generated
     private void doPostRequest(String phpFile) throws IOException {
         OkHttpClient client = new OkHttpClient();
 
         HttpUrl.Builder urlBuilder = HttpUrl.parse("https://lamp.ms.wits.ac.za/~s2105624/" + phpFile).newBuilder();
-        urlBuilder.addQueryParameter("studentNumber",USER.USERNAME);
+        urlBuilder.addQueryParameter("studentNumber", USER.USERNAME);
         urlBuilder.addQueryParameter("courseCode", COURSE.CODE);
         String url = urlBuilder.build().toString();
 
@@ -367,7 +378,7 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
-            private Activity cont = (Activity)context;
+            private Activity cont = (Activity) context;
 
             @Override
             @Generated
@@ -388,7 +399,7 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
                                 btnViewDialogSubscribe.setText("UNSUBSCRIBE");
                                 getTutorStateData();
                             }
-                            if(progressBar!=null){
+                            if (progressBar != null) {
                                 btnViewDialogSubscribe.setVisibility(View.VISIBLE);
                                 btnViewDialogViewCourse.setVisibility(View.VISIBLE);
                                 progressBar.setVisibility(View.GONE);
@@ -398,7 +409,7 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
                             if (responseData.trim().equals("unsubscribed")) {
                                 btnUnsubscribe.setText("SUBSCRIBE");
                             }
-                            if(progressBar!=null) {
+                            if (progressBar != null) {
                                 btnUnsubscribe.setVisibility(View.VISIBLE);
                                 btnViewDialogViewCourse.setVisibility(View.VISIBLE);
                                 progressBar.setVisibility(View.GONE);
@@ -410,14 +421,15 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
             }
         });
     }
+
     @Generated
-    private void getTutorStateData(){
+    private void getTutorStateData() {
         requestQueue = Volley.newRequestQueue(context);
         requestQueue.add(getTutorStateDataFromServer());
     }
 
     @Generated
-    private JsonArrayRequest getTutorStateDataFromServer(){
+    private JsonArrayRequest getTutorStateDataFromServer() {
         //JsonArrayRequest of volley
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(tutorURL + USER.USER_NUM + "&courseCode=" + COURSE.CODE,
                 (response) -> {
@@ -434,8 +446,8 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
 
     //This method will parse json Data
     @Generated
-    private void parseTutorStateData(JSONArray array){
-        for (int i = 0; i< array.length(); i++){
+    private void parseTutorStateData(JSONArray array) {
+        for (int i = 0; i < array.length(); i++) {
 
             JSONObject json = null;
             try {
@@ -446,19 +458,19 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
                 int tutorState = json.getInt("Tutor");
                 //Toast.makeText(this, ""+tutorState, Toast.LENGTH_LONG).show();
 
-                if (tutorState == 1){
+                if (tutorState == 1) {
                     tutor = true;
-                }
-                else{
+                } else {
                     tutor = false;
                 }
 
-            } catch (JSONException e){
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
 
         }
 
     }
+
 
 }

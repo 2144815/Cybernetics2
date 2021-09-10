@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -31,6 +32,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 
 
@@ -54,6 +56,11 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private RecyclerView.Adapter adapter;
+
+    //to check if student is subscribed to featured course
+    private  RequestQueue requestQueue;
+    String subURL = "https://lamp.ms.wits.ac.za/~s2105624/checkSubscription.php?studentNumber=";
+
 
     String URL = "https://lamp.ms.wits.ac.za/home/s2105624/";
 
@@ -314,6 +321,7 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
             CourseV course = new CourseV();
 
             course.setCourseCode(featuredCourse.getString("Course_Code"));
+            getSubData(featuredCourse.getString("Course_Code"));
             course.setCourseName(featuredCourse.getString("Course_Name"));
             course.setCourseDescription(featuredCourse.getString("Course_Description"));
             course.setCourseOutline(featuredCourse.getString("Course_Outline"));
@@ -331,5 +339,47 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
 
         USER.FEATURED_COURSES = courses;
         displayFeaturedCourses();
+    }
+
+    @Generated
+    private void getSubData(String courseCode) {
+        requestQueue = Volley.newRequestQueue(Dashboard.this);
+        requestQueue.add(getSubDataFromServer(courseCode));
+    }
+
+    @Generated
+    private JsonArrayRequest getSubDataFromServer(String courseCode) {
+        //JsonArrayRequest of volley
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(subURL + USER.USER_NUM + "&courseCode=" + courseCode ,
+                (response) -> {
+                    //Calling method parseData to parse the json responce
+                    parseSubData(response,courseCode);
+
+                },
+                (error) -> {
+                    //Toast.makeText(CourseHomePage.this, "No More Items Available", Toast.LENGTH_SHORT).show();
+                });
+        //Returning the request
+        return jsonArrayRequest;
+    }
+
+    //This method will parse json Data
+    @Generated
+    private void parseSubData(JSONArray array,String courseCode) {
+       // Toast.makeText(Dashboard.this, array.toString(), Toast.LENGTH_SHORT).show();
+        if (USER.SUBSCRIBED_TO_FEAT_COURSE == null){
+            USER.SUBSCRIBED_TO_FEAT_COURSE = new HashMap<>();
+        }
+        if (array.toString().equals("[]")){
+            USER.SUBSCRIBED_TO_FEAT_COURSE.put(courseCode,"false");
+            //Toast.makeText(Dashboard.this, "not subscribed", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            USER.SUBSCRIBED_TO_FEAT_COURSE.put(courseCode,"true");
+            //Toast.makeText(Dashboard.this, "subscribed", Toast.LENGTH_SHORT).show();
+        }
+
+
+
     }
 }

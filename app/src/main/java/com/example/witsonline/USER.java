@@ -1,6 +1,8 @@
 package com.example.witsonline;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+
 @Generated
 public class USER {
 	public static boolean STUDENT;
@@ -15,4 +17,5 @@ public class USER {
 	public static String LNAME;
 
 	public static ArrayList<CourseV> FEATURED_COURSES;
+	public static HashMap<String,String> SUBSCRIBED_TO_FEAT_COURSE;
 }
