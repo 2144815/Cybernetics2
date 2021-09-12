@@ -1,7 +1,7 @@
 package com.example.witsonline;
 
-
 import android.app.AlertDialog;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -10,9 +10,12 @@ import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.RatingBar;
@@ -23,9 +26,15 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.textfield.TextInputEditText;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,6 +47,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAdapter.ViewHolder> {
@@ -49,9 +59,16 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
 
     //to view student's profile
     private AlertDialog.Builder dialogBuilder;
+    public TextInputEditText EditedTopic;
+    public TextInputEditText EditedText;
+    public String Discussion_id;
+    public Button postEditDiscussion;
     private AlertDialog dialog;
     private Button btnView, btnCancel;
     private HashMap<String, String> studentNums = new HashMap<>();
+
+    private RequestQueue requestQueue;
+    private String discussionUpdateURL = "https://lamp.ms.wits.ac.za/home/s2105624/updateDiscussion.php";
 
     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
 
@@ -117,8 +134,6 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
         } else {
             holder.menu.setVisibility(View.GONE);
         }
-
-
     }
 
     @Generated
@@ -153,7 +168,6 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
                 dialog.dismiss();
             }
         });
-
     }
 
     @Generated
@@ -164,14 +178,71 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
 
         if (holder.status.getText().equals("Closed")) {
             popup.getMenu().findItem(R.id.Open_Close_DiscChoice).setTitle("Open Discussion");
-
+            popup.getMenu().findItem(R.id.Edit_DiscChoice).setVisible(false);
         }
 
+        popup.getMenu().findItem(R.id.Edit_DiscChoice).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                androidx.appcompat.app.AlertDialog.Builder dialogBuilder = new androidx.appcompat.app.AlertDialog.Builder(context);
 
+                final View viewPopUp = LayoutInflater.from(context)
+                        .inflate(R.layout.edit_discussion_dialog, null);
+
+                dialogBuilder.setView(viewPopUp);
+                androidx.appcompat.app.AlertDialog dialog = dialogBuilder.create();
+
+                requestQueue = Volley.newRequestQueue(context);
+
+                postEditDiscussion = (Button) viewPopUp.findViewById(R.id.postEditDiscussion);
+                EditedTopic = (TextInputEditText) viewPopUp.findViewById(R.id.EditDiscussionTopic);
+                EditedText = (TextInputEditText) viewPopUp.findViewById(R.id.EditDiscussionText);
+
+                EditedTopic.setText(holder.topic.getText());
+                EditedText.setText(holder.text.getText());
+                Discussion_id = holder.id.getText().toString();
+
+                dialog.show();
+
+                postEditDiscussion.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        StringRequest request = new StringRequest(Request.Method.POST, discussionUpdateURL, new Response.Listener<String>() {
+                            @Override
+                            @Generated
+                            public void onResponse(String response) {
+                                System.out.println(response);
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            @Generated
+                            public void onErrorResponse(VolleyError error) {
+                                System.out.println(error.getMessage());
+                            }
+                        }) {
+                            @Override
+                            @Generated
+                            protected Map<String, String> getParams() throws AuthFailureError {
+                                Map<String, String> parameters = new HashMap<>();
+                                parameters.put("Discussion_Student", USER.USER_NUM);
+                                parameters.put("Discussion_Id", Discussion_id);
+                                parameters.put("Discussion_Topic", EditedTopic.getText().toString());
+                                parameters.put("Discussion_Text", EditedText.getText().toString());
+                                return parameters;
+                            }
+                        };
+                        requestQueue.add(request);
+                        Toast.makeText(context, "Discussion updated successful", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                        Intent intent = new Intent(context, ForumActivity.class);
+                        context.startActivity(intent);
+                    }
+                });
+                return true;
+            }
+        });
         popup.setOnMenuItemClickListener(new DiscMenuClickListener(position, context, holder, discussions));
         popup.show();
-
-
     }
 
     @Override
@@ -240,5 +311,4 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
             });
         }
     }
-
 }

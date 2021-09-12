@@ -49,8 +49,6 @@ public class DiscMenuClickListener implements PopupMenu.OnMenuItemClickListener 
 
     }
 
-
-
     @Override
     @Generated
     public boolean onMenuItemClick(MenuItem item) {

@@ -4,11 +4,17 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -18,9 +24,15 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.textfield.TextInputEditText;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -32,17 +44,21 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyViewHolder> {
     List<Comment> commentList;
     Context context;
+
+    //to edit replies
+    public TextInputEditText EditedReply;
+    public String Reply_id;
+    public Button postEditComment;
 
     //to view student's profile
     private AlertDialog.Builder dialogBuilder;
@@ -51,6 +67,9 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
     private HashMap<String, String> usernames = new HashMap<>();
 
     private RequestQueue requestQueue;
+    private String instReplyUpdateURL = "https://lamp.ms.wits.ac.za/home/s2105624/updateInstrReply.php";
+    private String studReplyUpdateURL = "https://lamp.ms.wits.ac.za/home/s2105624/updateStuReply.php";
+
 
     public CommentsAdapter(List<Comment> commentList, Context context) {
         this.commentList = commentList;
@@ -103,15 +122,118 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
             }
         });
 
+        if (USER.USER_NUM.equals(comment.getUsername())) {
+            holder.TheAnswer.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                @Generated
+                public boolean onLongClick(View view) {
+                    showPopupMenu(holder.TheAnswer, holder);
+                    return true;
+                }
+            });
+        } else {
+            holder.TheAnswer.setLongClickable(false);
+        }
         usernames.put(comment.getId(),comment.getUsername());
-
-
     }
-    @Generated
-    public void UpdateReplies() {
 
+    private void showPopupMenu(View v, CommentsAdapter.MyViewHolder holder){
+        PopupMenu popup = new PopupMenu(v.getContext(), v);
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.edit_reply_menu, popup.getMenu());
+
+        popup.getMenu().findItem(R.id.Edit_reply_Choice).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                androidx.appcompat.app.AlertDialog.Builder dialogBuilder = new androidx.appcompat.app.AlertDialog.Builder(context);
+                final View viewPopUp = LayoutInflater.from(context)
+                        .inflate(R.layout.edit_comment_dialog, null);
+
+                dialogBuilder.setView(viewPopUp);
+                androidx.appcompat.app.AlertDialog dialog = dialogBuilder.create();
+
+                requestQueue = Volley.newRequestQueue(context);
+
+                postEditComment = (Button) viewPopUp.findViewById(R.id.postEditComment);
+
+                EditedReply = (TextInputEditText) viewPopUp.findViewById(R.id.EditCommentText);
+                EditedReply.setText(holder.TheAnswer.getText());
+
+                Reply_id = holder.id.getText().toString();
+
+                dialog.show();
+
+                postEditComment.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    @Generated
+                    public void onClick(View view) {
+                        if (USER.STUDENT) {
+                            //update student
+                            StringRequest request = new StringRequest(Request.Method.POST, studReplyUpdateURL, new Response.Listener<String>() {
+                                @Override
+                                @Generated
+                                public void onResponse(String response) {
+                                    System.out.println(response);
+                                }
+                            }, new Response.ErrorListener() {
+                                @Override
+                                @Generated
+                                public void onErrorResponse(VolleyError error) {
+                                    System.out.println(error.getMessage());
+                                }
+                            }) {
+                                @Override
+                                @Generated
+                                protected Map<String, String> getParams() throws AuthFailureError {
+                                    Map<String, String> parameters = new HashMap<>();
+                                    parameters.put("Reply_Student", USER.USER_NUM);
+                                    parameters.put("Reply_Id", holder.id.getText().toString());
+                                    parameters.put("Reply_Discussion", DISCUSSIONS.DISCUSSION_ID);
+                                    parameters.put("Reply_Text", EditedReply.getText().toString());
+                                    return parameters;
+                                }
+                            };
+                            requestQueue.add(request);
+                            Toast.makeText(context, "reply edited successful", Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            StringRequest request = new StringRequest(Request.Method.POST, instReplyUpdateURL, new Response.Listener<String>() {
+                                @Override
+                                @Generated
+                                public void onResponse(String response) {
+                                    System.out.println(response);
+                                }
+                            }, new Response.ErrorListener() {
+                                @Override
+                                @Generated
+                                public void onErrorResponse(VolleyError error) {
+                                    System.out.println(error.getMessage());
+                                }
+                            }) {
+                                @Override
+                                @Generated
+                                protected Map<String, String> getParams() throws AuthFailureError {
+                                    Map<String, String> parameters = new HashMap<>();
+                                    parameters.put("Reply_Instructor", USER.USER_NUM);
+                                    parameters.put("Reply_Id", holder.id.getText().toString());
+                                    parameters.put("Reply_Discussion", DISCUSSIONS.DISCUSSION_ID);
+                                    parameters.put("Reply_Text", EditedReply.getText().toString());
+                                    return parameters;
+                                }
+                            };
+                            requestQueue.add(request);
+                            Toast.makeText(context, "reply edited successful", Toast.LENGTH_SHORT).show();
+                        }
+                        dialog.dismiss();
+                        Intent intent = new Intent(context, ADiscussion.class);
+                        context.startActivity(intent);
+                    }
+                });
+                return true;
+            }
+        });
+        popup.show();
     }
-    //This method will parse json Data
 
     @Generated
     public void createNewViewProfileDialog(TextView replyID, TextView role) {

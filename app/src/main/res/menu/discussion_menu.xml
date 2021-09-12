@@ -4,4 +4,9 @@
         android:id="@+id/Open_Close_DiscChoice"
         android:orderInCategory="100"
         android:title="Close discussion" />
+    <item
+        android:id="@+id/Edit_DiscChoice"
+        android:orderInCategory="100"
+        android:title="Edit discussion"
+        android:visible="true" />
 </menu>

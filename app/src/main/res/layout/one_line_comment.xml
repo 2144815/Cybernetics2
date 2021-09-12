@@ -4,7 +4,8 @@
     android:id="@+id/oneLineComment"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="4dp">
+    android:layout_marginBottom="4dp"
+    android:longClickable="true">
 
     <!-- <ProgressBar
         android:id="@+id/replyProgressBar"
@@ -48,8 +49,9 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_toEndOf= "@+id/imageView2">
+                android:layout_toEndOf="@+id/imageView2"
+                android:orientation="vertical">
+
                 <TextView
                     android:id="@+id/tv_studentFullName"
                     android:layout_width="wrap_content"
@@ -57,6 +59,7 @@
                     android:layout_marginStart="5dp"
                     android:text="Student Name"
                     android:textStyle="bold" />
+
                 <TextView
                     android:id="@+id/role"
                     android:layout_width="wrap_content"
@@ -64,10 +67,11 @@
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="3dp"
                     android:text="Role"
-                    android:textSize="13dp"
                     android:textColor="@color/color1"
+                    android:textSize="13dp"
                     android:textStyle="italic" />
             </LinearLayout>
+
             <TextView
                 android:id="@+id/time"
                 android:layout_width="85dp"
@@ -93,7 +97,9 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="5dp"
-                android:text="An Answer.." />
+                android:longClickable="true"
+                android:text="An Answer.."
+                android:textColorLink="#090808" />
 
             <LinearLayout
                 android:layout_width="43dp"
@@ -132,12 +138,13 @@
             </LinearLayout>
 
         </RelativeLayout>
+
         <TextView
             android:id="@+id/replyID"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#F0F2F5"
-            android:text="" />
+            android:text=""
+            android:textColor="#F0F2F5" />
 
         <View
             android:id="@+id/divider"
@@ -148,5 +155,5 @@
 
 
     </LinearLayout>
-   <!-- </RelativeLayout> -->
+    <!-- </RelativeLayout> -->
 </RelativeLayout>
