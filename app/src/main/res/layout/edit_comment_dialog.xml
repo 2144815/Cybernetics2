@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:id="@+id/EditDiscussionLayout"
+    android:background="#F0F2F5"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="15dp"
+        android:text="Edit Reply"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reply"
+        android:textSize="20dp" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/EditCommentText"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="@color/white"
+        android:gravity="top"
+        android:inputType="textMultiLine"
+        app:counterEnabled="true"
+        app:counterMaxLength="280"
+        app:errorEnabled="true"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/postEditComment"
+        android:text="EDIT"
+        android:padding="10dp"
+        android:layout_margin="10dp"
+        android:background="@color/color1"
+        android:textColor="@color/white"
+        android:layout_gravity="center"/>
+</LinearLayout>
