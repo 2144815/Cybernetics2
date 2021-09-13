@@ -124,14 +124,12 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
         });
 
         if (USER.USER_NUM.equals(comment.getUsername())) {
-            holder.TheAnswer.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                @Generated
-                public boolean onLongClick(View view) {
-                    showPopupMenu(holder.TheAnswer, holder);
-                    return true;
-                }
-            });
+         holder.TheAnswer.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+                 showPopupMenu(holder.TheAnswer, holder);
+             }
+         });
         } else {
             holder.TheAnswer.setLongClickable(false);
         }
