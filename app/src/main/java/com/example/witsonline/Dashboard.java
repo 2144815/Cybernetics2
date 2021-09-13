@@ -43,6 +43,21 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
     private RelativeLayout relativeLayout; // for the entire page
     private RelativeLayout relativeLayoutName;
 
+    //Creating a list of Requests
+    private ArrayList<RequestV> listRequestVs;
+
+    //Volley Request Queue
+    private RequestQueue requestQueue4request;
+
+    //The request counter to send ?page=1, ?page=2 requests
+    private int requestsCount = 1;
+
+    //CreatingViews
+    private RecyclerView requestRecyclerView;
+    private RecyclerView.LayoutManager requestLayoutManager;
+    private RecyclerView.Adapter requestAdapter;
+    String webURL = "https://lamp.ms.wits.ac.za/home/s2105624/requestFeed.php?page=";
+
     //delay for loading featured courses
     private LinearLayout featuredCourses;  // for the featured course
 
@@ -86,6 +101,25 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
         relativeLayout = findViewById(R.id.DashboardLayout);
         relativeLayoutName = findViewById(R.id.dashboardRelLayout);
 
+        //Initializing Views
+        requestRecyclerView = (RecyclerView)findViewById(R.id.requestRecyclerView);
+        requestRecyclerView.setHasFixedSize(true);
+        requestLayoutManager = new LinearLayoutManager(this);
+        requestRecyclerView.setLayoutManager(requestLayoutManager);
+
+        //Initializing our Course list
+        listRequestVs = new ArrayList<>();
+        requestQueue4request = Volley.newRequestQueue(this);
+
+        //Adding an scroll change listener to recyclerView
+        requestRecyclerView.setOnScrollChangeListener(this);
+
+        //initializing our adapters
+        requestAdapter = new RequestAdapter(listRequestVs, this);
+
+        //Adding adapter to recyclerview's
+        requestRecyclerView.setAdapter(requestAdapter);
+
         //NO ACTION BAR ON THIS ACTIVITY
         Objects.requireNonNull(getSupportActionBar()).hide();
 
@@ -100,15 +134,102 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
             String getFeaturedCoursesMethod = "getFeaturedCourses";
             ArrayList<CourseV> courses = new ArrayList<CourseV>();
             getFeaturedCourses(URL, getFeaturedCoursesMethod, courses);
+
+            final ProgressBar progressBar = (ProgressBar) findViewById(R.id.requestProgressBar);
+            progressBar.setVisibility(View.GONE);
         } else {
             dashboardBottomNavigation.inflateMenu(R.menu.menu_instructor);
             dashboardBottomNavigation.getMenu().findItem(R.id.menuHomeInstructor).setChecked(true);
 
-            featuredCourses.setVisibility(LinearLayout.INVISIBLE);
+            featuredCourses.setVisibility(LinearLayout.VISIBLE);
+            TextView topic = findViewById(R.id.txtFeaturedCourses);
+            topic.setText("Course Enrollment Requests");
+            getData();
         }
 
         //display the user's name and surname
         getName(USER.USER_NUM);
+    }
+    //Request to get json from server we are passing an integer here
+    //This integer will used to specify the page number for the request ?page = requestCount
+    //This method would return a JsonArrayRequest that will be added to the request queue
+    @Generated
+    private JsonArrayRequest getDataFromServer(int requestCount) {
+        //Initializing progressbar
+        final ProgressBar progressBar = (ProgressBar) findViewById(R.id.requestProgressBar);
+
+        //Displaying ProgressBar
+        progressBar.setVisibility(View.VISIBLE);
+        setProgressBarIndeterminateVisibility(true);
+
+        //JsonArrayRequest of volley
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(webURL + String.valueOf(requestCount) + "&instructorCode=" + USER.USER_NUM,
+                (response) -> {
+                    //Calling method parseData to parse the json responce
+                    try {
+                        parseData(response);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    //Hiding the progressBar
+                    progressBar.setVisibility(View.GONE);
+                    // This is when we got a response but it an empty array
+                    //if (listRequestVs.isEmpty()) {
+                        // noCourses = (TextView) findViewById(R.id.noCourseItems);
+                       // noCourses.setVisibility(View.VISIBLE);
+                    //}
+
+                },
+                (error) -> {
+                    progressBar.setVisibility(View.GONE);
+                    //If an error occurs that means end of the list has been reached or we unable to get an courses
+                    //if (listRequestVs.isEmpty()) {
+                        //TextView noCourses = (TextView) findViewById(R.id.noCourseItems);
+                        //noCourses.setVisibility(View.VISIBLE);
+                    //} else {
+                        //Toast.makeText(Dashboard.this, "No More Items Available", Toast.LENGTH_SHORT).show();
+                    //}
+                });
+        //Returning the request
+        return jsonArrayRequest;
+    }
+    //This method will get Data from the web api
+    @Generated
+    public void getData() {
+        //Adding the method to the queue by calling the method getDatafromServer
+        requestQueue4request.add(getDataFromServer(requestsCount));
+        //Incrementing the course counter
+        requestsCount++;
+    }
+    //This method will parse json Data
+    @Generated
+    private void parseData(JSONArray array) throws JSONException {
+        for (int i = 0; i < array.length(); i++) {
+            // Creating the Course object
+            RequestV requestV = new RequestV();
+            JSONObject json = null;
+            try {
+                //Getting json
+                json = array.getJSONObject(i);
+
+                //Adding data to the course object
+                requestV.setStudentNumber(json.getString("studentNumber"));
+                requestV.setStudentLName(json.getString("studentLName"));
+                requestV.setStudentFName(json.getString("studentFName"));
+                requestV.setCourseName(json.getString("courseName"));
+                requestV.setCourseCode(json.getString("courseCode"));
+
+                listRequestVs.add(requestV);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            //Adding the request object to the list
+            //    if (json.getString("courseInstructor").equals("richard.klein")) {
+
+            requestAdapter.notifyDataSetChanged();
+            //     }
+
+        }
     }
     @Generated
     public void createNewViewDialog(){
@@ -297,9 +418,13 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
     @Generated
     public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
         //if Scrolled at last then
-        if(isLastItemDistplaying(recyclerView)){
+        if(isLastItemDistplaying(requestRecyclerView)){
             //Calling the method getData again
+            getData();
         }
+        //if(isLastItemDistplaying(requestRecyclerView)){
+          //  getData();
+        //}
     }
     @Generated
     private void getFeaturedCourses(String URL, String method, ArrayList<CourseV> courses) {
