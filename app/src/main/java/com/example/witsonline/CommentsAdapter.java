@@ -101,6 +101,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
         requestQueue = Volley.newRequestQueue(context);
         holder.role.setText(comment.getUserRole());
         holder.id.setText(comment.getId());
+        holder.NoVotes.setText((commentList.get(holder.getAdapterPosition())).getNoVotes().toString());
         SimpleDateFormat dtDate = new SimpleDateFormat("dd-MMM-yyyy");
         SimpleDateFormat dtTime = new SimpleDateFormat("HH:mm");
         String strTime = dtDate.format(comment.getTime()) + '\n' + dtTime.format(comment.getTime());
@@ -109,7 +110,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
             @Override
             @Generated
             public void onClick(View v) {
-                commentList.get((holder.getAdapterPosition())).setNoVotes(1);
+                commentList.get((holder.getAdapterPosition())).setNoVotes(Integer.parseInt(holder.NoVotes.getText().toString())+ 1);
                 holder.NoVotes.setText(String.valueOf(commentList.get((holder.getAdapterPosition())).getNoVotes()));
             }
         });
@@ -117,7 +118,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
             @Override
             @Generated
             public void onClick(View v) {
-                commentList.get((holder.getAdapterPosition())).setNoVotes(-1);
+                commentList.get((holder.getAdapterPosition())).setNoVotes(Integer.parseInt(holder.NoVotes.getText().toString())-1);
                 holder.NoVotes.setText(String.valueOf(commentList.get((holder.getAdapterPosition())).getNoVotes()));
             }
         });

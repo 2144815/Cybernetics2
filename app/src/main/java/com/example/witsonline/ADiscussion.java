@@ -252,6 +252,7 @@ public class ADiscussion extends AppCompatActivity implements View.OnScrollChang
                 fullName = fullName + json.getString("userFname");
                 fullName = fullName + " " + json.getString("userLname");
                 comment.setUserFullName(fullName);
+                comment.setNoVotes(Integer.parseInt(json.getString("reply_Votes")));
                 comment.setComment(json.getString("reply_Text"));
                 String username = json.getString("username");
                 comment.setUsername(username);

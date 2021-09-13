@@ -161,7 +161,7 @@ public class Comment {
     }
 
     public void setNoVotes(int noVotes) {
-        NoVotes = NoVotes + noVotes;
+        this.NoVotes = noVotes;
     }
 
 
