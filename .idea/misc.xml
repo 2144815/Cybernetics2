@@ -3,6 +3,16 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Download/Cybernetics2/app/src/main/res/layout/activity_adiscussion.xml" value="0.14285714285714285" />
+        <entry key="..\:/Download/Cybernetics2/app/src/main/res/layout/activity_browse_courses.xml" value="0.14285714285714285" />
+        <entry key="..\:/Download/Cybernetics2/app/src/main/res/layout/activity_dashboard.xml" value="0.16757246376811594" />
+        <entry key="..\:/Download/Cybernetics2/app/src/main/res/layout/activity_forum.xml" value="0.1" />
+        <entry key="..\:/Download/Cybernetics2/app/src/main/res/layout/course_card.xml" value="0.25" />
+        <entry key="..\:/Download/Cybernetics2/app/src/main/res/layout/discussion_card.xml" value="0.14285714285714285" />
+        <entry key="..\:/Download/Cybernetics2/app/src/main/res/layout/logout_dialog.xml" value="0.16757246376811594" />
+        <entry key="..\:/Download/Cybernetics2/app/src/main/res/layout/one_line_comment.xml" value="0.1" />
+        <entry key="..\:/Download/Cybernetics2/app/src/main/res/layout/request_card.xml" value="0.25" />
+        <entry key="..\:/Download/Cybernetics2/app/src/main/res/layout/student_card.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_adiscussion.xml" value="0.1381340579710145" />
         <entry key="app/src/main/res/layout/activity_course_home_page.xml" value="0.19322916666666667" />
         <entry key="app/src/main/res/layout/activity_course_home_page_instructor.xml" value="0.1671171171171171" />
