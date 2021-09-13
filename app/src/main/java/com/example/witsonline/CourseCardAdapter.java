@@ -57,6 +57,15 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
     private boolean tutor;
     private TextView unsubscribeText;
 
+    //for enrolment request
+    private Button btnRequest, btnReqCancel;
+    private ProgressBar progressBarReq;
+    private TextView requestText;
+
+    //for cancelling enrolment request
+    private Button btnCancelReqDB, btnCancelCancelRequest;
+
+
     //Constructor of this class
     public CourseCardAdapter(ArrayList<CourseV> requestVs, Context context) {
         super();
@@ -204,13 +213,15 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
                                 || !strContext.contains("BrowseCourses")) {
                             boolean featuredCourse = USER.SUBSCRIBED_TO_FEAT_COURSE.containsKey(COURSE.CODE);
                             if (featuredCourse && USER.SUBSCRIBED_TO_FEAT_COURSE.get(COURSE.CODE).equals("false")) {
-                                Toast.makeText(context, "This course is private", Toast.LENGTH_SHORT).show();
+                                createNewRequestDialog();
+                                //Toast.makeText(context, "This course is private", Toast.LENGTH_SHORT).show();
                             } else {
                                 createNewViewDialog(courseCode);
                             }
 
                         } else {
-                            Toast.makeText(context, "This course is private", Toast.LENGTH_SHORT).show();
+                            createNewRequestDialog();
+                            //Toast.makeText(context, "This course is private", Toast.LENGTH_SHORT).show();
                         }
 
                     } else {
@@ -222,6 +233,60 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
                 }
             });
         }
+    }
+
+
+    @Generated
+    public void createNewRequestDialog() {
+        dialogBuilder = new AlertDialog.Builder(context);
+        final View viewPopUp = LayoutInflater.from(context)
+                .inflate(R.layout.enrolment_request_dialog, null);
+
+        requestText = (TextView) viewPopUp.findViewById(R.id.requestText);
+        btnRequest = (Button) viewPopUp.findViewById(R.id.RequestEnrolment);
+        btnReqCancel = (Button) viewPopUp.findViewById(R.id.cancelRequest);
+        progressBarReq = (ProgressBar) viewPopUp.findViewById(R.id.progressBarRequest);
+        progressBarReq.setVisibility(View.VISIBLE);
+        dialogBuilder.setView(viewPopUp);
+        dialog = dialogBuilder.create();
+        dialog.show();
+
+        //check whether request was sent
+        try {
+            doEnrolmentRequest("checkRequest.php");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        btnRequest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (btnRequest.getText().toString().trim().equals("REQUEST")) {
+                    try {
+                        doEnrolmentRequest("enrolmentRequest.php");
+                        btnRequest.setText("Request sent");
+                        Toast toast = Toast.makeText(context, "Enrolment request for " + COURSE.CODE + " sent", Toast.LENGTH_LONG);
+                        toast.show();
+                        dialog.dismiss();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else{
+                    //Toast.makeText(context, "already sent", Toast.LENGTH_LONG).show();
+                    dialog.dismiss();
+                    createNewCancelRequestDialog();
+                }
+            }
+        });
+
+        btnReqCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
     }
 
     @Generated
@@ -311,6 +376,45 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
                 context.startActivity(i);
             }
         });
+
+    }
+
+    @Generated
+    public void createNewCancelRequestDialog() {
+        dialogBuilder = new AlertDialog.Builder(context);
+        final View viewPopUp = LayoutInflater.from(context)
+                .inflate(R.layout.cancel_request_dialog, null);
+        //relativeLayout = findViewById(R.id.CourseHomeInstructorLayout);
+        btnCancelReqDB = (Button) viewPopUp.findViewById(R.id.cancelRequestDB);
+        btnCancelCancelRequest = (Button) viewPopUp.findViewById(R.id.cancelCancelRequest);
+        dialogBuilder.setView(viewPopUp);
+        dialog = dialogBuilder.create();
+        dialog.show();
+
+
+        btnCancelReqDB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            @Generated
+            public void onClick(View v) {
+                try {
+                    doEnrolmentRequest("cancelEnrolmentRequest.php");
+                    btnRequest.setText("REQUEST");
+                    Toast toast = Toast.makeText(context, "Cancelled enrolment request for " + COURSE.CODE, Toast.LENGTH_LONG);
+                    toast.show();
+                    dialog.dismiss();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        btnCancelCancelRequest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            @Generated
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
 
     }
 
@@ -421,6 +525,69 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
             }
         });
     }
+
+    @Generated
+    private void doEnrolmentRequest(String phpFile) throws IOException {
+        OkHttpClient client = new OkHttpClient();
+
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("https://lamp.ms.wits.ac.za/~s2105624/" + phpFile).newBuilder();
+        urlBuilder.addQueryParameter("studentNumber", USER.USERNAME);
+        urlBuilder.addQueryParameter("courseCode", COURSE.CODE);
+        String url = urlBuilder.build().toString();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            private Activity cont = (Activity) context;
+
+            @Override
+            @Generated
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            @Generated
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                final String responseData = response.body().string();
+                cont.runOnUiThread(new Runnable() {
+                    @Override
+                    @Generated
+                    public void run() {
+                        if (btnRequest != null) {
+                            if (responseData.trim().equals("sent")) {
+                                btnRequest.setText("CANCEL REQUEST");
+                                requestText.setText("You have already requested enrolment for this course.");
+                            }
+                            if (progressBarReq != null) {
+                                requestText.setVisibility(View.VISIBLE);
+                                btnRequest.setVisibility(View.VISIBLE);
+                                btnReqCancel.setVisibility(View.VISIBLE);
+                                progressBarReq.setVisibility(View.GONE);
+                            }
+                        }
+
+                        if (btnCancelReqDB != null) {
+                            if (responseData.trim().equals("not sent")) {
+                                btnCancelReqDB.setText("REQUEST");
+                            }
+                            if (progressBarReq != null) {
+                                btnCancelReqDB.setVisibility(View.VISIBLE);
+                                //btnCancel.setVisibility(View.VISIBLE);
+                                progressBarReq.setVisibility(View.GONE);
+                            }
+                        }
+
+
+
+                    }
+                });
+            }
+        });
+    }
+
 
     @Generated
     private void getTutorStateData() {

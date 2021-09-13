@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:orientation="vertical"
+android:background="#F0F2F5"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:padding="16dp"
+android:textSize="25dp">
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:textStyle="bold"
+    android:layout_gravity="center"
+    android:id="@+id/requestText"
+    android:visibility="gone"
+    android:text="This course is private. Do you want to request enrolment?"/>
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:padding="16dp">
+
+    <ProgressBar
+        android:id="@+id/progressBarRequest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
+
+
+    <Button
+        android:id="@+id/RequestEnrolment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/color1"
+        android:padding="10dp"
+        android:text="REQUEST"
+        android:textColor="@color/white"
+        android:visibility="gone" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cancelRequest"
+        android:text="CANCEL"
+        android:visibility="gone"
+        android:layout_alignParentRight="true"
+        android:padding="10dp"
+        android:layout_margin="10dp"
+        android:background="@color/color1"
+        android:textColor="@color/white"
+        android:layout_gravity="center"/>
+</RelativeLayout>
+
+</LinearLayout>
