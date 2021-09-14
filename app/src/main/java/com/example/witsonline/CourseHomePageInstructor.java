@@ -375,6 +375,7 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
                 json = array.getJSONObject(i);
 
                 //Adding data to the course object
+                COURSE.INSTRUCTOR = json.getString("Course_Instructor");
                 COURSE.NAME = json.getString("Course_Name");
                 COURSE.DESCRIPTION = json.getString("Course_Description");
                 COURSE.OUTLINE = json.getString("Course_Outline");

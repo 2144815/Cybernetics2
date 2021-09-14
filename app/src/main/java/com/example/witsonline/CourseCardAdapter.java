@@ -96,7 +96,7 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
         holder.courseName.setText(courseV.getCourseName());
         holder.courseDescription.setText(courseV.getCourseDescription());
         holder.courseVisibility.setText(courseV.getCourseVisibility());
-        //holder.courseInstructor.setText(courseV.getCourseInstructor());
+        holder.courseInstUsername = courseV.getCourseInstructor();
         holder.courseInstructor.setText(courseV.getInstName());
         holder.courseCode.setText(courseV.getCourseCode());
         holder.courseRatingBar.setRating(Float.parseFloat(courseV.getCourseRating()));
@@ -136,6 +136,7 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
         public TextView courseName;
         public TextView courseDescription;
         public TextView courseInstructor;
+        public String courseInstUsername;
         public TextView courseCode;
         public String courseOutline;
         public String courseRating;
@@ -167,7 +168,7 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
                         COURSE.OUTLINE = courseOutline;
                         COURSE.IMAGE = courseImage;
                         COURSE.RATING = courseRating;
-                        //COURSE.INSTRUCTOR = courseInstructor.getText().toString();
+                        COURSE.INSTRUCTOR = courseInstUsername;
                         COURSE.INSTRUCTOR_NAME = courseInstructor.getText().toString();
                         COURSE.CODE = courseCode.getText().toString();
                         COURSE.DESCRIPTION = courseDescription.getText().toString();
@@ -191,7 +192,7 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
                     COURSE.OUTLINE = courseOutline;
                     COURSE.IMAGE = courseImage;
                     COURSE.RATING = courseRating;
-                    //COURSE.INSTRUCTOR = courseInstructor.getText().toString();
+                    COURSE.INSTRUCTOR = courseInstUsername;
                     COURSE.INSTRUCTOR_NAME = courseInstructor.getText().toString();
                     COURSE.CODE = courseCode.getText().toString();
                     COURSE.DESCRIPTION = courseDescription.getText().toString();

@@ -110,6 +110,15 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
             @Override
             @Generated
             public void onClick(View v) {
+                try {
+                    String phpFile = "addVote.php";
+                    if(comment.getUsername().equals(COURSE.INSTRUCTOR)){
+                        phpFile ="addVoteInstructor.php";
+                    }
+                    doPostRequest(phpFile, holder.id.getText().toString(),"1");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 commentList.get((holder.getAdapterPosition())).setNoVotes(Integer.parseInt(holder.NoVotes.getText().toString())+ 1);
                 holder.NoVotes.setText(String.valueOf(commentList.get((holder.getAdapterPosition())).getNoVotes()));
             }
@@ -118,8 +127,18 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
             @Override
             @Generated
             public void onClick(View v) {
+                try {
+                    String phpFile = "addVote.php";
+                    if(comment.getUsername().equals(COURSE.INSTRUCTOR)){
+                        phpFile ="addVoteInstructor.php";
+                    }
+                    doPostRequest(phpFile, holder.id.getText().toString(),"-1");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 commentList.get((holder.getAdapterPosition())).setNoVotes(Integer.parseInt(holder.NoVotes.getText().toString())-1);
                 holder.NoVotes.setText(String.valueOf(commentList.get((holder.getAdapterPosition())).getNoVotes()));
+
             }
         });
 
@@ -233,7 +252,43 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
         });
         popup.show();
     }
+    private void doPostRequest(String phpFile, String id, String vote) throws IOException {
+        OkHttpClient client = new OkHttpClient();
 
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("https://lamp.ms.wits.ac.za/~s2105624/" + phpFile).newBuilder();
+        urlBuilder.addQueryParameter("username", USER.USERNAME);
+        urlBuilder.addQueryParameter("reply", id);
+        urlBuilder.addQueryParameter("vote", vote);
+        String url = urlBuilder.build().toString();
+
+        okhttp3.Request request = new okhttp3.Request.Builder()
+                .url(url)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            private Activity cont = (Activity) context;
+
+            @Override
+            @Generated
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            @Generated
+            public void onResponse(@NotNull Call call, @NotNull okhttp3.Response response) throws IOException {
+                final String responseData = response.body().string();
+                cont.runOnUiThread(new Runnable() {
+                    @Override
+                    @Generated
+                    public void run() {
+                        if (responseData.trim().equals("Successful")) {
+                        }
+                    }
+                });
+            }
+        });
+    }
     @Generated
     public void createNewViewProfileDialog(TextView replyID, TextView role) {
 

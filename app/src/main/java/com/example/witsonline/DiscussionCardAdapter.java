@@ -1,5 +1,6 @@
 package com.example.witsonline;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.Context;
@@ -92,7 +93,7 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
 
     @Override
     @Generated
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         //Getting the particular item from the list
         final Discussion discussion = discussions.get(position);
         studentNums.put(discussion.getDiscussionID(), discussion.getDiscussionStudentNumber());
