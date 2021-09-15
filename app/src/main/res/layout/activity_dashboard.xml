@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Dashboard">
 
-    <ProgressBar
+   <ProgressBar
         android:id="@+id/dashboardProgressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -15,21 +15,17 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:id="@+id/DashboardLayout"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding"
+        android:layout_marginBottom="50dp"
+        android:visibility="gone">
 
     <LinearLayout
         android:id="@+id/dashboardLinearLayout"
-        android:layout_above="@id/dashboardBottomNavigation"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center_horizontal">
-
-        <ScrollView
-            android:id="@+id/dashboardScrollView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/padding">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -80,15 +76,7 @@
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
-
-                <LinearLayout
-                    android:layout_below="@id/dashboardNameLinearLayout"
-                    android:id="@+id/dashboardFeaturedCourses"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:visibility="gone">
+            </RelativeLayout>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -99,6 +87,19 @@
                         android:textSize="@dimen/text_2"
                         android:fontFamily="@font/vegur_bold"
                         android:layout_gravity="left"/>
+
+                   <ScrollView
+                        android:id="@+id/dashboardScrollView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:isScrollContainer="false">
+
+                    <LinearLayout
+                        android:layout_below="@id/dashboardNameLinearLayout"
+                        android:id="@+id/dashboardFeaturedCourses"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerView"
@@ -114,12 +115,14 @@
                         android:id="@+id/requestProgressBar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="150dp"
+                        android:layout_marginTop="100dp"
                         android:layout_centerInParent="true" />
-                </LinearLayout>
-            </RelativeLayout>
-        </ScrollView>
-    </LinearLayout>
 
+                </LinearLayout>
+                </ScrollView>
+    </LinearLayout>
+    </RelativeLayout>
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/dashboardBottomNavigation"
         android:layout_width="match_parent"
@@ -127,5 +130,4 @@
         android:layout_alignParentBottom="true"
         style="@style/AppTheme.BottomNavigation"
         android:layout_alignParentEnd="true"/>
-    </RelativeLayout>
-</RelativeLayout>
+ </RelativeLayout>
