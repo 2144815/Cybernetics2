@@ -26,14 +26,13 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingTop="5dp"
+                android:paddingTop="2dp"
                 android:orientation="vertical"
                 android:background="#F0F2F5">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="5dp"
                     android:orientation="horizontal"
                     android:background="#F0F2F5">
 

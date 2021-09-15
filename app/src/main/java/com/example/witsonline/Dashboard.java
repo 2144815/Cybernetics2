@@ -143,7 +143,7 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
 
             featuredCourses.setVisibility(LinearLayout.VISIBLE);
             TextView topic = findViewById(R.id.txtFeaturedCourses);
-            topic.setText("Course Enrollment Requests");
+            topic.setText("Course Enrolment Requests");
             getData();
         }
 
@@ -174,19 +174,20 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
                     //Hiding the progressBar
                     progressBar.setVisibility(View.GONE);
                     // This is when we got a response but it an empty array
-                    //if (listRequestVs.isEmpty()) {
-                        // noCourses = (TextView) findViewById(R.id.noCourseItems);
-                       // noCourses.setVisibility(View.VISIBLE);
-                    //}
+                    if (listRequestVs.isEmpty()) {
+                        TextView topic = findViewById(R.id.txtFeaturedCourses);
+                        topic.setText("No Enrolment Requests Available");
+                    }
 
                 },
                 (error) -> {
                     progressBar.setVisibility(View.GONE);
                     //If an error occurs that means end of the list has been reached or we unable to get an courses
-                    //if (listRequestVs.isEmpty()) {
-                        //TextView noCourses = (TextView) findViewById(R.id.noCourseItems);
-                        //noCourses.setVisibility(View.VISIBLE);
-                    //} else {
+                    if (listRequestVs.isEmpty()) {
+                        TextView topic = findViewById(R.id.txtFeaturedCourses);
+                        topic.setText("No Enrolment Requests Available");
+                    }
+                    //else {
                         //Toast.makeText(Dashboard.this, "No More Items Available", Toast.LENGTH_SHORT).show();
                     //}
                 });
