@@ -39,7 +39,7 @@ import java.util.Objects;
 public class Dashboard extends AppCompatActivity implements View.OnScrollChangeListener, BottomNavigationView.OnNavigationItemSelectedListener {
     TextView name;
     //This is for the delay while loading user full name
-    ProgressBar progressBar;
+    ProgressBar progressBarPage;
     private RelativeLayout relativeLayout; // for the entire page
     private RelativeLayout relativeLayoutName;
 
@@ -73,7 +73,7 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
     private RecyclerView.Adapter adapter;
 
     //to check if student is subscribed to featured course
-    private  RequestQueue requestQueue;
+    private RequestQueue requestQueue;
     String subURL = "https://lamp.ms.wits.ac.za/~s2105624/checkSubscription.php?studentNumber=";
 
 
@@ -81,7 +81,7 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
-    public void onBackPressed(){
+    public void onBackPressed() {
 
     }
 
@@ -94,15 +94,18 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
         setContentView(R.layout.activity_dashboard);
         name = findViewById(R.id.textViewStudentName);
 
+        //display the user's name and surname
+        getName(USER.USER_NUM);
+
         //Initializing progressbar
-        progressBar = findViewById(R.id.dashboardProgressBar);
-        progressBar.setVisibility(View.VISIBLE);
+        progressBarPage = findViewById(R.id.dashboardProgressBar);
+        progressBarPage.setVisibility(View.VISIBLE);
 
         relativeLayout = findViewById(R.id.DashboardLayout);
         relativeLayoutName = findViewById(R.id.dashboardRelLayout);
 
         //Initializing Views
-        requestRecyclerView = (RecyclerView)findViewById(R.id.requestRecyclerView);
+        requestRecyclerView = (RecyclerView) findViewById(R.id.requestRecyclerView);
         requestRecyclerView.setHasFixedSize(true);
         requestLayoutManager = new LinearLayoutManager(this);
         requestRecyclerView.setLayoutManager(requestLayoutManager);
@@ -147,9 +150,8 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
             getData();
         }
 
-        //display the user's name and surname
-        getName(USER.USER_NUM);
     }
+
     //Request to get json from server we are passing an integer here
     //This integer will used to specify the page number for the request ?page = requestCount
     //This method would return a JsonArrayRequest that will be added to the request queue
@@ -179,6 +181,10 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
                         topic.setText("No Enrolment Requests Available");
                     }
 
+                    relativeLayout.setVisibility(View.VISIBLE);
+                    relativeLayoutName.setVisibility(View.VISIBLE);
+                    progressBarPage.setVisibility(View.GONE);
+
                 },
                 (error) -> {
                     progressBar.setVisibility(View.GONE);
@@ -188,12 +194,17 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
                         topic.setText("No Enrolment Requests Available");
                     }
                     //else {
-                        //Toast.makeText(Dashboard.this, "No More Items Available", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(Dashboard.this, "No More Items Available", Toast.LENGTH_SHORT).show();
                     //}
+
+                    relativeLayout.setVisibility(View.VISIBLE);
+                    relativeLayoutName.setVisibility(View.VISIBLE);
+                    progressBarPage.setVisibility(View.GONE);
                 });
         //Returning the request
         return jsonArrayRequest;
     }
+
     //This method will get Data from the web api
     @Generated
     public void getData() {
@@ -202,6 +213,7 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
         //Incrementing the course counter
         requestsCount++;
     }
+
     //This method will parse json Data
     @Generated
     private void parseData(JSONArray array) throws JSONException {
@@ -232,8 +244,9 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
 
         }
     }
+
     @Generated
-    public void createNewViewDialog(){
+    public void createNewViewDialog() {
         dialogBuilder = new AlertDialog.Builder(this);
         final View viewPopUp = LayoutInflater.from(this)
                 .inflate(R.layout.logout_dialog, null);
@@ -249,10 +262,10 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
             @Override
             @Generated
             public void onClick(View v) {
-                    Intent intent5 = new Intent(Dashboard.this,LoginActivity.class);
-                    startActivity(intent5);
-                    finish();
-                    dialog.dismiss();
+                Intent intent5 = new Intent(Dashboard.this, LoginActivity.class);
+                startActivity(intent5);
+                finish();
+                dialog.dismiss();
             }
         });
         btnCancel.setOnClickListener(new View.OnClickListener() {
@@ -264,6 +277,7 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
         });
 
     }
+
     @Generated
     private void getName(String user) {
         String URL = "https://lamp.ms.wits.ac.za/home/s2105624/";
@@ -297,6 +311,7 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
             requestBuilder.doRequest(Dashboard.this, response -> addName(response));
         }
     }
+
     @Generated
     private void addName(String JSON) throws JSONException {
         JSONObject NAMES = new JSONObject(JSON);
@@ -316,14 +331,12 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
         USER.LNAME = LName;
 
         name.setText(FName + " " + LName);
-        relativeLayout.setVisibility(View.VISIBLE);
-        relativeLayoutName.setVisibility(View.VISIBLE);
-        progressBar.setVisibility(View.GONE);
     }
+
     @Generated
     private void displayFeaturedCourses() {
         //Initializing Views
-        recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
@@ -343,6 +356,12 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
             recyclerView.setAdapter(adapter);
         }
         featuredCourses.setVisibility(LinearLayout.VISIBLE);
+
+
+        relativeLayout.setVisibility(View.VISIBLE);
+        relativeLayoutName.setVisibility(View.VISIBLE);
+        progressBarPage.setVisibility(View.GONE);
+
     }
 
     @Override
@@ -350,41 +369,41 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             // STUDENT MENU
-            case R.id.menuHomeStudent :
+            case R.id.menuHomeStudent:
                 break;
 
-            case R.id.menuMyCoursesStudent :
+            case R.id.menuMyCoursesStudent:
                 Intent intent = new Intent(Dashboard.this, MyCourses.class);
                 startActivity(intent);
                 finish();
                 break;
 
-            case R.id.menuBrowseCourses :
+            case R.id.menuBrowseCourses:
                 Intent intent1 = new Intent(Dashboard.this, BrowseCourses.class);
                 startActivity(intent1);
                 finish();
                 break;
 
-            case R.id.menuLogOutStudent :
+            case R.id.menuLogOutStudent:
                 createNewViewDialog();
                 break;
 
-            case R.id.menuHomeInstructor :
+            case R.id.menuHomeInstructor:
                 break;
 
-            case R.id.menuMyCoursesInstructor :
+            case R.id.menuMyCoursesInstructor:
                 Intent intent3 = new Intent(Dashboard.this, MyCourses.class);
                 startActivity(intent3);
                 finish();
                 break;
 
-            case R.id.menuCreateCourse :
+            case R.id.menuCreateCourse:
                 Intent intent4 = new Intent(Dashboard.this, CreateCourse.class);
                 startActivity(intent4);
                 finish();
                 break;
 
-            case R.id.menuLogOutInstructor :
+            case R.id.menuLogOutInstructor:
                 createNewViewDialog();
                 break;
 
@@ -405,10 +424,10 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
     }
 
     //This method will check if the recyclerview has reached the bottom or not
-    public boolean isLastItemDistplaying(RecyclerView recyclerView){
-        if(recyclerView.getAdapter().getItemCount() != 0){
+    public boolean isLastItemDistplaying(RecyclerView recyclerView) {
+        if (recyclerView.getAdapter().getItemCount() != 0) {
             int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
-            if (lastVisibleItemPosition != RecyclerView.NO_POSITION && lastVisibleItemPosition == recyclerView.getAdapter().getItemCount() -1){
+            if (lastVisibleItemPosition != RecyclerView.NO_POSITION && lastVisibleItemPosition == recyclerView.getAdapter().getItemCount() - 1) {
                 return true;
             }
         }
@@ -419,14 +438,15 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
     @Generated
     public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
         //if Scrolled at last then
-        if(isLastItemDistplaying(requestRecyclerView)){
+        if (isLastItemDistplaying(requestRecyclerView)) {
             //Calling the method getData again
             getData();
         }
         //if(isLastItemDistplaying(requestRecyclerView)){
-          //  getData();
+        //  getData();
         //}
     }
+
     @Generated
     private void getFeaturedCourses(String URL, String method, ArrayList<CourseV> courses) {
         PHPRequestBuilder requestBuilder = new PHPRequestBuilder(URL, method);
@@ -439,6 +459,7 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
         });
 
     }
+
     @Generated
     private void setFeaturedCourses(String JSON, ArrayList<CourseV> courses) throws JSONException {
         JSONArray featuredCourses = new JSONArray(JSON);
@@ -476,10 +497,10 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
     @Generated
     private JsonArrayRequest getSubDataFromServer(String courseCode) {
         //JsonArrayRequest of volley
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(subURL + USER.USER_NUM + "&courseCode=" + courseCode ,
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(subURL + USER.USER_NUM + "&courseCode=" + courseCode,
                 (response) -> {
                     //Calling method parseData to parse the json responce
-                    parseSubData(response,courseCode);
+                    parseSubData(response, courseCode);
 
                 },
                 (error) -> {
@@ -491,20 +512,18 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
 
     //This method will parse json Data
     @Generated
-    private void parseSubData(JSONArray array,String courseCode) {
-       // Toast.makeText(Dashboard.this, array.toString(), Toast.LENGTH_SHORT).show();
-        if (USER.SUBSCRIBED_TO_FEAT_COURSE == null){
+    private void parseSubData(JSONArray array, String courseCode) {
+        // Toast.makeText(Dashboard.this, array.toString(), Toast.LENGTH_SHORT).show();
+        if (USER.SUBSCRIBED_TO_FEAT_COURSE == null) {
             USER.SUBSCRIBED_TO_FEAT_COURSE = new HashMap<>();
         }
-        if (array.toString().equals("[]")){
-            USER.SUBSCRIBED_TO_FEAT_COURSE.put(courseCode,"false");
+        if (array.toString().equals("[]")) {
+            USER.SUBSCRIBED_TO_FEAT_COURSE.put(courseCode, "false");
             //Toast.makeText(Dashboard.this, "not subscribed", Toast.LENGTH_SHORT).show();
-        }
-        else{
-            USER.SUBSCRIBED_TO_FEAT_COURSE.put(courseCode,"true");
+        } else {
+            USER.SUBSCRIBED_TO_FEAT_COURSE.put(courseCode, "true");
             //Toast.makeText(Dashboard.this, "subscribed", Toast.LENGTH_SHORT).show();
         }
-
 
 
     }
