@@ -65,7 +65,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
     private AlertDialog dialog;
     private Button btnView, btnCancel;
     private HashMap<String, String> usernames = new HashMap<>();
-
+    private  int votingStatus;
     private RequestQueue requestQueue;
     private String instReplyUpdateURL = "https://lamp.ms.wits.ac.za/home/s2105624/updateInstrReply.php";
     private String studReplyUpdateURL = "https://lamp.ms.wits.ac.za/home/s2105624/updateStuReply.php";
@@ -110,35 +110,70 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
             @Override
             @Generated
             public void onClick(View v) {
-                try {
-                    String phpFile = "addVote.php";
-                    if(comment.getUsername().equals(COURSE.INSTRUCTOR)){
-                        phpFile ="addVoteInstructor.php";
+                Log.d("VOTE", Integer.toString(holder.votingStatus ));
+                if(holder.votingStatus ==0) {
+                    try {
+                        String phpFile = "addVote.php";
+                        if (comment.getUsername().equals(COURSE.INSTRUCTOR)) {
+                            phpFile = "addVoteInstructor.php";
+                        }
+                        doPostRequest(phpFile, holder.id.getText().toString(), "1");
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                    doPostRequest(phpFile, holder.id.getText().toString(),"1");
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    commentList.get((holder.getAdapterPosition())).setNoVotes(Integer.parseInt(holder.NoVotes.getText().toString()) + 1);
+                    holder.NoVotes.setText(String.valueOf(commentList.get((holder.getAdapterPosition())).getNoVotes()));
+                    holder.votingStatus=1;
                 }
-                commentList.get((holder.getAdapterPosition())).setNoVotes(Integer.parseInt(holder.NoVotes.getText().toString())+ 1);
-                holder.NoVotes.setText(String.valueOf(commentList.get((holder.getAdapterPosition())).getNoVotes()));
+                else if(holder.votingStatus ==-1) {
+                    try {
+                        String phpFile = "removeVote.php";
+                        if (comment.getUsername().equals(COURSE.INSTRUCTOR)) {
+                            phpFile = "removeVoteInstructor.php";
+                        }
+                        doPostRequest(phpFile, holder.id.getText().toString(), "1");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    commentList.get((holder.getAdapterPosition())).setNoVotes(Integer.parseInt(holder.NoVotes.getText().toString()) + 1);
+                    holder.NoVotes.setText(String.valueOf(commentList.get((holder.getAdapterPosition())).getNoVotes()));
+                    holder.votingStatus=0;
+                }
             }
         });
         holder.downVote.setOnClickListener(new View.OnClickListener() {
             @Override
             @Generated
             public void onClick(View v) {
-                try {
-                    String phpFile = "addVote.php";
-                    if(comment.getUsername().equals(COURSE.INSTRUCTOR)){
-                        phpFile ="addVoteInstructor.php";
+                Log.d("VOTE", Integer.toString(holder.votingStatus ));
+                if(holder.votingStatus ==0) {
+                    try {
+                        String phpFile = "addVote.php";
+                        if (comment.getUsername().equals(COURSE.INSTRUCTOR)) {
+                            phpFile = "addVoteInstructor.php";
+                        }
+                        doPostRequest(phpFile, holder.id.getText().toString(), "-1");
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                    doPostRequest(phpFile, holder.id.getText().toString(),"-1");
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    commentList.get((holder.getAdapterPosition())).setNoVotes(Integer.parseInt(holder.NoVotes.getText().toString()) - 1);
+                    holder.NoVotes.setText(String.valueOf(commentList.get((holder.getAdapterPosition())).getNoVotes()));
+                    holder.votingStatus=-1;
                 }
-                commentList.get((holder.getAdapterPosition())).setNoVotes(Integer.parseInt(holder.NoVotes.getText().toString())-1);
-                holder.NoVotes.setText(String.valueOf(commentList.get((holder.getAdapterPosition())).getNoVotes()));
-
+                else if(holder.votingStatus ==1) {
+                    try {
+                        String phpFile = "removeVote.php";
+                        if (comment.getUsername().equals(COURSE.INSTRUCTOR)) {
+                            phpFile = "removeVoteInstructor.php";
+                        }
+                        doPostRequest(phpFile, holder.id.getText().toString(), "-1");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    commentList.get((holder.getAdapterPosition())).setNoVotes(Integer.parseInt(holder.NoVotes.getText().toString()) - 1);
+                    holder.NoVotes.setText(String.valueOf(commentList.get((holder.getAdapterPosition())).getNoVotes()));
+                    holder.votingStatus=0;
+                }
             }
         });
 
@@ -252,6 +287,50 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
         });
         popup.show();
     }
+    private int votingStatus(String phpFile, String id) throws IOException {
+        OkHttpClient client = new OkHttpClient();
+
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("https://lamp.ms.wits.ac.za/~s2105624/" + phpFile).newBuilder();
+        urlBuilder.addQueryParameter("username", USER.USERNAME);
+        urlBuilder.addQueryParameter("reply", id);
+        String url = urlBuilder.build().toString();
+        final int[] votingStatus = new int[1];
+        okhttp3.Request request = new okhttp3.Request.Builder()
+                .url(url)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            private Activity cont = (Activity) context;
+
+            @Override
+            @Generated
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            @Generated
+            public void onResponse(@NotNull Call call, @NotNull okhttp3.Response response) throws IOException {
+                final String responseData = response.body().string();
+                cont.runOnUiThread(new Runnable() {
+                    @Override
+                    @Generated
+                    public void run() {
+                        if (responseData.equals("0")) {
+                            votingStatus[0] =0;
+                        }
+                        else if(responseData.equals("-1")){
+                            votingStatus[0] = -1;
+                        }
+                        else{
+                            votingStatus[0] = 1;
+                        }
+                    }
+                });
+            }
+        });
+        return votingStatus[0];
+    }
     private void doPostRequest(String phpFile, String id, String vote) throws IOException {
         OkHttpClient client = new OkHttpClient();
 
@@ -348,6 +427,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
         TextView NoVotes;
         TextView role;
         TextView id;
+        int votingStatus;
         AppCompatImageButton upvote;
         AppCompatImageButton downVote;
 
@@ -369,6 +449,11 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
             NoVotes = itemView.findViewById(R.id.tv_NoVotes);
             upvote = itemView.findViewById(R.id.btn_Upvote);
             downVote = itemView.findViewById(R.id.btn_downVote);
+            try {
+                votingStatus = votingStatus("getVotes.php", id.getText().toString());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
         }
     }
