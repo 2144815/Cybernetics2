@@ -208,35 +208,39 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
                 postEditDiscussion.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        StringRequest request = new StringRequest(Request.Method.POST, discussionUpdateURL, new Response.Listener<String>() {
-                            @Override
-                            @Generated
-                            public void onResponse(String response) {
-                                System.out.println(response);
-                            }
-                        }, new Response.ErrorListener() {
-                            @Override
-                            @Generated
-                            public void onErrorResponse(VolleyError error) {
-                                System.out.println(error.getMessage());
-                            }
-                        }) {
-                            @Override
-                            @Generated
-                            protected Map<String, String> getParams() throws AuthFailureError {
-                                Map<String, String> parameters = new HashMap<>();
-                                parameters.put("Discussion_Student", USER.USER_NUM);
-                                parameters.put("Discussion_Id", Discussion_id);
-                                parameters.put("Discussion_Topic", EditedTopic.getText().toString());
-                                parameters.put("Discussion_Text", EditedText.getText().toString());
-                                return parameters;
-                            }
-                        };
-                        requestQueue.add(request);
-                        Toast.makeText(context, "Discussion updated successful", Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
-                        Intent intent = new Intent(context, ForumActivity.class);
-                        context.startActivity(intent);
+                        if(EditedTopic.getText().toString().length() > 1 && EditedText.getText().toString().length() > 1) {
+                            StringRequest request = new StringRequest(Request.Method.POST, discussionUpdateURL, new Response.Listener<String>() {
+                                @Override
+                                @Generated
+                                public void onResponse(String response) {
+                                    System.out.println(response);
+                                }
+                            }, new Response.ErrorListener() {
+                                @Override
+                                @Generated
+                                public void onErrorResponse(VolleyError error) {
+                                    System.out.println(error.getMessage());
+                                }
+                            }) {
+                                @Override
+                                @Generated
+                                protected Map<String, String> getParams() throws AuthFailureError {
+                                    Map<String, String> parameters = new HashMap<>();
+                                    parameters.put("Discussion_Student", USER.USER_NUM);
+                                    parameters.put("Discussion_Id", Discussion_id);
+                                    parameters.put("Discussion_Topic", EditedTopic.getText().toString());
+                                    parameters.put("Discussion_Text", EditedText.getText().toString());
+                                    return parameters;
+                                }
+                            };
+                            requestQueue.add(request);
+                            Toast.makeText(context, "Discussion updated successful", Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
+                            Intent intent = new Intent(context, ForumActivity.class);
+                            context.startActivity(intent);
+                        }else {
+                            Toast.makeText(context, "please fill in all details", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
                 return true;

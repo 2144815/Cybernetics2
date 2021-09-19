@@ -59,6 +59,8 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
     public TextInputEditText EditedReply;
     public String Reply_id;
     public Button postEditComment;
+    public Button btnEditComment;
+    public Button btnCancelComment;
 
     //to view student's profile
     private AlertDialog.Builder dialogBuilder;
@@ -67,7 +69,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
     private HashMap<String, String> usernames = new HashMap<>();
     private  int votingStatus;
     private RequestQueue requestQueue;
-    private String instReplyUpdateURL = "https://lamp.ms.wits.ac.za/home/s2105624/updateInstrReply.php";
+    private String instReplyUpdateURL = "https://lamp.ms.wits.ac.za/home/s2105624/updateInstReply.php";
     private String studReplyUpdateURL = "https://lamp.ms.wits.ac.za/home/s2105624/updateStuReply.php";
 
 
@@ -92,7 +94,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
     @Generated
     public void onBindViewHolder(@NonNull @NotNull MyViewHolder holder, int position) {
         final Comment comment = commentList.get(position);
-        //here we can create clickListerns and assign values
+        //here we can create clickListeners and assign values
         //onBindViewHolder(): RecyclerView calls this method to associate a ViewHolder with data.
         // The method fetches the appropriate data and uses the data to fill in the view holder's layout. For example, if the RecyclerView displays a list of names,
         // the method might find the appropriate name in the list and fill in the view holder's TextView widget.
@@ -176,28 +178,42 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
                 }
             }
         });
-
-        if (USER.USER_NUM.equals(comment.getUsername())) {
-         holder.TheAnswer.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View view) {
-                 showPopupMenu(holder.TheAnswer, holder);
-             }
-         });
-        } else {
-            holder.TheAnswer.setLongClickable(false);
-        }
         usernames.put(comment.getId(),comment.getUsername());
+        if (comment.getUsername().equals(USER.USERNAME)) {
+             holder.TheAnswer.setOnClickListener(new View.OnClickListener() {
+                 @Override
+                 @Generated
+                 public void onClick(View view) {
+                     getReplyDialog(holder);
+                     Log.d("USERNAME", commentList.get(holder.getAdapterPosition()).getUsername());
+                     Log.d("HOLDER USERNAME", holder.TheStudentName.getText().toString());
+                     Log.d("USERNAME", comment.getUsername());
+                     Log.d("USER USERNAME", USER.USERNAME);
+                 }
+             });
+        } else {
+            holder.TheAnswer.setClickable(false);
+        }
     }
 
-    private void showPopupMenu(View v, CommentsAdapter.MyViewHolder holder){
-        PopupMenu popup = new PopupMenu(v.getContext(), v);
-        MenuInflater inflater = popup.getMenuInflater();
-        inflater.inflate(R.menu.edit_reply_menu, popup.getMenu());
+    @Generated
+    public void getReplyDialog(CommentsAdapter.MyViewHolder holder) {
 
-        popup.getMenu().findItem(R.id.Edit_reply_Choice).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+        dialogBuilder = new AlertDialog.Builder(context);
+        final View viewPopUp = LayoutInflater.from(context)
+                .inflate(R.layout.get_comment_dialog, null);
+
+        btnEditComment = (Button) viewPopUp.findViewById(R.id.btnEdit);
+        btnCancelComment = (Button) viewPopUp.findViewById(R.id.btnEditCancel);
+
+        dialogBuilder.setView(viewPopUp);
+        dialog = dialogBuilder.create();
+        dialog.show();
+
+        btnEditComment.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
+            @Generated
+            public void onClick(View v) {
                 androidx.appcompat.app.AlertDialog.Builder dialogBuilder = new androidx.appcompat.app.AlertDialog.Builder(context);
                 final View viewPopUp = LayoutInflater.from(context)
                         .inflate(R.layout.edit_comment_dialog, null);
@@ -220,72 +236,80 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
                     @Override
                     @Generated
                     public void onClick(View view) {
-                        if (USER.STUDENT) {
-                            //update student
-                            StringRequest request = new StringRequest(Request.Method.POST, studReplyUpdateURL, new Response.Listener<String>() {
-                                @Override
-                                @Generated
-                                public void onResponse(String response) {
-                                    System.out.println(response);
-                                }
-                            }, new Response.ErrorListener() {
-                                @Override
-                                @Generated
-                                public void onErrorResponse(VolleyError error) {
-                                    System.out.println(error.getMessage());
-                                }
-                            }) {
-                                @Override
-                                @Generated
-                                protected Map<String, String> getParams() throws AuthFailureError {
-                                    Map<String, String> parameters = new HashMap<>();
-                                    parameters.put("Reply_Student", USER.USER_NUM);
-                                    parameters.put("Reply_Id", holder.id.getText().toString());
-                                    parameters.put("Reply_Discussion", DISCUSSIONS.DISCUSSION_ID);
-                                    parameters.put("Reply_Text", EditedReply.getText().toString());
-                                    return parameters;
-                                }
-                            };
-                            requestQueue.add(request);
-                            Toast.makeText(context, "reply edited successful", Toast.LENGTH_SHORT).show();
+                        if(EditedReply.getText().toString().length()>1) {
+                            if(USER.STUDENT) {
+                                StringRequest request = new StringRequest(Request.Method.POST, studReplyUpdateURL, new Response.Listener<String>() {
+                                    @Override
+                                    @Generated
+                                    public void onResponse(String response) {
+                                        System.out.println(response);
+                                    }
+                                }, new Response.ErrorListener() {
+                                    @Override
+                                    @Generated
+                                    public void onErrorResponse(VolleyError error) {
+                                        System.out.println(error.getMessage());
+                                    }
+                                }) {
+                                    @Override
+                                    @Generated
+                                    protected Map<String, String> getParams() throws AuthFailureError {
+                                        Map<String, String> parameters = new HashMap<>();
+                                        parameters.put("Reply_Student", USER.USER_NUM);
+                                        parameters.put("Reply_Id", holder.id.getText().toString());
+                                        parameters.put("Reply_Discussion", DISCUSSIONS.DISCUSSION_ID);
+                                        parameters.put("Reply_Text", EditedReply.getText().toString());
+                                        return parameters;
+                                    }
+                                };
+                                requestQueue.add(request);
+                                Toast.makeText(context, "reply edited successful", Toast.LENGTH_SHORT).show();
+                            } else {
+                                StringRequest request = new StringRequest(Request.Method.POST, instReplyUpdateURL, new Response.Listener<String>() {
+                                    @Override
+                                    @Generated
+                                    public void onResponse(String response) {
+                                        System.out.println(response);
+                                    }
+                                }, new Response.ErrorListener() {
+                                    @Override
+                                    @Generated
+                                    public void onErrorResponse(VolleyError error) {
+                                        System.out.println(error.getMessage());
+                                    }
+                                }) {
+                                    @Override
+                                    @Generated
+                                    protected Map<String, String> getParams() throws AuthFailureError {
+                                        Map<String, String> parameters = new HashMap<>();
+                                        parameters.put("Reply_Instructor", USER.USER_NUM);
+                                        parameters.put("Reply_Id", holder.id.getText().toString());
+                                        parameters.put("Reply_Discussion", DISCUSSIONS.DISCUSSION_ID);
+                                        parameters.put("Reply_Text", EditedReply.getText().toString());
+                                        return parameters;
+                                    }
+                                };
+                                requestQueue.add(request);
+                                Toast.makeText(context, "reply edited successful", Toast.LENGTH_SHORT).show();
+                            }
+                            dialog.dismiss();
+                            Intent intent = new Intent(context, ADiscussion.class);
+                            context.startActivity(intent);
+                        }else {
+                            Toast.makeText(context, "Reply cannot be empty", Toast.LENGTH_SHORT).show();
                         }
-                        else{
-                            StringRequest request = new StringRequest(Request.Method.POST, instReplyUpdateURL, new Response.Listener<String>() {
-                                @Override
-                                @Generated
-                                public void onResponse(String response) {
-                                    System.out.println(response);
-                                }
-                            }, new Response.ErrorListener() {
-                                @Override
-                                @Generated
-                                public void onErrorResponse(VolleyError error) {
-                                    System.out.println(error.getMessage());
-                                }
-                            }) {
-                                @Override
-                                @Generated
-                                protected Map<String, String> getParams() throws AuthFailureError {
-                                    Map<String, String> parameters = new HashMap<>();
-                                    parameters.put("Reply_Instructor", USER.USER_NUM);
-                                    parameters.put("Reply_Id", holder.id.getText().toString());
-                                    parameters.put("Reply_Discussion", DISCUSSIONS.DISCUSSION_ID);
-                                    parameters.put("Reply_Text", EditedReply.getText().toString());
-                                    return parameters;
-                                }
-                            };
-                            requestQueue.add(request);
-                            Toast.makeText(context, "reply edited successful", Toast.LENGTH_SHORT).show();
-                        }
-                        dialog.dismiss();
-                        Intent intent = new Intent(context, ADiscussion.class);
-                        context.startActivity(intent);
                     }
                 });
-                return true;
             }
         });
-        popup.show();
+        btnCancelComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            @Generated
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
     }
     private int votingStatus(String phpFile, String id) throws IOException {
         OkHttpClient client = new OkHttpClient();
@@ -399,7 +423,6 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
                     context.startActivity(intent5);
                     dialog.dismiss();
                 }
-
             }
         });
         btnCancel.setOnClickListener(new View.OnClickListener() {
