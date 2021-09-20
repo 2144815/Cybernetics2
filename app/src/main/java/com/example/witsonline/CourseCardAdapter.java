@@ -212,13 +212,21 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
                         String strContext = context.toString();
                         if (courseVisibility.getText().toString().equals("Public") || strContext.contains("MyCourses")
                                 || !strContext.contains("BrowseCourses")) {
-                            boolean featuredCourse = USER.SUBSCRIBED_TO_FEAT_COURSE.containsKey(COURSE.CODE);
-                            if (featuredCourse && USER.SUBSCRIBED_TO_FEAT_COURSE.get(COURSE.CODE).equals("false")) {
-                                createNewRequestDialog();
-                                //Toast.makeText(context, "This course is private", Toast.LENGTH_SHORT).show();
-                            } else {
+
+                            if (strContext.contains("Dashboard")){
+                                boolean featuredCourse = USER.SUBSCRIBED_TO_FEAT_COURSE.contains(COURSE.CODE);
+                                //if not subscribed to featured course
+                                if (!featuredCourse) {
+                                    createNewRequestDialog();
+                                    //Toast.makeText(context, "This course is private", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    createNewViewDialog(courseCode);
+                                }
+                            }
+                            else{
                                 createNewViewDialog(courseCode);
                             }
+
 
                         } else {
                             createNewRequestDialog();

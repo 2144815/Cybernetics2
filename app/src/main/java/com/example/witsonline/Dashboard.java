@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.json.JSONArray;
@@ -33,6 +34,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Objects;
 
 
@@ -74,7 +76,7 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
 
     //to check if student is subscribed to featured course
     private RequestQueue requestQueue;
-    String subURL = "https://lamp.ms.wits.ac.za/~s2105624/checkSubscription.php?studentNumber=";
+    String subURL = "https://lamp.ms.wits.ac.za/~s2105624/checkFeatCourses.php?studentNumber=";
 
 
     String URL = "https://lamp.ms.wits.ac.za/home/s2105624/";
@@ -93,12 +95,6 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
         name = findViewById(R.id.textViewStudentName);
-
-        if (USER.STUDENT){
-            getSubData("COMS3006A");
-            getSubData("COMS1018A");
-            getSubData("COMS4000A");
-        }
 
         //display the user's name and surname
         getName(USER.USER_NUM);
@@ -303,6 +299,7 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
 
             requestBuilder.doBuild(Parameters);
             requestBuilder.doRequest(Dashboard.this, response -> addName(response));
+            getSubData();
         } else {
             PHPRequestBuilder requestBuilder = new PHPRequestBuilder(URL, getInstructorNameMethod);
 
@@ -362,10 +359,6 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
             recyclerView.setAdapter(adapter);
         }
         featuredCourses.setVisibility(LinearLayout.VISIBLE);
-
-        relativeLayout.setVisibility(View.VISIBLE);
-        relativeLayoutName.setVisibility(View.VISIBLE);
-        progressBarPage.setVisibility(View.GONE);
 
     }
 
@@ -493,18 +486,18 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
     }
 
     @Generated
-    private void getSubData(String courseCode) {
+    private void getSubData() {
         requestQueue = Volley.newRequestQueue(Dashboard.this);
-        requestQueue.add(getSubDataFromServer(courseCode));
+        requestQueue.add(getSubDataFromServer());
     }
 
     @Generated
-    private JsonArrayRequest getSubDataFromServer(String courseCode) {
+    private JsonArrayRequest getSubDataFromServer() {
         //JsonArrayRequest of volley
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(subURL + USER.USER_NUM + "&courseCode=" + courseCode,
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(subURL + USER.USER_NUM,
                 (response) -> {
                     //Calling method parseData to parse the json responce
-                    parseSubData(response, courseCode);
+                    parseSubData(response);
 
                 },
                 (error) -> {
@@ -516,11 +509,34 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
 
     //This method will parse json Data
     @Generated
-    private void parseSubData(JSONArray array, String courseCode) {
-        // Toast.makeText(Dashboard.this, array.toString(), Toast.LENGTH_SHORT).show();
-        if (USER.SUBSCRIBED_TO_FEAT_COURSE == null) {
-            USER.SUBSCRIBED_TO_FEAT_COURSE = new HashMap<>();
+    private void parseSubData(JSONArray array) {
+        if (USER.SUBSCRIBED_TO_FEAT_COURSE != null) {
+            USER.SUBSCRIBED_TO_FEAT_COURSE.clear();
+        } else {
+            USER.SUBSCRIBED_TO_FEAT_COURSE = new HashSet<>();
         }
+
+        for (int i = 0; i< array.length(); i++){
+            // Creating the Course object
+            JSONObject json = null;
+            try {
+                //Getting json
+                json = array.getJSONObject(i);
+                String course = json.getString("Enrolment_Course");
+                USER.SUBSCRIBED_TO_FEAT_COURSE.add(course);
+                //Toast.makeText(Dashboard.this, course+"subscribed", Toast.LENGTH_SHORT).show();
+
+            } catch (JSONException e){
+                e.printStackTrace();
+            }
+        }
+
+        relativeLayout.setVisibility(View.VISIBLE);
+        relativeLayoutName.setVisibility(View.VISIBLE);
+        progressBarPage.setVisibility(View.GONE);
+
+
+        /*
         if (array.toString().equals("[]")) {
             USER.SUBSCRIBED_TO_FEAT_COURSE.put(courseCode, "false");
             //Toast.makeText(Dashboard.this, "not subscribed", Toast.LENGTH_SHORT).show();
@@ -528,6 +544,8 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
             USER.SUBSCRIBED_TO_FEAT_COURSE.put(courseCode, "true");
             //Toast.makeText(Dashboard.this, "subscribed", Toast.LENGTH_SHORT).show();
         }
+
+         */
 
 
     }

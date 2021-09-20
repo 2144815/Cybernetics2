@@ -2,6 +2,7 @@ package com.example.witsonline;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 @Generated
 public class USER {
@@ -17,5 +18,5 @@ public class USER {
 	public static String LNAME;
 
 	public static ArrayList<CourseV> FEATURED_COURSES;
-	public static HashMap<String,String> SUBSCRIBED_TO_FEAT_COURSE;
+	public static Set<String> SUBSCRIBED_TO_FEAT_COURSE;
 }
