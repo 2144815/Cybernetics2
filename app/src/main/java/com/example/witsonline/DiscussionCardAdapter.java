@@ -208,7 +208,7 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
                 postEditDiscussion.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if(EditedTopic.getText().toString().length() > 1 && EditedText.getText().toString().length() > 1) {
+                        if(!EditedTopic.getText().toString().isEmpty() && !EditedText.getText().toString().isEmpty()) {
                             StringRequest request = new StringRequest(Request.Method.POST, discussionUpdateURL, new Response.Listener<String>() {
                                 @Override
                                 @Generated
@@ -234,12 +234,12 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
                                 }
                             };
                             requestQueue.add(request);
-                            Toast.makeText(context, "Discussion updated successful", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Discussion updated successfully", Toast.LENGTH_SHORT).show();
                             dialog.dismiss();
                             Intent intent = new Intent(context, ForumActivity.class);
                             context.startActivity(intent);
                         }else {
-                            Toast.makeText(context, "please fill in all details", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Please fill in all details", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

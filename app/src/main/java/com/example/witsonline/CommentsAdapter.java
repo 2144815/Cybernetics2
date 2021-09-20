@@ -98,8 +98,17 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
         //onBindViewHolder(): RecyclerView calls this method to associate a ViewHolder with data.
         // The method fetches the appropriate data and uses the data to fill in the view holder's layout. For example, if the RecyclerView displays a list of names,
         // the method might find the appropriate name in the list and fill in the view holder's TextView widget.
+        //edit reply
+
+
         holder.TheStudentName.setText(commentList.get((holder.getAdapterPosition())).getUserFullName());
         holder.TheAnswer.setText(commentList.get((holder.getAdapterPosition())).getComment());
+       /* if (comment.getUsername().equals(USER.USERNAME)){
+            holder.TheAnswer.setClickable(true);
+        }
+        else{
+            holder.TheAnswer.setClickable(false);
+        }  */
         requestQueue = Volley.newRequestQueue(context);
         holder.role.setText(comment.getUserRole());
         holder.id.setText(comment.getId());
@@ -142,6 +151,8 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
                     holder.votingStatus=0;
                 }
             }
+
+
         });
         holder.downVote.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -178,26 +189,16 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
                 }
             }
         });
+
+        //view profile
         usernames.put(comment.getId(),comment.getUsername());
-        if (comment.getUsername().equals(USER.USERNAME)) {
-             holder.TheAnswer.setOnClickListener(new View.OnClickListener() {
-                 @Override
-                 @Generated
-                 public void onClick(View view) {
-                     getReplyDialog(holder);
-                     Log.d("USERNAME", commentList.get(holder.getAdapterPosition()).getUsername());
-                     Log.d("HOLDER USERNAME", holder.TheStudentName.getText().toString());
-                     Log.d("USERNAME", comment.getUsername());
-                     Log.d("USER USERNAME", USER.USERNAME);
-                 }
-             });
-        } else {
-            holder.TheAnswer.setClickable(false);
-        }
+
+
+
     }
 
     @Generated
-    public void getReplyDialog(CommentsAdapter.MyViewHolder holder) {
+    public void getReplyDialog(TextView id, TextView TheAnswer) {
 
         dialogBuilder = new AlertDialog.Builder(context);
         final View viewPopUp = LayoutInflater.from(context)
@@ -226,9 +227,9 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
                 postEditComment = (Button) viewPopUp.findViewById(R.id.postEditComment);
 
                 EditedReply = (TextInputEditText) viewPopUp.findViewById(R.id.EditCommentText);
-                EditedReply.setText(holder.TheAnswer.getText());
+                EditedReply.setText(TheAnswer.getText());
 
-                Reply_id = holder.id.getText().toString();
+                Reply_id = id.getText().toString();
 
                 dialog.show();
 
@@ -236,7 +237,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
                     @Override
                     @Generated
                     public void onClick(View view) {
-                        if(EditedReply.getText().toString().length()>1) {
+                        if(!EditedReply.getText().toString().isEmpty()) {
                             if(USER.STUDENT) {
                                 StringRequest request = new StringRequest(Request.Method.POST, studReplyUpdateURL, new Response.Listener<String>() {
                                     @Override
@@ -256,14 +257,14 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
                                     protected Map<String, String> getParams() throws AuthFailureError {
                                         Map<String, String> parameters = new HashMap<>();
                                         parameters.put("Reply_Student", USER.USER_NUM);
-                                        parameters.put("Reply_Id", holder.id.getText().toString());
+                                        parameters.put("Reply_Id", id.getText().toString());
                                         parameters.put("Reply_Discussion", DISCUSSIONS.DISCUSSION_ID);
                                         parameters.put("Reply_Text", EditedReply.getText().toString());
                                         return parameters;
                                     }
                                 };
                                 requestQueue.add(request);
-                                Toast.makeText(context, "reply edited successful", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "Reply edited successfully", Toast.LENGTH_SHORT).show();
                             } else {
                                 StringRequest request = new StringRequest(Request.Method.POST, instReplyUpdateURL, new Response.Listener<String>() {
                                     @Override
@@ -283,14 +284,14 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
                                     protected Map<String, String> getParams() throws AuthFailureError {
                                         Map<String, String> parameters = new HashMap<>();
                                         parameters.put("Reply_Instructor", USER.USER_NUM);
-                                        parameters.put("Reply_Id", holder.id.getText().toString());
+                                        parameters.put("Reply_Id", id.getText().toString());
                                         parameters.put("Reply_Discussion", DISCUSSIONS.DISCUSSION_ID);
                                         parameters.put("Reply_Text", EditedReply.getText().toString());
                                         return parameters;
                                     }
                                 };
                                 requestQueue.add(request);
-                                Toast.makeText(context, "reply edited successful", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "Reply edited successfully", Toast.LENGTH_SHORT).show();
                             }
                             dialog.dismiss();
                             Intent intent = new Intent(context, ADiscussion.class);
@@ -469,6 +470,20 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
             });
             TheTime = itemView.findViewById(R.id.time);
             TheAnswer = itemView.findViewById(R.id.Answer);
+            TheAnswer.setSoundEffectsEnabled(false);
+            TheAnswer.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    @Generated
+                    public void onClick(View view) {
+                        if (usernames.get(id.getText().toString()).equals(USER.USERNAME)) {
+                        getReplyDialog(id, TheAnswer);
+                        }
+                        // Log.d("USERNAME", commentList.get(holder.getAdapterPosition()).getUsername());
+                        // Log.d("HOLDER USERNAME", holder.TheStudentName.getText().toString());
+                        // Log.d("USERNAME", comment.getUsername());
+                        // Log.d("USER USERNAME", USER.USERNAME);
+                    }
+            });
             NoVotes = itemView.findViewById(R.id.tv_NoVotes);
             upvote = itemView.findViewById(R.id.btn_Upvote);
             downVote = itemView.findViewById(R.id.btn_downVote);

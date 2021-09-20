@@ -94,6 +94,12 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
         setContentView(R.layout.activity_dashboard);
         name = findViewById(R.id.textViewStudentName);
 
+        if (USER.STUDENT){
+            getSubData("COMS3006A");
+            getSubData("COMS1018A");
+            getSubData("COMS4000A");
+        }
+
         //display the user's name and surname
         getName(USER.USER_NUM);
 
@@ -357,7 +363,6 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
         }
         featuredCourses.setVisibility(LinearLayout.VISIBLE);
 
-
         relativeLayout.setVisibility(View.VISIBLE);
         relativeLayoutName.setVisibility(View.VISIBLE);
         progressBarPage.setVisibility(View.GONE);
@@ -468,7 +473,6 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
             CourseV course = new CourseV();
 
             course.setCourseCode(featuredCourse.getString("Course_Code"));
-            getSubData(featuredCourse.getString("Course_Code"));
             course.setCourseName(featuredCourse.getString("Course_Name"));
             course.setCourseDescription(featuredCourse.getString("Course_Description"));
             course.setCourseOutline(featuredCourse.getString("Course_Outline"));
