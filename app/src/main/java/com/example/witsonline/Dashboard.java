@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,6 +38,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Objects;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 
 public class Dashboard extends AppCompatActivity implements View.OnScrollChangeListener, BottomNavigationView.OnNavigationItemSelectedListener {
@@ -299,7 +308,6 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
 
             requestBuilder.doBuild(Parameters);
             requestBuilder.doRequest(Dashboard.this, response -> addName(response));
-            getSubData();
         } else {
             PHPRequestBuilder requestBuilder = new PHPRequestBuilder(URL, getInstructorNameMethod);
 
@@ -359,6 +367,12 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
             recyclerView.setAdapter(adapter);
         }
         featuredCourses.setVisibility(LinearLayout.VISIBLE);
+        //getSubData();
+        try {
+            checkFeatCourses();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -485,6 +499,7 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
         displayFeaturedCourses();
     }
 
+    /*
     @Generated
     private void getSubData() {
         requestQueue = Volley.newRequestQueue(Dashboard.this);
@@ -531,6 +546,7 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
             }
         }
 
+
         relativeLayout.setVisibility(View.VISIBLE);
         relativeLayoutName.setVisibility(View.VISIBLE);
         progressBarPage.setVisibility(View.GONE);
@@ -545,8 +561,64 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
             //Toast.makeText(Dashboard.this, "subscribed", Toast.LENGTH_SHORT).show();
         }
 
-         */
+
 
 
     }
+
+     */
+
+    @Generated
+    private void checkFeatCourses() throws IOException {
+        OkHttpClient client = new OkHttpClient();
+
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("https://lamp.ms.wits.ac.za/~s2105624/checkFeatCourses.php").newBuilder();
+        urlBuilder.addQueryParameter("studentNumber", USER.USER_NUM);
+        String url = urlBuilder.build().toString();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+
+            @Override
+            @Generated
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            @Generated
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                final String responseData = response.body().string();
+                Dashboard.this.runOnUiThread(new Runnable() {
+                    @Override
+                    @Generated
+                    public void run() {
+                        if (USER.SUBSCRIBED_TO_FEAT_COURSE != null) {
+                            USER.SUBSCRIBED_TO_FEAT_COURSE.clear();
+                        } else {
+                            USER.SUBSCRIBED_TO_FEAT_COURSE = new HashSet<>();
+                        }
+                        try {
+                            JSONArray all = new JSONArray(responseData);
+                            for (int i = 0; i < all.length();i++){
+                                JSONObject obj = all.getJSONObject(i);
+                                String course = obj.getString("Enrolment_Course");
+                                USER.SUBSCRIBED_TO_FEAT_COURSE.add(course);
+                            }
+                        }
+                        catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        relativeLayout.setVisibility(View.VISIBLE);
+                        relativeLayoutName.setVisibility(View.VISIBLE);
+                        progressBarPage.setVisibility(View.GONE);
+                    }
+                });
+            }
+        });
+    }
+
 }
