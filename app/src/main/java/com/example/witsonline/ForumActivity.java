@@ -127,9 +127,20 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
         listDiscussions = new ArrayList<>();
         requestQueue = Volley.newRequestQueue(this);
         //Calling methods to get data from server
-        getTutorData();
+        //getTutorData();
+        try {
+            getCourseTutors();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         getData();
-        getTutorStateData();
+        //getTutorStateData();
+        try {
+            checkTutorState();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         //Adding an scroll change listener to recyclerView
         recyclerView.setOnScrollChangeListener(this);
 
@@ -232,6 +243,9 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
         }
         //Notifying the adapter that data has been added or changed
         adapter.notifyDataSetChanged();
+
+        relativeLayout.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.GONE);
     }
 
     //This is the dialog for adding new discussions in the forum
@@ -327,6 +341,9 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
             }
         });
     }
+
+
+   /*
     @Generated
     private void getTutorStateData(){
         requestQueue.add(getTutorStateDataFromServer());
@@ -373,9 +390,6 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
             }
 
         }
-        relativeLayout.setVisibility(View.VISIBLE);
-        progressBar.setVisibility(View.GONE);
-
     }
 
     //This method will get Data from the web api
@@ -421,6 +435,109 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
             }
 
         }
+    }
+    */
+
+
+    @Generated
+    private void checkTutorState() throws IOException {
+        OkHttpClient client = new OkHttpClient();
+
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("https://lamp.ms.wits.ac.za/~s2105624/getTutorState.php").newBuilder();
+        urlBuilder.addQueryParameter("studentNumber", USER.USER_NUM);
+        urlBuilder.addQueryParameter("courseCode", COURSE.CODE);
+        String url = urlBuilder.build().toString();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+
+            @Override
+            @Generated
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            @Generated
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                final String responseData = response.body().string();
+                ForumActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    @Generated
+                    public void run() {
+                        try {
+                            JSONArray all = new JSONArray(responseData);
+                            for (int i = 0; i < all.length();i++){
+                                JSONObject obj = all.getJSONObject(i);
+                                //Adding data to the course object
+                                int tutorState = obj.getInt("Tutor");
+                                //Toast.makeText(this, ""+tutorState, Toast.LENGTH_LONG).show();
+
+                                if (tutorState == 1){
+                                    //if student is a tutor, they can't post discussions
+                                    startDiscussion.setVisibility(View.GONE);
+                                }
+
+                            }
+
+                        }
+                        catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+
+    @Generated
+    private void getCourseTutors() throws IOException {
+        OkHttpClient client = new OkHttpClient();
+
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("https://lamp.ms.wits.ac.za/~s2105624/getTutors.php").newBuilder();
+        urlBuilder.addQueryParameter("courseCode", COURSE.CODE);
+        String url = urlBuilder.build().toString();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+
+            @Override
+            @Generated
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            @Generated
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                final String responseData = response.body().string();
+                ForumActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    @Generated
+                    public void run() {
+                        try {
+                            JSONArray all = new JSONArray(responseData);
+                            for (int i = 0; i < all.length();i++){
+                                JSONObject obj = all.getJSONObject(i);
+                                //Adding data to the course object
+                                String studentNumber = obj.getString("Enrolment_Student");
+                                COURSE.TUTORS.add(studentNumber);
+                            }
+                        }
+                        catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        });
     }
 
     //This method will check if the recyclerview has reached the bottom or not

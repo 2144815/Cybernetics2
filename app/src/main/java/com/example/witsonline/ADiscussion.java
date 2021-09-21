@@ -79,7 +79,7 @@ public class ADiscussion extends AppCompatActivity implements View.OnScrollChang
     private int commentsCount = 1;
     private Comment comment;
     private RequestQueue requestQueue;
-    private String webLink = "https://lamp.ms.wits.ac.za/home/s2105624/getReplies.php?page=";
+    private String webLink = "https://lamp.ms.wits.ac.za/home/s2105624/getAllReplies.php?page=";
     private boolean browse = false;
     private boolean mycourses = false;
     private boolean dashboard = false;
@@ -276,7 +276,7 @@ public class ADiscussion extends AppCompatActivity implements View.OnScrollChang
                 e.printStackTrace();
             }
             commentList.add(comment);
-            commentList.sort(Comparator.comparing(o -> o.getTime()));
+            //commentList.sort(Comparator.comparing(o -> o.getTime()));
             mAdapter.notifyDataSetChanged();
 
         }
