@@ -68,8 +68,6 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
     private RecyclerView.LayoutManager requestLayoutManager;
     private RecyclerView.Adapter requestAdapter;
     String webURL = "https://lamp.ms.wits.ac.za/home/s2105624/requestFeed.php?page=";
-    private String votesUrl = "https://lamp.ms.wits.ac.za/home/s2105624/getVotes.php";
-    private String  votesInstUrl = "https://lamp.ms.wits.ac.za/home/s2105624/getVotesInstructor.php";
 
     //delay for loading featured courses
     private LinearLayout featuredCourses;  // for the featured course
@@ -138,10 +136,7 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
 
         //NO ACTION BAR ON THIS ACTIVITY
         Objects.requireNonNull(getSupportActionBar()).hide();
-        USER.INSTRUCTOR_VOTES.clear();
-        USER.VOTES.clear();
-        getVotesData();
-        getInstVotesData();
+
         BottomNavigationView dashboardBottomNavigation = findViewById(R.id.dashboardBottomNavigation);
         dashboardBottomNavigation.setOnNavigationItemSelectedListener(Dashboard.this);
 
@@ -164,8 +159,6 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
             TextView topic = findViewById(R.id.txtFeaturedCourses);
             topic.setText("Course Enrolment Requests");
             getData();
-
-
         }
 
     }
@@ -505,18 +498,21 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
         USER.FEATURED_COURSES = courses;
         displayFeaturedCourses();
     }
-    private void getVotesData() {
-        requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(getVotesDataFromServer());
+
+    /*
+    @Generated
+    private void getSubData() {
+        requestQueue = Volley.newRequestQueue(Dashboard.this);
+        requestQueue.add(getSubDataFromServer());
     }
 
     @Generated
-    private JsonArrayRequest getVotesDataFromServer() {
+    private JsonArrayRequest getSubDataFromServer() {
         //JsonArrayRequest of volley
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(votesUrl + "?username="+USER.USERNAME,
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(subURL + USER.USER_NUM,
                 (response) -> {
                     //Calling method parseData to parse the json responce
-                    parseVotesData(response);
+                    parseSubData(response);
 
                 },
                 (error) -> {
@@ -528,57 +524,49 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
 
     //This method will parse json Data
     @Generated
-    private void parseVotesData(JSONArray array) {
-        JSONObject json = null;
-        for(int i=0;i<array.length();i++){
+    private void parseSubData(JSONArray array) {
+        if (USER.SUBSCRIBED_TO_FEAT_COURSE != null) {
+            USER.SUBSCRIBED_TO_FEAT_COURSE.clear();
+        } else {
+            USER.SUBSCRIBED_TO_FEAT_COURSE = new HashSet<>();
+        }
+
+        for (int i = 0; i< array.length(); i++){
+            // Creating the Course object
+            JSONObject json = null;
             try {
                 //Getting json
                 json = array.getJSONObject(i);
-                //Adding data to the course object
-                USER.VOTES.put(json.getString("Vote_ReplyId"), json.getInt("Vote_Int"));
-            } catch (JSONException e) {
+                String course = json.getString("Enrolment_Course");
+                USER.SUBSCRIBED_TO_FEAT_COURSE.add(course);
+                //Toast.makeText(Dashboard.this, course+"subscribed", Toast.LENGTH_SHORT).show();
+
+            } catch (JSONException e){
                 e.printStackTrace();
             }
         }
-    }
-
-    private void getInstVotesData() {
-        requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(getInstVotesDataFromServer());
-    }
-
-    @Generated
-    private JsonArrayRequest getInstVotesDataFromServer() {
-        //JsonArrayRequest of volley
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(votesInstUrl + "?username="+USER.USERNAME,
-                (response) -> {
-                    //Calling method parseData to parse the json responce
-                    parseInstVotesData(response);
 
 
-                },
-                (error) -> {
-                    //Toast.makeText(CourseHomePage.this, "No More Items Available", Toast.LENGTH_SHORT).show();
-                });
-        //Returning the request
-        return jsonArrayRequest;
-    }
+        relativeLayout.setVisibility(View.VISIBLE);
+        relativeLayoutName.setVisibility(View.VISIBLE);
+        progressBarPage.setVisibility(View.GONE);
 
-    //This method will parse json Data
-    @Generated
-    private void parseInstVotesData(JSONArray array) {
-        JSONObject json = null;
-        for(int i=0;i<array.length();i++){
-            try {
-                //Getting json
-                json = array.getJSONObject(i);
-                //Adding data to the course object
-                USER.INSTRUCTOR_VOTES.put(json.getString("Vote_ReplyId"), json.getInt("Vote_Int"));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+
+        /*
+        if (array.toString().equals("[]")) {
+            USER.SUBSCRIBED_TO_FEAT_COURSE.put(courseCode, "false");
+            //Toast.makeText(Dashboard.this, "not subscribed", Toast.LENGTH_SHORT).show();
+        } else {
+            USER.SUBSCRIBED_TO_FEAT_COURSE.put(courseCode, "true");
+            //Toast.makeText(Dashboard.this, "subscribed", Toast.LENGTH_SHORT).show();
         }
+
+
+
+
     }
+
+     */
 
     @Generated
     private void checkFeatCourses() throws IOException {
