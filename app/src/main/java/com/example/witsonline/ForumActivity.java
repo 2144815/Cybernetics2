@@ -165,11 +165,12 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
 
     @Generated
     private JsonArrayRequest getDataFromServer(int requestCount){
-        //Initializing progressbar
-        final ProgressBar progressBar = (ProgressBar) findViewById(R.id.discussionProgressBar);
+        //Initializing progressbar for the dicussions. The other one is for the page due to the header changing for students
+        // or tutors and instructors
+        final ProgressBar loadProgressBar = (ProgressBar) findViewById(R.id.discussionProgressBar);
 
         //Displaying ProgressBar
-        progressBar.setVisibility(View.VISIBLE);
+        loadProgressBar.setVisibility(View.VISIBLE);
         setProgressBarIndeterminateVisibility(true);
 
         //JsonArrayRequest of volley
@@ -178,20 +179,24 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
                     //Calling method parseData to parse the json responce
                     parseData(response);
                     //Hiding the progressBar
-                    progressBar.setVisibility(View.GONE);
                     if(listDiscussions.isEmpty()){
                         TextView noDiscussions = (TextView)findViewById(R.id.noDiscussionItems);
                         noDiscussions.setVisibility(View.VISIBLE);
                     }
+                    relativeLayout.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.GONE);
+                    loadProgressBar.setVisibility(View.GONE);
                 },
                 (error) -> {
-                    progressBar.setVisibility(View.GONE);
                     //If an error occurs that means end of the list has been reached
 
                     if(listDiscussions.isEmpty()){
                         TextView noDiscussions = (TextView)findViewById(R.id.noDiscussionItems);
                         noDiscussions.setVisibility(View.VISIBLE);
                     }
+                    relativeLayout.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.GONE);
+                    loadProgressBar.setVisibility(View.GONE);
                     //Toast.makeText(CourseHomePage.this, "No More Items Available", Toast.LENGTH_SHORT).show();
                 });
         return jsonArrayRequest;
@@ -243,9 +248,6 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
         }
         //Notifying the adapter that data has been added or changed
         adapter.notifyDataSetChanged();
-
-        relativeLayout.setVisibility(View.VISIBLE);
-        progressBar.setVisibility(View.GONE);
     }
 
     //This is the dialog for adding new discussions in the forum
@@ -436,8 +438,8 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
 
         }
     }
-    */
 
+   */
 
     @Generated
     private void checkTutorState() throws IOException {
