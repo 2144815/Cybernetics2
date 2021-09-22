@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:padding="10dp"
-        android:text="Do you want to edit comment?"
+        android:text="Do you want to edit your comment?"
         android:textStyle="bold" />
     <RelativeLayout
         android:layout_width="match_parent"
