@@ -2,6 +2,7 @@ package com.example.witsonline;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 @Generated
@@ -19,4 +20,6 @@ public class USER {
 
 	public static ArrayList<CourseV> FEATURED_COURSES;
 	public static Set<String> SUBSCRIBED_TO_FEAT_COURSE;
+	public static Map<String, Integer> VOTES  = new HashMap<>();
+	public static Map<String, Integer> INSTRUCTOR_VOTES = new HashMap<>();
 }

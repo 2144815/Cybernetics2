@@ -149,7 +149,9 @@ public class ADiscussion extends AppCompatActivity implements View.OnScrollChang
         recyclerView.setAdapter(mAdapter);
         commentList = new ArrayList<>();
         //Calling methods to get data from server
+
         getData();
+
         //Adding an scroll change listener to recyclerView
         recyclerView.setOnScrollChangeListener(this);
         mAdapter = new CommentsAdapter(commentList, this);
@@ -371,6 +373,7 @@ public class ADiscussion extends AppCompatActivity implements View.OnScrollChang
 
     }
 
+
     public boolean isLastItemDisplaying(RecyclerView recyclerView) {
         if (recyclerView.getAdapter().getItemCount() != 0) {
             int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
@@ -408,10 +411,6 @@ public class ADiscussion extends AppCompatActivity implements View.OnScrollChang
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate( R.menu.sort_comments_menu,menu);
-
-
-
-
         return true;
     }
 

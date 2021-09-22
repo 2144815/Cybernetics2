@@ -67,7 +67,6 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
     private AlertDialog dialog;
     private Button btnView, btnCancel;
     private HashMap<String, String> usernames = new HashMap<>();
-    private  int votingStatus;
     private RequestQueue requestQueue;
     private String instReplyUpdateURL = "https://lamp.ms.wits.ac.za/home/s2105624/updateInstReply.php";
     private String studReplyUpdateURL = "https://lamp.ms.wits.ac.za/home/s2105624/updateStuReply.php";
@@ -99,8 +98,16 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
         // The method fetches the appropriate data and uses the data to fill in the view holder's layout. For example, if the RecyclerView displays a list of names,
         // the method might find the appropriate name in the list and fill in the view holder's TextView widget.
         //edit reply
-
-
+        if(!COURSE.INSTRUCTOR.equals(comment.getUsername())){
+            if(USER.VOTES.containsKey(comment.getId())) {
+                holder.votingStatus = USER.VOTES.get(comment.getId());
+            }
+        }
+        else{
+            if(USER.INSTRUCTOR_VOTES.containsKey(comment.getId())) {
+                holder.votingStatus = USER.INSTRUCTOR_VOTES.get(comment.getId());
+            }
+        }
         holder.TheStudentName.setText(commentList.get((holder.getAdapterPosition())).getUserFullName());
         holder.TheAnswer.setText(commentList.get((holder.getAdapterPosition())).getComment());
        /* if (comment.getUsername().equals(USER.USERNAME)){
@@ -117,6 +124,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
         SimpleDateFormat dtTime = new SimpleDateFormat("HH:mm");
         String strTime = dtDate.format(comment.getTime()) + '\n' + dtTime.format(comment.getTime());
         holder.TheTime.setText(strTime);
+        Log.d("VOTES", USER.VOTES.toString());
         holder.upvote.setOnClickListener(new View.OnClickListener() {
             @Override
             @Generated
@@ -135,6 +143,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
                     commentList.get((holder.getAdapterPosition())).setNoVotes(Integer.parseInt(holder.NoVotes.getText().toString()) + 1);
                     holder.NoVotes.setText(String.valueOf(commentList.get((holder.getAdapterPosition())).getNoVotes()));
                     holder.votingStatus=1;
+
                 }
                 else if(holder.votingStatus ==-1) {
                     try {
@@ -312,50 +321,6 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
         });
 
     }
-    private int votingStatus(String phpFile, String id) throws IOException {
-        OkHttpClient client = new OkHttpClient();
-
-        HttpUrl.Builder urlBuilder = HttpUrl.parse("https://lamp.ms.wits.ac.za/~s2105624/" + phpFile).newBuilder();
-        urlBuilder.addQueryParameter("username", USER.USERNAME);
-        urlBuilder.addQueryParameter("reply", id);
-        String url = urlBuilder.build().toString();
-        final int[] votingStatus = new int[1];
-        okhttp3.Request request = new okhttp3.Request.Builder()
-                .url(url)
-                .build();
-
-        client.newCall(request).enqueue(new Callback() {
-            private Activity cont = (Activity) context;
-
-            @Override
-            @Generated
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                e.printStackTrace();
-            }
-
-            @Override
-            @Generated
-            public void onResponse(@NotNull Call call, @NotNull okhttp3.Response response) throws IOException {
-                final String responseData = response.body().string();
-                cont.runOnUiThread(new Runnable() {
-                    @Override
-                    @Generated
-                    public void run() {
-                        if (responseData.equals("0")) {
-                            votingStatus[0] =0;
-                        }
-                        else if(responseData.equals("-1")){
-                            votingStatus[0] = -1;
-                        }
-                        else{
-                            votingStatus[0] = 1;
-                        }
-                    }
-                });
-            }
-        });
-        return votingStatus[0];
-    }
     private void doPostRequest(String phpFile, String id, String vote) throws IOException {
         OkHttpClient client = new OkHttpClient();
 
@@ -451,7 +416,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
         TextView NoVotes;
         TextView role;
         TextView id;
-        int votingStatus;
+        Integer votingStatus=0;
         AppCompatImageButton upvote;
         AppCompatImageButton downVote;
 
@@ -487,12 +452,6 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
             NoVotes = itemView.findViewById(R.id.tv_NoVotes);
             upvote = itemView.findViewById(R.id.btn_Upvote);
             downVote = itemView.findViewById(R.id.btn_downVote);
-            try {
-                votingStatus = votingStatus("getVotes.php", id.getText().toString());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
         }
     }
 
