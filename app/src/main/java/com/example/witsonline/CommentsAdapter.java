@@ -143,6 +143,12 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
                     commentList.get((holder.getAdapterPosition())).setNoVotes(Integer.parseInt(holder.NoVotes.getText().toString()) + 1);
                     holder.NoVotes.setText(String.valueOf(commentList.get((holder.getAdapterPosition())).getNoVotes()));
                     holder.votingStatus=1;
+                    if(!COURSE.INSTRUCTOR.equals(comment.getUsername())){
+                        USER.VOTES.replace(comment.getId(),1);
+                    }
+                    else{
+                        USER.INSTRUCTOR_VOTES.replace(comment.getId(),1);
+                    }
 
                 }
                 else if(holder.votingStatus ==-1) {
@@ -158,6 +164,12 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
                     commentList.get((holder.getAdapterPosition())).setNoVotes(Integer.parseInt(holder.NoVotes.getText().toString()) + 1);
                     holder.NoVotes.setText(String.valueOf(commentList.get((holder.getAdapterPosition())).getNoVotes()));
                     holder.votingStatus=0;
+                    if(!COURSE.INSTRUCTOR.equals(comment.getUsername())){
+                        USER.VOTES.replace(comment.getId(),0);
+                    }
+                    else{
+                        USER.INSTRUCTOR_VOTES.replace(comment.getId(),0);
+                    }
                 }
             }
 
@@ -181,6 +193,12 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
                     commentList.get((holder.getAdapterPosition())).setNoVotes(Integer.parseInt(holder.NoVotes.getText().toString()) - 1);
                     holder.NoVotes.setText(String.valueOf(commentList.get((holder.getAdapterPosition())).getNoVotes()));
                     holder.votingStatus=-1;
+                    if(!COURSE.INSTRUCTOR.equals(comment.getUsername())){
+                        USER.VOTES.replace(comment.getId(),-1);
+                    }
+                    else{
+                        USER.INSTRUCTOR_VOTES.replace(comment.getId(),-1);
+                    }
                 }
                 else if(holder.votingStatus ==1) {
                     try {
@@ -195,6 +213,12 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
                     commentList.get((holder.getAdapterPosition())).setNoVotes(Integer.parseInt(holder.NoVotes.getText().toString()) - 1);
                     holder.NoVotes.setText(String.valueOf(commentList.get((holder.getAdapterPosition())).getNoVotes()));
                     holder.votingStatus=0;
+                    if(!COURSE.INSTRUCTOR.equals(comment.getUsername())){
+                        USER.VOTES.replace(comment.getId(),0);
+                    }
+                    else{
+                        USER.INSTRUCTOR_VOTES.replace(comment.getId(),0);
+                    }
                 }
             }
         });
