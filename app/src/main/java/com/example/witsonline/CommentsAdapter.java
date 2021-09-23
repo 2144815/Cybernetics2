@@ -111,24 +111,15 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
         SimpleDateFormat dtTime = new SimpleDateFormat("HH:mm");
         String strTime = dtDate.format(comment.getTime()) + '\n' + dtTime.format(comment.getTime());
         holder.TheTime.setText(strTime);
-        Log.d("VOTES", USER.VOTES.toString());
-        if(!COURSE.INSTRUCTOR.equals(comment.getUsername())){
-            if(USER.VOTES.containsKey(holder.id)) {
-                holder.votingStatus = USER.VOTES.get(holder.id);
-            }
-        }
-        else{
-            if(USER.INSTRUCTOR_VOTES.containsKey(holder.id)) {
-                holder.votingStatus = USER.INSTRUCTOR_VOTES.get(holder.id);
-            }
-        }
-        if(holder.votingStatus==1){
+        //Log.d("VOTES", USER.VOTES.toString());
+        holder.votingStatus.setText(""+comment.getVotingStatus());
+        if(comment.getVotingStatus()==1){
             holder.upvote.setImageURI(Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE+
                     "://" + context.getResources().getResourcePackageName(R.drawable.ic_baseline_keyboard_arrow_up_gold_24)+
                     '/' + context.getResources().getResourceTypeName(R.drawable.ic_baseline_keyboard_arrow_up_gold_24) +
                     '/' + context.getResources().getResourceEntryName(R.drawable.ic_baseline_keyboard_arrow_up_gold_24) ));
         }
-        if(holder.votingStatus==-1){
+        if(comment.getVotingStatus()==-1){
             holder.downVote.setImageURI(Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE+
                     "://" + context.getResources().getResourcePackageName(R.drawable.ic_baseline_keyboard_arrow_down_gold_24)+
                     '/' + context.getResources().getResourceTypeName(R.drawable.ic_baseline_keyboard_arrow_down_gold_24) +
@@ -352,16 +343,25 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
         TextView NoVotes;
         TextView role;
         TextView id;
-        Integer votingStatus;
+        TextView votingStatus;
+        //Integer voteStatus;
         AppCompatImageButton upvote;
         AppCompatImageButton downVote;
+
 
 
         public MyViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
             id = itemView.findViewById(R.id.replyID);
             role = itemView.findViewById(R.id.role);
-            votingStatus =0;
+            votingStatus = itemView.findViewById(R.id.votingStatus);
+            //voteStatus = Integer.parseInt(votingStatus.getText().toString());
+            role.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context, ""+votingStatus, Toast.LENGTH_SHORT).show();
+                }
+            });
             TheStudentName = itemView.findViewById(R.id.tv_studentFullName);
             TheStudentName.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -395,8 +395,8 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
                 @Override
                 @Generated
                 public void onClick(View v) {
-                    Log.d("VOTE", Integer.toString(votingStatus ));
-                    if(votingStatus ==0) {
+                    //Log.d("VOTE", Integer.toString(votingStatus ));
+                    if(votingStatus.getText().toString().equals("0")) {
                         try {
                             String phpFile = "addVote.php";
                             if (role.equals("Instructor")) {
@@ -408,7 +408,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
                         }
 
                         NoVotes.setText(Integer.toString(Integer.parseInt(NoVotes.getText().toString())+1));
-                        votingStatus=1;
+                        votingStatus.setText("1");
                         upvote.setImageURI(Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE+
                                 "://" + context.getResources().getResourcePackageName(R.drawable.ic_baseline_keyboard_arrow_up_gold_24)+
                                 '/' + context.getResources().getResourceTypeName(R.drawable.ic_baseline_keyboard_arrow_up_gold_24) +
@@ -421,7 +421,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
                         }
 
                     }
-                    else if(votingStatus ==-1) {
+                    else if(votingStatus.getText().toString().equals("-1")) {
                         try {
                             String phpFile = "removeVote.php";
                             if (role.equals("Instructor")) {
@@ -437,7 +437,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
                                 '/' + context.getResources().getResourceTypeName(R.drawable.ic_baseline_keyboard_arrow_down_24) +
                                 '/' + context.getResources().getResourceEntryName(R.drawable.ic_baseline_keyboard_arrow_down_24) ));
                         NoVotes.setText(Integer.toString(Integer.parseInt(NoVotes.getText().toString())+1));
-                        votingStatus=0;
+                        votingStatus.setText("0");
                         if(!role.equals("instructor")){
                             USER.VOTES.replace(id.toString(),0);
                         }
@@ -453,8 +453,8 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
                 @Override
                 @Generated
                 public void onClick(View v) {
-                    Log.d("VOTE", Integer.toString(votingStatus ));
-                    if(votingStatus ==0) {
+                    //Log.d("VOTE", Integer.toString(voteStatus ));
+                    if(votingStatus.getText().toString().equals("0")) {
                         try {
                             String phpFile = "addVote.php";
                             if (role.equals("Instructor")) {
@@ -469,7 +469,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
                                 '/' + context.getResources().getResourceTypeName(R.drawable.ic_baseline_keyboard_arrow_down_gold_24) +
                                 '/' + context.getResources().getResourceEntryName(R.drawable.ic_baseline_keyboard_arrow_down_gold_24) ));
                         NoVotes.setText(Integer.toString(Integer.parseInt(NoVotes.getText().toString())-1));
-                        votingStatus=-1;
+                        votingStatus.setText("-1");
                         if(!role.equals("Instructor")){
                             USER.VOTES.replace(id.toString(),-1);
                         }
@@ -477,7 +477,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
                             USER.INSTRUCTOR_VOTES.replace(id.toString(),-1);
                         }
                     }
-                    else if(votingStatus ==1) {
+                    else if(votingStatus.getText().toString().equals("1")) {
                         try {
                             String phpFile = "removeVote.php";
                             if (role.equals("Instructor")) {
@@ -493,7 +493,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
                                 '/' + context.getResources().getResourceEntryName(R.drawable.ic_baseline_keyboard_arrow_up_24) ));
 
                         NoVotes.setText(Integer.toString(Integer.parseInt(NoVotes.getText().toString())-1));
-                        votingStatus=0;
+                        votingStatus.setText("0");
                         if(!role.equals("Instructor")){
                             USER.VOTES.replace(id.toString(),0);
                         }

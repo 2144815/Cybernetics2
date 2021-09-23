@@ -216,8 +216,8 @@ public class ADiscussion extends AppCompatActivity implements View.OnScrollChang
                     //Calling method parseData to parse the json responce
                     //getTutorData();
                     parseData(response);
-                    //relativeLayout.setVisibility(View.VISIBLE);
-                    //progressBar.setVisibility(View.GONE);
+                    relativeLayout.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.GONE);
                     /*final Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         @Override
@@ -271,9 +271,40 @@ public class ADiscussion extends AppCompatActivity implements View.OnScrollChang
                     }else{
                         comment.setUserRole("Student");
                     }
+                    //for students and tutors
+                    if(USER.VOTES.containsKey(id)) {
+                        comment.setVotingStatus(USER.VOTES.get(id));
+                    }
+                    else{
+                        comment.setVotingStatus(0);
+                    }
                 } else {
                     comment.setUserRole("Instructor");
+                    if(USER.INSTRUCTOR_VOTES.containsKey(id)) {
+                        comment.setVotingStatus(USER.INSTRUCTOR_VOTES.get(id));
+                    }
+                    else{
+                        comment.setVotingStatus(0);
+                    }
                 }
+                /*
+                if(!COURSE.INSTRUCTOR.equals(comment.getUsername())){
+                    if(USER.VOTES.containsKey(id)) {
+                        comment.setVotingStatus(USER.VOTES.get(id));
+                    }
+                    else{
+                        comment.setVotingStatus(0);
+                    }
+                }
+                else{
+                    if(USER.INSTRUCTOR_VOTES.containsKey(id)) {
+                        comment.setVotingStatus(USER.INSTRUCTOR_VOTES.get(id));
+                    }
+                    else{
+                        comment.setVotingStatus(0);
+                    }
+                }
+                 */
 
             } catch (JSONException | ParseException e) {
                 e.printStackTrace();

@@ -105,7 +105,10 @@ public class Comment {
     private String username;
     private int NoVotes = 0;
     private String id;
+    private int votingStatus;
 
+    public int getVotingStatus(){return votingStatus;}
+    public void setVotingStatus(int status){this.votingStatus = status;}
     public String getId(){
         return id;
     }
