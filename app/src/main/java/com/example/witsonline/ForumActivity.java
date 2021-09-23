@@ -136,6 +136,7 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
             e.printStackTrace();
         }
         USER.VOTES.clear();
+        USER.INSTRUCTOR_VOTES.clear();
         getVotesData();
         getInstVotesData();
         getData();
@@ -507,7 +508,6 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
     @Generated
     private JsonArrayRequest getVotesDataFromServer() {
         //JsonArrayRequest of volley
-        setProgressBarIndeterminateVisibility(true);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(votesUrl + "?username="+USER.USERNAME,
                 (response) -> {
                     //Calling method parseData to parse the json responce
@@ -546,7 +546,6 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
     @Generated
     private JsonArrayRequest getInstVotesDataFromServer() {
         //JsonArrayRequest of volley
-        setProgressBarIndeterminateVisibility(true);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(votesInstUrl + "?username="+USER.USERNAME,
                 (response) -> {
                     //Calling method parseData to parse the json responce
@@ -639,8 +638,6 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
         if(isLastItemDisplaying(recyclerView)){
             //Calling the method getData again
             getData();
-            getVotesData();
-            getInstVotesData();
         }
     }
     @Generated

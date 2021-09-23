@@ -216,8 +216,8 @@ public class ADiscussion extends AppCompatActivity implements View.OnScrollChang
                     //Calling method parseData to parse the json responce
                     //getTutorData();
                     parseData(response);
-                    relativeLayout.setVisibility(View.VISIBLE);
-                    progressBar.setVisibility(View.GONE);
+                    //relativeLayout.setVisibility(View.VISIBLE);
+                    //progressBar.setVisibility(View.GONE);
                     /*final Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         @Override

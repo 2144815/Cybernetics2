@@ -100,14 +100,26 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
         // The method fetches the appropriate data and uses the data to fill in the view holder's layout. For example, if the RecyclerView displays a list of names,
         // the method might find the appropriate name in the list and fill in the view holder's TextView widget.
         //edit reply
+
+        holder.TheStudentName.setText(commentList.get((holder.getAdapterPosition())).getUserFullName());
+        holder.TheAnswer.setText(commentList.get((holder.getAdapterPosition())).getComment());
+        requestQueue = Volley.newRequestQueue(context);
+        holder.role.setText(comment.getUserRole());
+        holder.id.setText(comment.getId());
+        holder.NoVotes.setText((commentList.get(holder.getAdapterPosition())).getNoVotes().toString());
+        SimpleDateFormat dtDate = new SimpleDateFormat("dd-MMM-yyyy");
+        SimpleDateFormat dtTime = new SimpleDateFormat("HH:mm");
+        String strTime = dtDate.format(comment.getTime()) + '\n' + dtTime.format(comment.getTime());
+        holder.TheTime.setText(strTime);
+        Log.d("VOTES", USER.VOTES.toString());
         if(!COURSE.INSTRUCTOR.equals(comment.getUsername())){
-            if(USER.VOTES.containsKey(comment.getId())) {
-                holder.votingStatus = USER.VOTES.get(comment.getId());
+            if(USER.VOTES.containsKey(holder.id)) {
+                holder.votingStatus = USER.VOTES.get(holder.id);
             }
         }
         else{
-            if(USER.INSTRUCTOR_VOTES.containsKey(comment.getId())) {
-                holder.votingStatus = USER.INSTRUCTOR_VOTES.get(comment.getId());
+            if(USER.INSTRUCTOR_VOTES.containsKey(holder.id)) {
+                holder.votingStatus = USER.INSTRUCTOR_VOTES.get(holder.id);
             }
         }
         if(holder.votingStatus==1){
@@ -122,132 +134,6 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
                     '/' + context.getResources().getResourceTypeName(R.drawable.ic_baseline_keyboard_arrow_down_gold_24) +
                     '/' + context.getResources().getResourceEntryName(R.drawable.ic_baseline_keyboard_arrow_down_gold_24) ));
         }
-        holder.TheStudentName.setText(commentList.get((holder.getAdapterPosition())).getUserFullName());
-        holder.TheAnswer.setText(commentList.get((holder.getAdapterPosition())).getComment());
-        requestQueue = Volley.newRequestQueue(context);
-        holder.role.setText(comment.getUserRole());
-        holder.id.setText(comment.getId());
-        holder.NoVotes.setText((commentList.get(holder.getAdapterPosition())).getNoVotes().toString());
-        SimpleDateFormat dtDate = new SimpleDateFormat("dd-MMM-yyyy");
-        SimpleDateFormat dtTime = new SimpleDateFormat("HH:mm");
-        String strTime = dtDate.format(comment.getTime()) + '\n' + dtTime.format(comment.getTime());
-        holder.TheTime.setText(strTime);
-        Log.d("VOTES", USER.VOTES.toString());
-        holder.upvote.setOnClickListener(new View.OnClickListener() {
-            @Override
-            @Generated
-            public void onClick(View v) {
-                Log.d("VOTE", Integer.toString(holder.votingStatus ));
-                if(holder.votingStatus ==0) {
-                    try {
-                        String phpFile = "addVote.php";
-                        if (comment.getUsername().equals(COURSE.INSTRUCTOR)) {
-                            phpFile = "addVoteInstructor.php";
-                        }
-                        doPostRequest(phpFile, holder.id.getText().toString(), "1");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    commentList.get((holder.getAdapterPosition())).setNoVotes(Integer.parseInt(holder.NoVotes.getText().toString()) + 1);
-                    holder.NoVotes.setText(String.valueOf(commentList.get((holder.getAdapterPosition())).getNoVotes()));
-                    holder.votingStatus=1;
-                    holder.upvote.setImageURI(Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE+
-                            "://" + context.getResources().getResourcePackageName(R.drawable.ic_baseline_keyboard_arrow_up_gold_24)+
-                            '/' + context.getResources().getResourceTypeName(R.drawable.ic_baseline_keyboard_arrow_up_gold_24) +
-                            '/' + context.getResources().getResourceEntryName(R.drawable.ic_baseline_keyboard_arrow_up_gold_24) ));
-                    if(!COURSE.INSTRUCTOR.equals(comment.getUsername())){
-                        USER.VOTES.replace(comment.getId(),1);
-                    }
-                    else{
-                        USER.INSTRUCTOR_VOTES.replace(comment.getId(),1);
-                    }
-
-                }
-                else if(holder.votingStatus ==-1) {
-                    try {
-                        String phpFile = "removeVote.php";
-                        if (comment.getUsername().equals(COURSE.INSTRUCTOR)) {
-                            phpFile = "removeVoteInstructor.php";
-                        }
-                        doPostRequest(phpFile, holder.id.getText().toString(), "1");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    holder.downVote.setImageURI(Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE+
-                            "://" + context.getResources().getResourcePackageName(R.drawable.ic_baseline_keyboard_arrow_down_24)+
-                            '/' + context.getResources().getResourceTypeName(R.drawable.ic_baseline_keyboard_arrow_down_24) +
-                            '/' + context.getResources().getResourceEntryName(R.drawable.ic_baseline_keyboard_arrow_down_24) ));
-                    commentList.get((holder.getAdapterPosition())).setNoVotes(Integer.parseInt(holder.NoVotes.getText().toString()) + 1);
-                    holder.NoVotes.setText(String.valueOf(commentList.get((holder.getAdapterPosition())).getNoVotes()));
-                    holder.votingStatus=0;
-                    if(!COURSE.INSTRUCTOR.equals(comment.getUsername())){
-                        USER.VOTES.replace(comment.getId(),0);
-                    }
-                    else{
-                        USER.INSTRUCTOR_VOTES.replace(comment.getId(),0);
-                    }
-                }
-            }
-
-
-        });
-        holder.downVote.setOnClickListener(new View.OnClickListener() {
-            @Override
-            @Generated
-            public void onClick(View v) {
-                Log.d("VOTE", Integer.toString(holder.votingStatus ));
-                if(holder.votingStatus ==0) {
-                    try {
-                        String phpFile = "addVote.php";
-                        if (comment.getUsername().equals(COURSE.INSTRUCTOR)) {
-                            phpFile = "addVoteInstructor.php";
-                        }
-                        doPostRequest(phpFile, holder.id.getText().toString(), "-1");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    holder.downVote.setImageURI(Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE+
-                            "://" + context.getResources().getResourcePackageName(R.drawable.ic_baseline_keyboard_arrow_down_gold_24)+
-                            '/' + context.getResources().getResourceTypeName(R.drawable.ic_baseline_keyboard_arrow_down_gold_24) +
-                            '/' + context.getResources().getResourceEntryName(R.drawable.ic_baseline_keyboard_arrow_down_gold_24) ));
-                    commentList.get((holder.getAdapterPosition())).setNoVotes(Integer.parseInt(holder.NoVotes.getText().toString()) - 1);
-                    holder.NoVotes.setText(String.valueOf(commentList.get((holder.getAdapterPosition())).getNoVotes()));
-                    holder.votingStatus=-1;
-                    if(!COURSE.INSTRUCTOR.equals(comment.getUsername())){
-                        USER.VOTES.replace(comment.getId(),-1);
-                    }
-                    else{
-                        USER.INSTRUCTOR_VOTES.replace(comment.getId(),-1);
-                    }
-                }
-                else if(holder.votingStatus ==1) {
-                    try {
-                        String phpFile = "removeVote.php";
-                        if (comment.getUsername().equals(COURSE.INSTRUCTOR)) {
-                            phpFile = "removeVoteInstructor.php";
-                        }
-                        doPostRequest(phpFile, holder.id.getText().toString(), "-1");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    holder.upvote.setImageURI(Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE+
-                            "://" + context.getResources().getResourcePackageName(R.drawable.ic_baseline_keyboard_arrow_up_24)+
-                            '/' + context.getResources().getResourceTypeName(R.drawable.ic_baseline_keyboard_arrow_up_24) +
-                            '/' + context.getResources().getResourceEntryName(R.drawable.ic_baseline_keyboard_arrow_up_24) ));
-
-                    commentList.get((holder.getAdapterPosition())).setNoVotes(Integer.parseInt(holder.NoVotes.getText().toString()) - 1);
-                    holder.NoVotes.setText(String.valueOf(commentList.get((holder.getAdapterPosition())).getNoVotes()));
-                    holder.votingStatus=0;
-                    if(!COURSE.INSTRUCTOR.equals(comment.getUsername())){
-                        USER.VOTES.replace(comment.getId(),0);
-                    }
-                    else{
-                        USER.INSTRUCTOR_VOTES.replace(comment.getId(),0);
-                    }
-                }
-            }
-        });
 
         //view profile
         usernames.put(comment.getId(),comment.getUsername());
@@ -466,7 +352,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
         TextView NoVotes;
         TextView role;
         TextView id;
-        Integer votingStatus=0;
+        Integer votingStatus;
         AppCompatImageButton upvote;
         AppCompatImageButton downVote;
 
@@ -475,6 +361,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
             super(itemView);
             id = itemView.findViewById(R.id.replyID);
             role = itemView.findViewById(R.id.role);
+            votingStatus =0;
             TheStudentName = itemView.findViewById(R.id.tv_studentFullName);
             TheStudentName.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -499,9 +386,124 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
                         // Log.d("USER USERNAME", USER.USERNAME);
                     }
             });
+
             NoVotes = itemView.findViewById(R.id.tv_NoVotes);
             upvote = itemView.findViewById(R.id.btn_Upvote);
             downVote = itemView.findViewById(R.id.btn_downVote);
+
+            upvote.setOnClickListener(new View.OnClickListener() {
+                @Override
+                @Generated
+                public void onClick(View v) {
+                    Log.d("VOTE", Integer.toString(votingStatus ));
+                    if(votingStatus ==0) {
+                        try {
+                            String phpFile = "addVote.php";
+                            if (role.equals("Instructor")) {
+                                phpFile = "addVoteInstructor.php";
+                            }
+                            doPostRequest(phpFile, id.getText().toString(), "1");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        NoVotes.setText(Integer.toString(Integer.parseInt(NoVotes.getText().toString())+1));
+                        votingStatus=1;
+                        upvote.setImageURI(Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE+
+                                "://" + context.getResources().getResourcePackageName(R.drawable.ic_baseline_keyboard_arrow_up_gold_24)+
+                                '/' + context.getResources().getResourceTypeName(R.drawable.ic_baseline_keyboard_arrow_up_gold_24) +
+                                '/' + context.getResources().getResourceEntryName(R.drawable.ic_baseline_keyboard_arrow_up_gold_24) ));
+                        if(!role.equals("Instructor")){
+                            USER.VOTES.replace(id.toString(),1);
+                        }
+                        else{
+                            USER.INSTRUCTOR_VOTES.replace(id.toString(),1);
+                        }
+
+                    }
+                    else if(votingStatus ==-1) {
+                        try {
+                            String phpFile = "removeVote.php";
+                            if (role.equals("Instructor")) {
+                                phpFile = "removeVoteInstructor.php";
+                            }
+                            doPostRequest(phpFile, id.getText().toString(), "1");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                       downVote.setImageURI(Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE+
+                                "://" + context.getResources().getResourcePackageName(R.drawable.ic_baseline_keyboard_arrow_down_24)+
+                                '/' + context.getResources().getResourceTypeName(R.drawable.ic_baseline_keyboard_arrow_down_24) +
+                                '/' + context.getResources().getResourceEntryName(R.drawable.ic_baseline_keyboard_arrow_down_24) ));
+                        NoVotes.setText(Integer.toString(Integer.parseInt(NoVotes.getText().toString())+1));
+                        votingStatus=0;
+                        if(!role.equals("instructor")){
+                            USER.VOTES.replace(id.toString(),0);
+                        }
+                        else{
+                            USER.INSTRUCTOR_VOTES.replace(id.toString(),0);
+                        }
+                    }
+                }
+
+
+            });
+            downVote.setOnClickListener(new View.OnClickListener() {
+                @Override
+                @Generated
+                public void onClick(View v) {
+                    Log.d("VOTE", Integer.toString(votingStatus ));
+                    if(votingStatus ==0) {
+                        try {
+                            String phpFile = "addVote.php";
+                            if (role.equals("Instructor")) {
+                                phpFile = "addVoteInstructor.php";
+                            }
+                            doPostRequest(phpFile, id.getText().toString(), "-1");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        downVote.setImageURI(Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE+
+                                "://" + context.getResources().getResourcePackageName(R.drawable.ic_baseline_keyboard_arrow_down_gold_24)+
+                                '/' + context.getResources().getResourceTypeName(R.drawable.ic_baseline_keyboard_arrow_down_gold_24) +
+                                '/' + context.getResources().getResourceEntryName(R.drawable.ic_baseline_keyboard_arrow_down_gold_24) ));
+                        NoVotes.setText(Integer.toString(Integer.parseInt(NoVotes.getText().toString())-1));
+                        votingStatus=-1;
+                        if(!role.equals("Instructor")){
+                            USER.VOTES.replace(id.toString(),-1);
+                        }
+                        else{
+                            USER.INSTRUCTOR_VOTES.replace(id.toString(),-1);
+                        }
+                    }
+                    else if(votingStatus ==1) {
+                        try {
+                            String phpFile = "removeVote.php";
+                            if (role.equals("Instructor")) {
+                                phpFile = "removeVoteInstructor.php";
+                            }
+                            doPostRequest(phpFile, id.getText().toString(), "-1");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        upvote.setImageURI(Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE+
+                                "://" + context.getResources().getResourcePackageName(R.drawable.ic_baseline_keyboard_arrow_up_24)+
+                                '/' + context.getResources().getResourceTypeName(R.drawable.ic_baseline_keyboard_arrow_up_24) +
+                                '/' + context.getResources().getResourceEntryName(R.drawable.ic_baseline_keyboard_arrow_up_24) ));
+
+                        NoVotes.setText(Integer.toString(Integer.parseInt(NoVotes.getText().toString())-1));
+                        votingStatus=0;
+                        if(!role.equals("Instructor")){
+                            USER.VOTES.replace(id.toString(),0);
+                        }
+                        else{
+                            USER.INSTRUCTOR_VOTES.replace(id.toString(),0);
+                        }
+                    }
+                }
+            });
+
         }
     }
 
