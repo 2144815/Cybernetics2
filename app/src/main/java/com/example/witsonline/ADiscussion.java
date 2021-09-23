@@ -451,14 +451,16 @@ public class ADiscussion extends AppCompatActivity implements View.OnScrollChang
             case R.id.menu_sortByVotes:
                 // sort by votes
                 Collections.sort(commentList, Comment.CommentVotesComparator);
-                mAdapter.notifyDataSetChanged();
+                mAdapter = new CommentsAdapter(commentList, this);
+                recyclerView.setAdapter(mAdapter);
                 Toast.makeText( ADiscussion.this, "Sorted by votes", Toast.LENGTH_SHORT ).show();
                 return true;
 
             case R.id.menu_sortByRoles:
                 //sort by Roles
                 Collections.sort(commentList, Comment.CommentRolesComparator);
-                mAdapter.notifyDataSetChanged();
+                mAdapter = new CommentsAdapter(commentList, this);
+                recyclerView.setAdapter(mAdapter);
                 Toast.makeText( ADiscussion.this, "Sorted by Roles", Toast.LENGTH_SHORT ).show();
                 return true;
 
@@ -466,7 +468,8 @@ public class ADiscussion extends AppCompatActivity implements View.OnScrollChang
                 //sort by date(Default)
 
                 Collections.sort(commentList, Comment.CommentDatesComparator);
-                mAdapter.notifyDataSetChanged();
+                mAdapter = new CommentsAdapter(commentList, this);
+                recyclerView.setAdapter(mAdapter);
                 Toast.makeText( ADiscussion.this, "Sorted by Date", Toast.LENGTH_SHORT ).show();
                 return true;
         }

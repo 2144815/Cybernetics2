@@ -407,10 +407,22 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
                                 '/' + context.getResources().getResourceTypeName(R.drawable.ic_baseline_keyboard_arrow_up_gold_24) +
                                 '/' + context.getResources().getResourceEntryName(R.drawable.ic_baseline_keyboard_arrow_up_gold_24) ));
                         if(!role.getText().toString().equals("Instructor")){
-                            USER.VOTES.replace(id.toString(),1);
+                            USER.VOTES.put(id.toString(),1);
+                            for(int i=0;i<commentList.size();i++){
+                                if(commentList.get(i).getId().equals(id.getText().toString()) && !commentList.get(i).getUsername().equals(COURSE.INSTRUCTOR)){
+                                    commentList.get(i).setNoVotes(Integer.parseInt(NoVotes.getText().toString()));
+                                    commentList.get(i).setVotingStatus(1);
+                                }
+                            }
                         }
                         else{
-                            USER.INSTRUCTOR_VOTES.replace(id.toString(),1);
+                            USER.INSTRUCTOR_VOTES.put(id.toString(),1);
+                            for(int i=0;i<commentList.size();i++){
+                                if(commentList.get(i).getId().equals(id.getText().toString()) && commentList.get(i).getUsername().equals(COURSE.INSTRUCTOR)){
+                                    commentList.get(i).setNoVotes(Integer.parseInt(NoVotes.getText().toString()));
+                                    commentList.get(i).setVotingStatus(1);
+                                }
+                            }
                         }
 
                     }
@@ -432,10 +444,22 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
                         NoVotes.setText(Integer.toString(Integer.parseInt(NoVotes.getText().toString())+1));
                         votingStatus.setText("0");
                         if(!role.getText().toString().equals("Instructor")){
-                            USER.VOTES.replace(id.toString(),0);
+                            USER.VOTES.remove(id.toString());
+                            for(int i=0;i<commentList.size();i++){
+                                if(commentList.get(i).getId().equals(id.getText().toString()) && !commentList.get(i).getUsername().equals(COURSE.INSTRUCTOR)){
+                                    commentList.get(i).setNoVotes(Integer.parseInt(NoVotes.getText().toString()));
+                                    commentList.get(i).setVotingStatus(0);
+                                }
+                            }
                         }
                         else{
-                            USER.INSTRUCTOR_VOTES.replace(id.toString(),0);
+                            USER.INSTRUCTOR_VOTES.remove(id.toString());
+                            for(int i=0;i<commentList.size();i++){
+                                if(commentList.get(i).getId().equals(id.getText().toString()) && commentList.get(i).getUsername().equals(COURSE.INSTRUCTOR)){
+                                    commentList.get(i).setNoVotes(Integer.parseInt(NoVotes.getText().toString()));
+                                    commentList.get(i).setVotingStatus(0);
+                                }
+                            }
                         }
                     }
                 }
@@ -464,10 +488,22 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
                         NoVotes.setText(Integer.toString(Integer.parseInt(NoVotes.getText().toString())-1));
                         votingStatus.setText("-1");
                         if(!role.getText().toString().equals("Instructor")){
-                            USER.VOTES.replace(id.toString(),-1);
+                            USER.VOTES.put(id.toString(),-1);
+                            for(int i=0;i<commentList.size();i++){
+                                if(commentList.get(i).getId().equals(id.getText().toString()) && !commentList.get(i).getUsername().equals(COURSE.INSTRUCTOR)){
+                                    commentList.get(i).setNoVotes(Integer.parseInt(NoVotes.getText().toString()));
+                                    commentList.get(i).setVotingStatus(-1);
+                                }
+                            }
                         }
                         else{
-                            USER.INSTRUCTOR_VOTES.replace(id.toString(),-1);
+                            USER.INSTRUCTOR_VOTES.put(id.toString(),-1);
+                            for(int i=0;i<commentList.size();i++){
+                                if(commentList.get(i).getId().equals(id.getText().toString()) && commentList.get(i).getUsername().equals(COURSE.INSTRUCTOR)){
+                                    commentList.get(i).setNoVotes(Integer.parseInt(NoVotes.getText().toString()));
+                                    commentList.get(i).setVotingStatus(-1);
+                                }
+                            }
                         }
                     }
                     else if(votingStatus.getText().toString().equals("1")) {
@@ -488,13 +524,26 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
                         NoVotes.setText(Integer.toString(Integer.parseInt(NoVotes.getText().toString())-1));
                         votingStatus.setText("0");
                         if(!role.getText().toString().equals("Instructor")){
-                            USER.VOTES.replace(id.toString(),0);
+                            USER.VOTES.remove(id.toString());
+                            for(int i=0;i<commentList.size();i++){
+                                if(commentList.get(i).getId().equals(id.getText().toString()) && !commentList.get(i).getUsername().equals(COURSE.INSTRUCTOR)){
+                                    commentList.get(i).setNoVotes(Integer.parseInt(NoVotes.getText().toString()));
+                                    commentList.get(i).setVotingStatus(0);
+                                }
+                            }
                         }
                         else{
-                            USER.INSTRUCTOR_VOTES.replace(id.toString(),0);
+                            USER.INSTRUCTOR_VOTES.remove(id.toString());
+                            for(int i=0;i<commentList.size();i++){
+                                if(commentList.get(i).getId().equals(id.getText().toString()) && commentList.get(i).getUsername().equals(COURSE.INSTRUCTOR)){
+                                    commentList.get(i).setNoVotes(Integer.parseInt(NoVotes.getText().toString()));
+                                    commentList.get(i).setVotingStatus(0);
+                                }
+                            }
                         }
                     }
                 }
+
             });
 
         }
