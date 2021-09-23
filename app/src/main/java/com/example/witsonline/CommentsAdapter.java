@@ -2,8 +2,10 @@ package com.example.witsonline;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -108,14 +110,20 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
                 holder.votingStatus = USER.INSTRUCTOR_VOTES.get(comment.getId());
             }
         }
+        if(holder.votingStatus==1){
+            holder.upvote.setImageURI(Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE+
+                    "://" + context.getResources().getResourcePackageName(R.drawable.ic_baseline_keyboard_arrow_up_gold_24)+
+                    '/' + context.getResources().getResourceTypeName(R.drawable.ic_baseline_keyboard_arrow_up_gold_24) +
+                    '/' + context.getResources().getResourceEntryName(R.drawable.ic_baseline_keyboard_arrow_up_gold_24) ));
+        }
+        if(holder.votingStatus==-1){
+            holder.downVote.setImageURI(Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE+
+                    "://" + context.getResources().getResourcePackageName(R.drawable.ic_baseline_keyboard_arrow_down_gold_24)+
+                    '/' + context.getResources().getResourceTypeName(R.drawable.ic_baseline_keyboard_arrow_down_gold_24) +
+                    '/' + context.getResources().getResourceEntryName(R.drawable.ic_baseline_keyboard_arrow_down_gold_24) ));
+        }
         holder.TheStudentName.setText(commentList.get((holder.getAdapterPosition())).getUserFullName());
         holder.TheAnswer.setText(commentList.get((holder.getAdapterPosition())).getComment());
-       /* if (comment.getUsername().equals(USER.USERNAME)){
-            holder.TheAnswer.setClickable(true);
-        }
-        else{
-            holder.TheAnswer.setClickable(false);
-        }  */
         requestQueue = Volley.newRequestQueue(context);
         holder.role.setText(comment.getUserRole());
         holder.id.setText(comment.getId());
@@ -143,6 +151,10 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
                     commentList.get((holder.getAdapterPosition())).setNoVotes(Integer.parseInt(holder.NoVotes.getText().toString()) + 1);
                     holder.NoVotes.setText(String.valueOf(commentList.get((holder.getAdapterPosition())).getNoVotes()));
                     holder.votingStatus=1;
+                    holder.upvote.setImageURI(Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE+
+                            "://" + context.getResources().getResourcePackageName(R.drawable.ic_baseline_keyboard_arrow_up_gold_24)+
+                            '/' + context.getResources().getResourceTypeName(R.drawable.ic_baseline_keyboard_arrow_up_gold_24) +
+                            '/' + context.getResources().getResourceEntryName(R.drawable.ic_baseline_keyboard_arrow_up_gold_24) ));
                     if(!COURSE.INSTRUCTOR.equals(comment.getUsername())){
                         USER.VOTES.replace(comment.getId(),1);
                     }
@@ -161,6 +173,11 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+
+                    holder.downVote.setImageURI(Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE+
+                            "://" + context.getResources().getResourcePackageName(R.drawable.ic_baseline_keyboard_arrow_down_24)+
+                            '/' + context.getResources().getResourceTypeName(R.drawable.ic_baseline_keyboard_arrow_down_24) +
+                            '/' + context.getResources().getResourceEntryName(R.drawable.ic_baseline_keyboard_arrow_down_24) ));
                     commentList.get((holder.getAdapterPosition())).setNoVotes(Integer.parseInt(holder.NoVotes.getText().toString()) + 1);
                     holder.NoVotes.setText(String.valueOf(commentList.get((holder.getAdapterPosition())).getNoVotes()));
                     holder.votingStatus=0;
@@ -190,6 +207,10 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                    holder.downVote.setImageURI(Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE+
+                            "://" + context.getResources().getResourcePackageName(R.drawable.ic_baseline_keyboard_arrow_down_gold_24)+
+                            '/' + context.getResources().getResourceTypeName(R.drawable.ic_baseline_keyboard_arrow_down_gold_24) +
+                            '/' + context.getResources().getResourceEntryName(R.drawable.ic_baseline_keyboard_arrow_down_gold_24) ));
                     commentList.get((holder.getAdapterPosition())).setNoVotes(Integer.parseInt(holder.NoVotes.getText().toString()) - 1);
                     holder.NoVotes.setText(String.valueOf(commentList.get((holder.getAdapterPosition())).getNoVotes()));
                     holder.votingStatus=-1;
@@ -210,6 +231,11 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                    holder.upvote.setImageURI(Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE+
+                            "://" + context.getResources().getResourcePackageName(R.drawable.ic_baseline_keyboard_arrow_up_24)+
+                            '/' + context.getResources().getResourceTypeName(R.drawable.ic_baseline_keyboard_arrow_up_24) +
+                            '/' + context.getResources().getResourceEntryName(R.drawable.ic_baseline_keyboard_arrow_up_24) ));
+
                     commentList.get((holder.getAdapterPosition())).setNoVotes(Integer.parseInt(holder.NoVotes.getText().toString()) - 1);
                     holder.NoVotes.setText(String.valueOf(commentList.get((holder.getAdapterPosition())).getNoVotes()));
                     holder.votingStatus=0;
