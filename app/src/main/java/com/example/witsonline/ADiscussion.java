@@ -80,8 +80,6 @@ public class ADiscussion extends AppCompatActivity implements View.OnScrollChang
     private Comment comment;
     private RequestQueue requestQueue;
     private String webLink = "https://lamp.ms.wits.ac.za/home/s2105624/getAllReplies.php?page=";
-    private String votesUrl = "https://lamp.ms.wits.ac.za/home/s2105624/getVotes.php";
-    private String  votesInstUrl = "https://lamp.ms.wits.ac.za/home/s2105624/getVotesInstructor.php";
     private boolean browse = false;
     private boolean mycourses = false;
     private boolean dashboard = false;
@@ -150,10 +148,6 @@ public class ADiscussion extends AppCompatActivity implements View.OnScrollChang
         //specify an adapter
         recyclerView.setAdapter(mAdapter);
         commentList = new ArrayList<>();
-        USER.INSTRUCTOR_VOTES.clear();
-        USER.VOTES.clear();
-        getVotesData();
-        getInstVotesData();
         //Calling methods to get data from server
 
         getData();
@@ -222,6 +216,8 @@ public class ADiscussion extends AppCompatActivity implements View.OnScrollChang
                     //Calling method parseData to parse the json responce
                     //getTutorData();
                     parseData(response);
+                    relativeLayout.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.GONE);
                     /*final Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         @Override
@@ -376,85 +372,6 @@ public class ADiscussion extends AppCompatActivity implements View.OnScrollChang
             }
         });
 
-    }
-    private void getVotesData() {
-        requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(getVotesDataFromServer());
-    }
-
-    @Generated
-    private JsonArrayRequest getVotesDataFromServer() {
-        //JsonArrayRequest of volley
-        setProgressBarIndeterminateVisibility(true);
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(votesUrl + "?username="+USER.USERNAME,
-                (response) -> {
-                    //Calling method parseData to parse the json responce
-                    parseVotesData(response);
-                    relativeLayout.setVisibility(View.VISIBLE);
-                    progressBar.setVisibility(View.GONE);
-
-                },
-                (error) -> {
-                    //Toast.makeText(CourseHomePage.this, "No More Items Available", Toast.LENGTH_SHORT).show();
-                });
-        //Returning the request
-        return jsonArrayRequest;
-    }
-
-    //This method will parse json Data
-    @Generated
-    private void parseVotesData(JSONArray array) {
-        JSONObject json = null;
-        for(int i=0;i<array.length();i++){
-            try {
-                //Getting json
-                json = array.getJSONObject(i);
-                //Adding data to the course object
-                USER.VOTES.put(json.getString("Vote_ReplyId"), json.getInt("Vote_Int"));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private void getInstVotesData() {
-        requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(getInstVotesDataFromServer());
-    }
-
-    @Generated
-    private JsonArrayRequest getInstVotesDataFromServer() {
-        //JsonArrayRequest of volley
-        setProgressBarIndeterminateVisibility(true);
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(votesInstUrl + "?username="+USER.USERNAME,
-                (response) -> {
-                    //Calling method parseData to parse the json responce
-                    parseInstVotesData(response);
-                    relativeLayout.setVisibility(View.VISIBLE);
-                    progressBar.setVisibility(View.GONE);
-
-                },
-                (error) -> {
-                    //Toast.makeText(CourseHomePage.this, "No More Items Available", Toast.LENGTH_SHORT).show();
-                });
-        //Returning the request
-        return jsonArrayRequest;
-    }
-
-    //This method will parse json Data
-    @Generated
-    private void parseInstVotesData(JSONArray array) {
-        JSONObject json = null;
-        for(int i=0;i<array.length();i++){
-            try {
-                //Getting json
-                json = array.getJSONObject(i);
-                //Adding data to the course object
-                USER.INSTRUCTOR_VOTES.put(json.getString("Vote_ReplyId"), json.getInt("Vote_Int"));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     public boolean isLastItemDisplaying(RecyclerView recyclerView) {

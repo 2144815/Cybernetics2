@@ -70,6 +70,8 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
     private RecyclerView.LayoutManager layoutManager;
     private RecyclerView.Adapter adapter;
     String webURL = "https://lamp.ms.wits.ac.za/home/s2105624/getDiscussions.php?page=";
+    private String votesUrl = "https://lamp.ms.wits.ac.za/home/s2105624/getVotes.php";
+    private String  votesInstUrl = "https://lamp.ms.wits.ac.za/home/s2105624/getVotesInstructor.php";
     //Volley Request Queue
     private RequestQueue requestQueue;
     private  Button startDiscussion;
@@ -109,7 +111,7 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         startDiscussion = (Button)findViewById( R.id.startDiscussion );
-
+        USER.INSTRUCTOR_VOTES.clear();
 
         extras = getIntent().getExtras();
         if (extras != null) {
@@ -133,7 +135,9 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        USER.VOTES.clear();
+        getVotesData();
+        getInstVotesData();
         getData();
         //getTutorStateData();
         try {
@@ -495,6 +499,82 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
         });
     }
 
+    private void getVotesData() {
+        requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(getVotesDataFromServer());
+    }
+
+    @Generated
+    private JsonArrayRequest getVotesDataFromServer() {
+        //JsonArrayRequest of volley
+        setProgressBarIndeterminateVisibility(true);
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(votesUrl + "?username="+USER.USERNAME,
+                (response) -> {
+                    //Calling method parseData to parse the json responce
+                    parseVotesData(response);
+
+
+                },
+                (error) -> {
+                    //Toast.makeText(CourseHomePage.this, "No More Items Available", Toast.LENGTH_SHORT).show();
+                });
+        //Returning the request
+        return jsonArrayRequest;
+    }
+
+    //This method will parse json Data
+    @Generated
+    private void parseVotesData(JSONArray array) {
+        JSONObject json = null;
+        for(int i=0;i<array.length();i++){
+            try {
+                //Getting json
+                json = array.getJSONObject(i);
+                //Adding data to the course object
+                USER.VOTES.put(json.getString("Vote_ReplyId"), json.getInt("Vote_Int"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void getInstVotesData() {
+        requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(getInstVotesDataFromServer());
+    }
+
+    @Generated
+    private JsonArrayRequest getInstVotesDataFromServer() {
+        //JsonArrayRequest of volley
+        setProgressBarIndeterminateVisibility(true);
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(votesInstUrl + "?username="+USER.USERNAME,
+                (response) -> {
+                    //Calling method parseData to parse the json responce
+                    parseInstVotesData(response);
+
+                },
+                (error) -> {
+                    //Toast.makeText(CourseHomePage.this, "No More Items Available", Toast.LENGTH_SHORT).show();
+                });
+        //Returning the request
+        return jsonArrayRequest;
+    }
+
+    //This method will parse json Data
+    @Generated
+    private void parseInstVotesData(JSONArray array) {
+        JSONObject json = null;
+        for(int i=0;i<array.length();i++){
+            try {
+                //Getting json
+                json = array.getJSONObject(i);
+                //Adding data to the course object
+                USER.INSTRUCTOR_VOTES.put(json.getString("Vote_ReplyId"), json.getInt("Vote_Int"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     @Generated
     private void getCourseTutors() throws IOException {
@@ -559,6 +639,8 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
         if(isLastItemDisplaying(recyclerView)){
             //Calling the method getData again
             getData();
+            getVotesData();
+            getInstVotesData();
         }
     }
     @Generated
