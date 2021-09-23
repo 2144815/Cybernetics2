@@ -431,7 +431,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
                                 '/' + context.getResources().getResourceEntryName(R.drawable.ic_baseline_keyboard_arrow_down_24) ));
                         NoVotes.setText(Integer.toString(Integer.parseInt(NoVotes.getText().toString())+1));
                         votingStatus.setText("0");
-                        if(!role.getText().toString().equals("instructor")){
+                        if(!role.getText().toString().equals("Instructor")){
                             USER.VOTES.replace(id.toString(),0);
                         }
                         else{
