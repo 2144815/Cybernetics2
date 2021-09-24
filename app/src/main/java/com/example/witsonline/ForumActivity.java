@@ -112,6 +112,7 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
         recyclerView.setLayoutManager(layoutManager);
         startDiscussion = (Button)findViewById( R.id.startDiscussion );
         USER.INSTRUCTOR_VOTES.clear();
+        USER.VOTES.clear();
 
         extras = getIntent().getExtras();
         if (extras != null) {
