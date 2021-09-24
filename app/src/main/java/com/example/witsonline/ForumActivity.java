@@ -135,8 +135,6 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
         } catch (IOException e) {
             e.printStackTrace();
         }
-        USER.VOTES.clear();
-        USER.INSTRUCTOR_VOTES.clear();
         getVotesData();
         getInstVotesData();
         getData();

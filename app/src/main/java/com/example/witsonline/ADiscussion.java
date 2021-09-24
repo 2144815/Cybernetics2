@@ -100,9 +100,8 @@ public class ADiscussion extends AppCompatActivity implements View.OnScrollChang
         relativeLayout = findViewById(R.id.repliesRelativeLayout);
         progressBar = findViewById(R.id.commentProgressBar);
         progressBar.setVisibility(View.VISIBLE);
-
-
         //assign values
+
         send = (ImageButton) findViewById(R.id.btn_Send);
         Answer = (EditText) findViewById(R.id.editTextAnswer);
         studentName = (TextView) findViewById(R.id.tv_studentName);
@@ -149,9 +148,7 @@ public class ADiscussion extends AppCompatActivity implements View.OnScrollChang
         recyclerView.setAdapter(mAdapter);
         commentList = new ArrayList<>();
         //Calling methods to get data from server
-
         getData();
-
         //Adding an scroll change listener to recyclerView
         recyclerView.setOnScrollChangeListener(this);
         mAdapter = new CommentsAdapter(commentList, this);
@@ -444,7 +441,6 @@ public class ADiscussion extends AppCompatActivity implements View.OnScrollChang
         inflater.inflate( R.menu.sort_comments_menu,menu);
         return true;
     }
-
     @Override
     public boolean onOptionsItemSelected(@NonNull @NotNull MenuItem item) {
         switch(item.getItemId()){

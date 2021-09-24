@@ -100,7 +100,6 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
         // The method fetches the appropriate data and uses the data to fill in the view holder's layout. For example, if the RecyclerView displays a list of names,
         // the method might find the appropriate name in the list and fill in the view holder's TextView widget.
         //edit reply
-
         holder.TheStudentName.setText(commentList.get((holder.getAdapterPosition())).getUserFullName());
         holder.TheAnswer.setText(commentList.get((holder.getAdapterPosition())).getComment());
         requestQueue = Volley.newRequestQueue(context);
@@ -112,14 +111,14 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
         String strTime = dtDate.format(comment.getTime()) + '\n' + dtTime.format(comment.getTime());
         holder.TheTime.setText(strTime);
         //Log.d("VOTES", USER.VOTES.toString());
-        holder.votingStatus.setText(""+comment.getVotingStatus());
+        holder.votingStatus.setText(Integer.toString(comment.getVotingStatus()));
         if(comment.getVotingStatus()==1){
             holder.upvote.setImageURI(Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE+
                     "://" + context.getResources().getResourcePackageName(R.drawable.ic_baseline_keyboard_arrow_up_gold_24)+
                     '/' + context.getResources().getResourceTypeName(R.drawable.ic_baseline_keyboard_arrow_up_gold_24) +
                     '/' + context.getResources().getResourceEntryName(R.drawable.ic_baseline_keyboard_arrow_up_gold_24) ));
         }
-        if(comment.getVotingStatus()==-1){
+        else if(comment.getVotingStatus()==-1){
             holder.downVote.setImageURI(Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE+
                     "://" + context.getResources().getResourcePackageName(R.drawable.ic_baseline_keyboard_arrow_down_gold_24)+
                     '/' + context.getResources().getResourceTypeName(R.drawable.ic_baseline_keyboard_arrow_down_gold_24) +
@@ -407,7 +406,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
                                 '/' + context.getResources().getResourceTypeName(R.drawable.ic_baseline_keyboard_arrow_up_gold_24) +
                                 '/' + context.getResources().getResourceEntryName(R.drawable.ic_baseline_keyboard_arrow_up_gold_24) ));
                         if(!role.getText().toString().equals("Instructor")){
-                            USER.VOTES.put(id.toString(),1);
+                            USER.VOTES.put(id.getText().toString(),1);
                             for(int i=0;i<commentList.size();i++){
                                 if(commentList.get(i).getId().equals(id.getText().toString()) && !commentList.get(i).getUsername().equals(COURSE.INSTRUCTOR)){
                                     commentList.get(i).setNoVotes(Integer.parseInt(NoVotes.getText().toString()));
@@ -416,7 +415,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
                             }
                         }
                         else{
-                            USER.INSTRUCTOR_VOTES.put(id.toString(),1);
+                            USER.INSTRUCTOR_VOTES.put(id.getText().toString(),1);
                             for(int i=0;i<commentList.size();i++){
                                 if(commentList.get(i).getId().equals(id.getText().toString()) && commentList.get(i).getUsername().equals(COURSE.INSTRUCTOR)){
                                     commentList.get(i).setNoVotes(Integer.parseInt(NoVotes.getText().toString()));
@@ -444,7 +443,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
                         NoVotes.setText(Integer.toString(Integer.parseInt(NoVotes.getText().toString())+1));
                         votingStatus.setText("0");
                         if(!role.getText().toString().equals("Instructor")){
-                            USER.VOTES.remove(id.toString());
+                            USER.VOTES.remove(id.getText().toString());
                             for(int i=0;i<commentList.size();i++){
                                 if(commentList.get(i).getId().equals(id.getText().toString()) && !commentList.get(i).getUsername().equals(COURSE.INSTRUCTOR)){
                                     commentList.get(i).setNoVotes(Integer.parseInt(NoVotes.getText().toString()));
@@ -453,7 +452,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
                             }
                         }
                         else{
-                            USER.INSTRUCTOR_VOTES.remove(id.toString());
+                            USER.INSTRUCTOR_VOTES.remove(id.getText().toString());
                             for(int i=0;i<commentList.size();i++){
                                 if(commentList.get(i).getId().equals(id.getText().toString()) && commentList.get(i).getUsername().equals(COURSE.INSTRUCTOR)){
                                     commentList.get(i).setNoVotes(Integer.parseInt(NoVotes.getText().toString()));
@@ -488,7 +487,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
                         NoVotes.setText(Integer.toString(Integer.parseInt(NoVotes.getText().toString())-1));
                         votingStatus.setText("-1");
                         if(!role.getText().toString().equals("Instructor")){
-                            USER.VOTES.put(id.toString(),-1);
+                            USER.VOTES.put(id.getText().toString(),-1);
                             for(int i=0;i<commentList.size();i++){
                                 if(commentList.get(i).getId().equals(id.getText().toString()) && !commentList.get(i).getUsername().equals(COURSE.INSTRUCTOR)){
                                     commentList.get(i).setNoVotes(Integer.parseInt(NoVotes.getText().toString()));
@@ -497,7 +496,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
                             }
                         }
                         else{
-                            USER.INSTRUCTOR_VOTES.put(id.toString(),-1);
+                            USER.INSTRUCTOR_VOTES.put(id.getText().toString(),-1);
                             for(int i=0;i<commentList.size();i++){
                                 if(commentList.get(i).getId().equals(id.getText().toString()) && commentList.get(i).getUsername().equals(COURSE.INSTRUCTOR)){
                                     commentList.get(i).setNoVotes(Integer.parseInt(NoVotes.getText().toString()));
@@ -524,7 +523,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
                         NoVotes.setText(Integer.toString(Integer.parseInt(NoVotes.getText().toString())-1));
                         votingStatus.setText("0");
                         if(!role.getText().toString().equals("Instructor")){
-                            USER.VOTES.remove(id.toString());
+                            USER.VOTES.remove(id.getText().toString());
                             for(int i=0;i<commentList.size();i++){
                                 if(commentList.get(i).getId().equals(id.getText().toString()) && !commentList.get(i).getUsername().equals(COURSE.INSTRUCTOR)){
                                     commentList.get(i).setNoVotes(Integer.parseInt(NoVotes.getText().toString()));
@@ -533,7 +532,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
                             }
                         }
                         else{
-                            USER.INSTRUCTOR_VOTES.remove(id.toString());
+                            USER.INSTRUCTOR_VOTES.remove(id.getText().toString());
                             for(int i=0;i<commentList.size();i++){
                                 if(commentList.get(i).getId().equals(id.getText().toString()) && commentList.get(i).getUsername().equals(COURSE.INSTRUCTOR)){
                                     commentList.get(i).setNoVotes(Integer.parseInt(NoVotes.getText().toString()));

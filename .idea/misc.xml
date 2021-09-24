@@ -34,6 +34,8 @@
         <entry key="app/src/main/res/layout/review_dialog.xml" value="0.1671171171171171" />
         <entry key="app/src/main/res/layout/subscribe_dialog.xml" value="0.1358695652173913" />
         <entry key="app/src/main/res/layout/unsubscribe_dialog.xml" value="0.10733695652173914" />
+        <entry key="app/src/main/res/menu/discussion_menu.xml" value="0.1671171171171171" />
+        <entry key="app/src/main/res/menu/sort_comments_menu.xml" value="0.1671171171171171" />
       </map>
     </option>
   </component>
