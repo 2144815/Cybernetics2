@@ -436,12 +436,14 @@ public class ADiscussion extends AppCompatActivity implements View.OnScrollChang
     }
 
     @Override
+    @Generated
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate( R.menu.sort_comments_menu,menu);
         return true;
     }
     @Override
+    @Generated
     public boolean onOptionsItemSelected(@NonNull @NotNull MenuItem item) {
         switch(item.getItemId()){
             case R.id.menu_sortByVotes:

@@ -498,7 +498,7 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
             }
         });
     }
-
+    @Generated
     private void getVotesData() {
         requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(getVotesDataFromServer());
@@ -536,7 +536,7 @@ public class ForumActivity extends AppCompatActivity implements  View.OnScrollCh
             }
         }
     }
-
+    @Generated
     private void getInstVotesData() {
         requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(getInstVotesDataFromServer());

@@ -14,6 +14,7 @@ public class Comment {
 
     public static Comparator<Comment> CommentDatesComparator = new Comparator<com.example.witsonline.Comment>() {
         @Override
+        @Generated
         public int compare(com.example.witsonline.Comment C1, com.example.witsonline.Comment C2) {
             //If it returns a positive number, C1 has more votes
             //If it returns a negative number, C2 has more votes
@@ -33,6 +34,7 @@ public class Comment {
     };
     public static Comparator<Comment> CommentVotesComparator = new Comparator<com.example.witsonline.Comment>() {
         @Override
+        @Generated
         public int compare(com.example.witsonline.Comment C1, com.example.witsonline.Comment C2) {
             //If it returns a positive number, C1 has more votes
             //If it returns a negative number, C2 has more votes
@@ -49,6 +51,7 @@ public class Comment {
     };
     public static Comparator<Comment> CommentRolesComparator = new Comparator<com.example.witsonline.Comment>() {
         @Override
+        @Generated
         public int compare(com.example.witsonline.Comment C1, com.example.witsonline.Comment C2) {
             //If it returns a positive number, C1 has more votes
             //If it returns a negative number, C2 has more votes

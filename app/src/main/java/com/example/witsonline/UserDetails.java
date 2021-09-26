@@ -46,7 +46,7 @@ import java.util.ArrayList;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
-
+@Generated
 public class UserDetails extends AppCompatActivity {
 
     private TextInputLayout user, firstName, lastName, email;

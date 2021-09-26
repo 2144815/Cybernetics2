@@ -92,6 +92,7 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
+    @Generated
     public void onBackPressed() {
 
     }

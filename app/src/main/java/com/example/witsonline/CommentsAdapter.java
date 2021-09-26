@@ -247,6 +247,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
         });
 
     }
+    @Generated
     private void doPostRequest(String phpFile, String id, String vote) throws IOException {
         OkHttpClient client = new OkHttpClient();
 
@@ -329,6 +330,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
 
 
     @Override
+    @Generated
     public int getItemCount() {
         return commentList.size();
     }

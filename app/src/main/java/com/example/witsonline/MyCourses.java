@@ -126,6 +126,7 @@ public class MyCourses extends AppCompatActivity implements View.OnScrollChangeL
             jsonArrayRequest = new JsonArrayRequest(studWebURL + String.valueOf(requestCount)+"&studentNo="+USER.USER_NUM,
                     (response) -> {
                         //Calling method parseData to parse the json response
+
                         try {
                             parseData(response);
                         } catch (JSONException e) {

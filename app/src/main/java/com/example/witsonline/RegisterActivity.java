@@ -243,6 +243,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     //This function checks if a text contains digits only
+    @Generated
     boolean isDigits(TextInputLayout text){
         return TextUtils.isDigitsOnly(text.getEditText().getText().toString());
     }

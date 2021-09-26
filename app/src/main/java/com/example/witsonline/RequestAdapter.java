@@ -101,6 +101,7 @@ public class RequestAdapter extends  RecyclerView.Adapter<RequestAdapter.ViewHol
 
             acceptRequest.setOnClickListener(new View.OnClickListener() {
                 @Override
+                @Generated
                 public void onClick(View v) {
                     String studentNo = studentNumber.getText().toString();
                     String courseNo = courseCode.getText().toString();
@@ -111,6 +112,7 @@ public class RequestAdapter extends  RecyclerView.Adapter<RequestAdapter.ViewHol
 
             declineRequest.setOnClickListener(new View.OnClickListener() {
                 @Override
+                @Generated
                 public void onClick(View v) {
                     String studentNo = studentNumber.getText().toString();
                     String courseNo = courseCode.getText().toString();

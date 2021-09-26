@@ -184,6 +184,7 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
 
         popup.getMenu().findItem(R.id.Edit_DiscChoice).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
+            @Generated
             public boolean onMenuItemClick(MenuItem menuItem) {
                 androidx.appcompat.app.AlertDialog.Builder dialogBuilder = new androidx.appcompat.app.AlertDialog.Builder(context);
 
@@ -207,6 +208,7 @@ public class DiscussionCardAdapter extends RecyclerView.Adapter<DiscussionCardAd
 
                 postEditDiscussion.setOnClickListener(new View.OnClickListener() {
                     @Override
+                    @Generated
                     public void onClick(View view) {
                         if(!EditedTopic.getText().toString().isEmpty() && !EditedText.getText().toString().isEmpty()) {
                             StringRequest request = new StringRequest(Request.Method.POST, discussionUpdateURL, new Response.Listener<String>() {
