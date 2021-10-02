@@ -1,12 +1,20 @@
 package com.example.witsonline;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.ImageDecoder;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -17,6 +25,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.util.PatternsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,6 +39,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -36,11 +47,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class EditProfile extends AppCompatActivity implements View.OnScrollChangeListener, BottomNavigationView.OnNavigationItemSelectedListener {
+public class EditProfile extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     //This is for the logout pop up menu
     private AlertDialog.Builder dialogBuilder;
@@ -51,10 +64,17 @@ public class EditProfile extends AppCompatActivity implements View.OnScrollChang
     private RequestQueue requestQueue;
 
     //Creating Views
-    private TextInputLayout user, firstName, lastName, email, password, confirmPass;
+    private TextInputLayout user, firstName, lastName, email,bio, password, confirmPass;
+    private ImageView image;
     private Button btnEditProfile;
     private Switch passwordSwitch;
-    private RecyclerView recyclerView;
+
+    //for editing image
+    public static final int IMAGE_REQUEST_CODE = 3;
+    public static final int STORAGE_PERMISSION_CODE = 123;
+    private boolean imgChanged = false;
+    private Bitmap bitmap;
+    private Uri filePath;
 
     //boolean for password update
     boolean passwordUpdateRequired = false;
@@ -77,6 +97,8 @@ public class EditProfile extends AppCompatActivity implements View.OnScrollChang
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
 
+        requestStoragePermission();
+
         //Initializing progressbar
         progressBar = findViewById(R.id.editProfileProgressBar);
         relativeLayout = findViewById(R.id.EditProfileLayout);
@@ -97,9 +119,23 @@ public class EditProfile extends AppCompatActivity implements View.OnScrollChang
         lastName = findViewById(R.id.lastName);
         lastName.getEditText().setText(USER.LNAME);
         email = findViewById(R.id.email);
+        bio = findViewById(R.id.bio);
+        image = findViewById(R.id.profileEditImage);
         passwordSwitch = findViewById(R.id.passwordSwitch);
         password = findViewById(R.id.password);
         confirmPass = findViewById(R.id.confirmPassword);
+
+        //image on click
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            @Generated
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent,"Complete action using"), IMAGE_REQUEST_CODE);
+            }
+        });
 
         passwordSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -160,13 +196,20 @@ public class EditProfile extends AppCompatActivity implements View.OnScrollChang
                 } else {
                     passwordUpdate = "nopass";
                     //validate without password text inputs
-                    if (isEmpty(firstName) | isEmpty(lastName) | !validEmail(email)) {
+                    if (isEmpty(firstName) | isEmpty(lastName) | !validEmail(email) | isEmpty(bio)) {
                         valid = false;
                     }
                     else{
                         valid = true;
                     }
                 }
+
+                //store string version of image if updated
+                String bm = "nofile";
+                if (imgChanged){
+                    bm = getStringImage(bitmap);
+                }
+                final String file = bm;
 
                 if (valid) {
                     //perfom the update
@@ -193,6 +236,8 @@ public class EditProfile extends AppCompatActivity implements View.OnScrollChang
                                 parameters.put("fname", firstName.getEditText().getText().toString());
                                 parameters.put("lname", lastName.getEditText().getText().toString());
                                 parameters.put("email", email.getEditText().getText().toString());
+                                parameters.put("bio", bio.getEditText().getText().toString());
+                                parameters.put("bitmap", file);
                                 parameters.put("passreq", passwordUpdate);
                                 parameters.put("pass", password.getEditText().getText().toString());
                                 return parameters;
@@ -224,6 +269,8 @@ public class EditProfile extends AppCompatActivity implements View.OnScrollChang
                                 parameters.put("fname", firstName.getEditText().getText().toString());
                                 parameters.put("lname", lastName.getEditText().getText().toString());
                                 parameters.put("email", email.getEditText().getText().toString());
+                                parameters.put("bio", bio.getEditText().getText().toString());
+                                parameters.put("bitmap", file);
                                 parameters.put("passreq", passwordUpdate);
                                 parameters.put("pass", password.getEditText().getText().toString());
                                 return parameters;
@@ -237,6 +284,70 @@ public class EditProfile extends AppCompatActivity implements View.OnScrollChang
     });
 
 }
+
+    //getting and setting bitmap
+    @Override
+    @Generated
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == IMAGE_REQUEST_CODE && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            filePath = data.getData();
+        }
+        if (filePath != null) {
+            imgChanged = true;
+            try {
+                ImageDecoder.Source source = ImageDecoder.createSource(this.getContentResolver(), filePath);
+                bitmap = ImageDecoder.decodeBitmap(source);
+                image.setImageBitmap(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else{
+            imgChanged = false;
+        }
+    }
+
+    //getting the bitmap of image and encoding it as a string
+    @Generated
+    private String getStringImage(Bitmap bitmap) {
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] b = baos.toByteArray();
+        final String temp = Base64.encodeToString(b, Base64.DEFAULT);
+        Log.i("My_data_image", "" + temp);
+        return temp;
+    }
+
+    @Generated
+    public void requestStoragePermission(){
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+            return;
+        }
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.READ_EXTERNAL_STORAGE)){
+            //can explain here why you need this permission.
+        }
+        //ask for permission
+        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},STORAGE_PERMISSION_CODE);
+    }
+
+    //This method will be called when user taps on allow or deny
+    @Override
+    @Generated
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults){
+
+        //Checking if request code is our request
+        if (requestCode == STORAGE_PERMISSION_CODE){
+
+            //if granted
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                Toast.makeText(this, "Permission granted",Toast.LENGTH_LONG).show();
+            }
+            else{
+                Toast.makeText(this, "Permission denied",Toast.LENGTH_LONG).show();
+            }
+        }
+    }
 
     // This function checks if a required text is empty or not
     public boolean isEmpty(TextInputLayout text) {
@@ -344,6 +455,12 @@ public class EditProfile extends AppCompatActivity implements View.OnScrollChang
                 //getting student profile data
                 USER.EMAIL = json.getString("Student_Email");
                 email.getEditText().setText(USER.EMAIL);
+                if (!json.getString("Student_Bio").equals("null")){
+                    bio.getEditText().setText(json.getString("Student_Bio"));
+                }
+                if(!json.getString("Student_Image").equals("null")){
+                    Glide.with(this).load(json.getString("Student_Image")).into(image);
+                }
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -403,6 +520,12 @@ public class EditProfile extends AppCompatActivity implements View.OnScrollChang
                 //getting student profile data
                 USER.EMAIL = json.getString("Instructor_Email");
                 email.getEditText().setText(USER.EMAIL);
+                if (!json.getString("Instructor_Bio").equals("null")) {
+                    bio.getEditText().setText(json.getString("Instructor_Bio"));
+                }
+                if(!json.getString("Instructor_Image").equals("null")){
+                    Glide.with(this).load(json.getString("Instructor_Image")).into(image);
+                }
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -502,26 +625,6 @@ public class EditProfile extends AppCompatActivity implements View.OnScrollChang
         }
 
         return false;
-    }
-
-    //This method will check if the recyclerview has reached the bottom or not
-    public boolean isLastItemDistplaying(RecyclerView recyclerView) {
-        if (recyclerView.getAdapter().getItemCount() != 0) {
-            int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
-            if (lastVisibleItemPosition != RecyclerView.NO_POSITION && lastVisibleItemPosition == recyclerView.getAdapter().getItemCount() - 1) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Override
-    @Generated
-    public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-        //if Scrolled at last then
-        if (isLastItemDistplaying(recyclerView)) {
-            //Calling the method getData again
-        }
     }
 
     @Override
