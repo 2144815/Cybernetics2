@@ -10,6 +10,7 @@ public class Comment {
     private int discussionId;
     private String Comment;
     private Date time;
+    private String imageUrl;
 
 
     public static Comparator<Comment> CommentDatesComparator = new Comparator<com.example.witsonline.Comment>() {
@@ -133,6 +134,7 @@ public class Comment {
     public String getUserFullName() {
         return UserFullName;
     }
+    public void setImageUrl(String url){ this.imageUrl = url; }
 
     public void setUserFullName(String userFullName) {
         UserFullName = userFullName;
@@ -169,6 +171,8 @@ public class Comment {
     public void setNoVotes(int noVotes) {
         this.NoVotes = noVotes;
     }
+
+    public String getImageUrl(){ return this.imageUrl; }
 
 
 }

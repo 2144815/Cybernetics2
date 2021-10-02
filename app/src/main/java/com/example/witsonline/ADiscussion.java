@@ -259,6 +259,7 @@ public class ADiscussion extends AppCompatActivity implements View.OnScrollChang
                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 comment.setTime(format.parse(json.getString("reply_Time")));
                 Log.d("HERE",format.format(comment.getTime()));
+                comment.setImageUrl(json.getString("userImage"));
 
                 //check if instructor or student
                 if (byRegex(username,m)) {
@@ -284,24 +285,6 @@ public class ADiscussion extends AppCompatActivity implements View.OnScrollChang
                         comment.setVotingStatus(0);
                     }
                 }
-                /*
-                if(!COURSE.INSTRUCTOR.equals(comment.getUsername())){
-                    if(USER.VOTES.containsKey(id)) {
-                        comment.setVotingStatus(USER.VOTES.get(id));
-                    }
-                    else{
-                        comment.setVotingStatus(0);
-                    }
-                }
-                else{
-                    if(USER.INSTRUCTOR_VOTES.containsKey(id)) {
-                        comment.setVotingStatus(USER.INSTRUCTOR_VOTES.get(id));
-                    }
-                    else{
-                        comment.setVotingStatus(0);
-                    }
-                }
-                 */
 
             } catch (JSONException | ParseException e) {
                 e.printStackTrace();

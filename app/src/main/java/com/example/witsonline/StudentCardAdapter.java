@@ -11,12 +11,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 
 import org.jetbrains.annotations.NotNull;
 import org.w3c.dom.Text;
@@ -68,13 +71,15 @@ public class StudentCardAdapter extends RecyclerView.Adapter<StudentCardAdapter.
         final StudentV studentV = studentVs.get(position);
 
         //Showing data on the views
-
+        holder.setIsRecyclable(false);
         holder.studentNumber.setText(studentV.getStudentNumber());
         holder.studentName.setText(studentV.getStudentFName() +" "+ studentV.getStudentLName());
         holder.tutorState.setText(studentV.getTutorState());
+        if (!studentV.getStudentImageUrl().equals("null")) {
+            Glide.with(context).load(studentV.getStudentImageUrl()).into(holder.image);
+        }
         if(studentV.getTutorState().equals("1")){
             holder.assignTutor.setText("Un-assign Tutor");
-
         }
     }
 
@@ -124,6 +129,7 @@ public class StudentCardAdapter extends RecyclerView.Adapter<StudentCardAdapter.
         public TextView studentName;
         public TextView studentNumber;
         public Button assignTutor;
+        public ImageView image;
         public TextView tutorState;
 
         //Initializing Views
@@ -132,6 +138,7 @@ public class StudentCardAdapter extends RecyclerView.Adapter<StudentCardAdapter.
             super(itemView);
             studentNumber = (TextView) itemView.findViewById(R.id.studentCardNumber);
             studentName = (TextView) itemView.findViewById(R.id.studentCardName);
+            image = (ImageView) itemView.findViewById(R.id.studentImage);
             studentName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 @Generated

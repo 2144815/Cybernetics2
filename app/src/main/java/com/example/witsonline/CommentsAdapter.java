@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -34,6 +35,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
 import com.google.android.material.textfield.TextInputEditText;
 
 import org.jetbrains.annotations.NotNull;
@@ -100,6 +102,10 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
         // The method fetches the appropriate data and uses the data to fill in the view holder's layout. For example, if the RecyclerView displays a list of names,
         // the method might find the appropriate name in the list and fill in the view holder's TextView widget.
         //edit reply
+        holder.setIsRecyclable(false);
+        if (!comment.getImageUrl().equals("null")) {
+            Glide.with(context).load(comment.getImageUrl()).into(holder.image);
+        }
         holder.TheStudentName.setText(commentList.get((holder.getAdapterPosition())).getUserFullName());
         holder.TheAnswer.setText(commentList.get((holder.getAdapterPosition())).getComment());
         requestQueue = Volley.newRequestQueue(context);
@@ -348,6 +354,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
         //Integer voteStatus;
         AppCompatImageButton upvote;
         AppCompatImageButton downVote;
+        ImageView image;
 
 
 
@@ -357,6 +364,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
             role = itemView.findViewById(R.id.role);
             votingStatus = itemView.findViewById(R.id.votingStatus);
             TheStudentName = itemView.findViewById(R.id.tv_studentFullName);
+            image = (ImageView) itemView.findViewById(R.id.imageView2);
             TheStudentName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 @Generated

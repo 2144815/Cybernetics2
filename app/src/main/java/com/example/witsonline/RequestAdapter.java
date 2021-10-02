@@ -17,6 +17,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -71,6 +73,9 @@ public class RequestAdapter extends  RecyclerView.Adapter<RequestAdapter.ViewHol
         holder.courseCode.setText(requestV.getCourseCode());
         holder.studentName.setText(requestV.getStudentFName() + " " + requestV.getStudentLName());
         holder.studentNumber.setText(requestV.getStudentNumber());
+        if (!requestV.getStudentImageUrl().equals("null")) {
+            Glide.with(context).load(requestV.getStudentImageUrl()).into(holder.image);
+        }
     }
 
     @Override
@@ -87,6 +92,7 @@ public class RequestAdapter extends  RecyclerView.Adapter<RequestAdapter.ViewHol
         public TextView studentNumber;
         public Button acceptRequest;
         public Button declineRequest;
+        public ImageView image;
 
 
         //Initializing Views
@@ -98,6 +104,7 @@ public class RequestAdapter extends  RecyclerView.Adapter<RequestAdapter.ViewHol
             studentNumber = (TextView) itemView.findViewById(R.id.requestStudentNumber);
             acceptRequest = (Button) itemView.findViewById(R.id.acceptRequestButton);
             declineRequest = (Button) itemView.findViewById(R.id.declineRequestButton);
+            image = (ImageView) itemView.findViewById(R.id.requestStudentImage);
 
             acceptRequest.setOnClickListener(new View.OnClickListener() {
                 @Override
