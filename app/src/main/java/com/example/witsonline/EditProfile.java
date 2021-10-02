@@ -53,7 +53,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class EditProfile extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+public class EditProfile extends AppCompatActivity implements View.OnScrollChangeListener, BottomNavigationView.OnNavigationItemSelectedListener {
 
     //This is for the logout pop up menu
     private AlertDialog.Builder dialogBuilder;
@@ -68,6 +68,7 @@ public class EditProfile extends AppCompatActivity implements BottomNavigationVi
     private ImageView image;
     private Button btnEditProfile;
     private Switch passwordSwitch;
+    private RecyclerView recyclerView;
 
     //for editing image
     public static final int IMAGE_REQUEST_CODE = 3;
@@ -626,6 +627,27 @@ public class EditProfile extends AppCompatActivity implements BottomNavigationVi
 
         return false;
     }
+
+    //This method will check if the recyclerview has reached the bottom or not
+    public boolean isLastItemDistplaying(RecyclerView recyclerView) {
+        if (recyclerView.getAdapter().getItemCount() != 0) {
+            int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
+            if (lastVisibleItemPosition != RecyclerView.NO_POSITION && lastVisibleItemPosition == recyclerView.getAdapter().getItemCount() - 1) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    @Generated
+    public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+        //if Scrolled at last then
+        if (isLastItemDistplaying(recyclerView)) {
+            //Calling the method getData again
+        }
+    }
+
 
     @Override
     @Generated
