@@ -421,6 +421,7 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
                 reviewV.setStudentLName(json.getString("reviewStudentLName"));
                 reviewV.setReviewRating(json.getString("reviewRating"));
                 reviewV.setReviewDescription(json.getString("reviewDescription"));
+                reviewV.setReviewImageUrl(json.getString("reviewImage"));
             } catch (JSONException e){
                 e.printStackTrace();
             }

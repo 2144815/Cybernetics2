@@ -483,6 +483,8 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
                 reviewV.setStudentLName(json.getString("reviewStudentLName"));
                 reviewV.setReviewRating(json.getString("reviewRating"));
                 reviewV.setReviewDescription(json.getString("reviewDescription"));
+                //Toast.makeText(CourseHomePage.this, json.getString("reviewImage"), Toast.LENGTH_SHORT).show();
+                reviewV.setReviewImageUrl(json.getString("reviewImage"));
             } catch (JSONException e){
                 e.printStackTrace();
             }

@@ -9,15 +9,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 public class ReviewCardAdapter extends RecyclerView.Adapter<ReviewCardAdapter.ViewHolder> {
 
@@ -94,9 +100,13 @@ public class ReviewCardAdapter extends RecyclerView.Adapter<ReviewCardAdapter.Vi
         final ReviewV reviewV =  reviewVs.get(position);
 
         //Showing data on the view
+        holder.setIsRecyclable(false);
         holder.studentName.setText(reviewV.getStudentFName() +" "+ reviewV.getStudentLName());
         holder.reviewDescription.setText(reviewV.getReviewDescription());
         holder.reviewID.setText(reviewV.getReviewID());
+        if (!reviewV.getReviewImageUrl().equals("null")) {
+            Glide.with(context).load(reviewV.getReviewImageUrl()).into(holder.image);
+        }
         if(reviewV.getReviewRating()!=null) {
             holder.reviewRating.setRating(Float.parseFloat(reviewV.getReviewRating()));
         }
@@ -117,6 +127,7 @@ public class ReviewCardAdapter extends RecyclerView.Adapter<ReviewCardAdapter.Vi
         public TextView reviewDescription;
         public RatingBar reviewRating;
         public TextView reviewID;
+        public ImageView image;
 
         //Initializing Views
         @RequiresApi(api = Build.VERSION_CODES.M)
@@ -124,6 +135,7 @@ public class ReviewCardAdapter extends RecyclerView.Adapter<ReviewCardAdapter.Vi
             super(itemView);
             reviewID = (TextView) itemView.findViewById(R.id.reviewID);
             studentName = (TextView) itemView.findViewById(R.id.studentName);
+            image = (ImageView) itemView.findViewById(R.id.reviewImage);
             studentName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 @Generated

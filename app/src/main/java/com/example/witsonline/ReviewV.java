@@ -11,6 +11,7 @@ public class ReviewV {
     private String strStudentLName;
     private String strReviewDescription;
     private String strReviewRating;
+    private String strReviewImageUrl;
 
     public void setReviewID(String reviewID){ this.strReviewID = reviewID; }
     public void setStudentNumber(String studentNumber){ this.strStudentNumber = studentNumber; }
@@ -20,6 +21,7 @@ public class ReviewV {
     }
     public void setReviewDescription(String reviewDescription){ this.strReviewDescription = reviewDescription;}
     public void setReviewRating(String reviewRating){ this.strReviewRating = reviewRating;}
+    public void setReviewImageUrl(String url){ this.strReviewImageUrl = url;}
 
     public String getReviewID(){ return strReviewID; }
     public String getStudentNumber(){ return strStudentNumber; }
@@ -32,6 +34,7 @@ public class ReviewV {
     public String getReviewDescription(){
         return strReviewDescription;
     }
+    public String getReviewImageUrl(){ return  strReviewImageUrl; }
     public String getReviewRating(){
         if(strReviewRating!=null) {
             return strReviewRating;
