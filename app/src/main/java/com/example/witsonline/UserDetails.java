@@ -1,20 +1,33 @@
 package com.example.witsonline;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.ImageDecoder;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.AttributeSet;
+import android.util.Base64;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -26,6 +39,8 @@ import android.widget.Toast;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.textfield.TextInputLayout;
 
 import okhttp3.*;
@@ -36,6 +51,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 //import org.mindrot.jbcrypt.BCrypt;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
@@ -49,8 +65,15 @@ import javax.crypto.spec.PBEKeySpec;
 @Generated
 public class UserDetails extends AppCompatActivity {
 
-    private TextInputLayout user, firstName, lastName, email;
+    private TextInputLayout user, firstName, lastName, email, Bio;
     private RequestQueue requestQueue;
+
+    String Biography;
+    String profilePicUrl;
+
+    //for viewing image
+    public ImageView profileImage;
+    public ImageView profileImageExtended;
 
     //This is for the delay while loading the email
     private ProgressBar progressBar;
@@ -62,6 +85,7 @@ public class UserDetails extends AppCompatActivity {
     //for determining the type of user
     Bundle extras;
 
+    @RequiresApi(api = Build.VERSION_CODES.P)
     @Override
     @Generated
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +103,8 @@ public class UserDetails extends AppCompatActivity {
         firstName = findViewById(R.id.viewFirstName);
         lastName = findViewById(R.id.viewLastName);
         email = findViewById(R.id.viewEmail);
+        Bio = findViewById(R.id.viewUserBio);
+        profileImage = findViewById(R.id.profileImage);
 
         extras = getIntent().getExtras();
         String userType = extras.getString("userType");
@@ -95,14 +121,26 @@ public class UserDetails extends AppCompatActivity {
                 Toast.makeText(UserDetails.this, "null", Toast.LENGTH_SHORT).show();
             }
         }
+
+        //image on click
+        profileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            @Generated
+            public void onClick(View v) {
+                //Intent intent = new Intent(UserDetails.this, viewProfilePic.class);
+                //startActivity(intent);
+            }
+        });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.P)
     @Generated
     private void getStudentData() {
         //Adding the method to the queue by calling the method getTagData
         requestQueue.add(getStudentDataFromServer());
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.P)
     @Generated
     private JsonArrayRequest getStudentDataFromServer() {
         //JsonArrayRequest of volley
@@ -123,6 +161,7 @@ public class UserDetails extends AppCompatActivity {
     }
 
     //This method will parse json Data
+    @RequiresApi(api = Build.VERSION_CODES.P)
     @Generated
     private void parseStudentData(JSONArray array) {
         for (int i = 0; i < array.length(); i++) {
@@ -139,13 +178,20 @@ public class UserDetails extends AppCompatActivity {
                 firstName.getEditText().setText(STUDENT.fName);
                 STUDENT.lName = json.getString("Student_LName");
                 lastName.getEditText().setText(STUDENT.lName);
-
+                Biography = json.getString("Student_Bio");
+                profilePicUrl = json.getString("Student_Image");
+                if(Biography.equals("null")){
+                    Bio.getEditText().setText("Bio has not been set");
+                }else{
+                    Bio.getEditText().setText(Biography);
+                }
+                if(!profilePicUrl.equals("null")){
+                    Glide.with(this).load(profilePicUrl).into(profileImage);
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
         }
-
     }
 
     @Generated
@@ -190,6 +236,17 @@ public class UserDetails extends AppCompatActivity {
                 firstName.getEditText().setText(INSTRUCTOR.FNAME);
                 INSTRUCTOR.LNAME = json.getString("Instructor_LName");
                 lastName.getEditText().setText(INSTRUCTOR.LNAME);
+                Biography = json.getString("Instructor_Bio");
+                if (Biography.equals("null")) {
+                    Bio.getEditText().setText("Bio has not been set");
+                } else {
+                    Bio.getEditText().setText(Biography);
+                }
+                profilePicUrl = json.getString("Instructor_Image");
+                if(!profilePicUrl.equals("null")){
+                    Glide.with(this).load(profilePicUrl).into(profileImage);
+
+                }
 
             } catch (JSONException e) {
                 e.printStackTrace();
