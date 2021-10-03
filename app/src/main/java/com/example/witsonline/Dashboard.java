@@ -243,6 +243,7 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
                 requestV.setStudentFName(json.getString("studentFName"));
                 requestV.setCourseName(json.getString("courseName"));
                 requestV.setCourseCode(json.getString("courseCode"));
+                requestV.setStudentImageUrl(json.getString("studentImage"));
 
                 listRequestVs.add(requestV);
             } catch (JSONException e) {
@@ -499,75 +500,6 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
         USER.FEATURED_COURSES = courses;
         displayFeaturedCourses();
     }
-
-    /*
-    @Generated
-    private void getSubData() {
-        requestQueue = Volley.newRequestQueue(Dashboard.this);
-        requestQueue.add(getSubDataFromServer());
-    }
-
-    @Generated
-    private JsonArrayRequest getSubDataFromServer() {
-        //JsonArrayRequest of volley
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(subURL + USER.USER_NUM,
-                (response) -> {
-                    //Calling method parseData to parse the json responce
-                    parseSubData(response);
-
-                },
-                (error) -> {
-                    //Toast.makeText(CourseHomePage.this, "No More Items Available", Toast.LENGTH_SHORT).show();
-                });
-        //Returning the request
-        return jsonArrayRequest;
-    }
-
-    //This method will parse json Data
-    @Generated
-    private void parseSubData(JSONArray array) {
-        if (USER.SUBSCRIBED_TO_FEAT_COURSE != null) {
-            USER.SUBSCRIBED_TO_FEAT_COURSE.clear();
-        } else {
-            USER.SUBSCRIBED_TO_FEAT_COURSE = new HashSet<>();
-        }
-
-        for (int i = 0; i< array.length(); i++){
-            // Creating the Course object
-            JSONObject json = null;
-            try {
-                //Getting json
-                json = array.getJSONObject(i);
-                String course = json.getString("Enrolment_Course");
-                USER.SUBSCRIBED_TO_FEAT_COURSE.add(course);
-                //Toast.makeText(Dashboard.this, course+"subscribed", Toast.LENGTH_SHORT).show();
-
-            } catch (JSONException e){
-                e.printStackTrace();
-            }
-        }
-
-
-        relativeLayout.setVisibility(View.VISIBLE);
-        relativeLayoutName.setVisibility(View.VISIBLE);
-        progressBarPage.setVisibility(View.GONE);
-
-
-        /*
-        if (array.toString().equals("[]")) {
-            USER.SUBSCRIBED_TO_FEAT_COURSE.put(courseCode, "false");
-            //Toast.makeText(Dashboard.this, "not subscribed", Toast.LENGTH_SHORT).show();
-        } else {
-            USER.SUBSCRIBED_TO_FEAT_COURSE.put(courseCode, "true");
-            //Toast.makeText(Dashboard.this, "subscribed", Toast.LENGTH_SHORT).show();
-        }
-
-
-
-
-    }
-
-     */
 
     @Generated
     private void checkFeatCourses() throws IOException {

@@ -19,7 +19,7 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/courseImage"
+                android:id="@+id/studentImage"
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
                 android:src="@drawable/user"/>

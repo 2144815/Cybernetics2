@@ -125,6 +125,7 @@ public class BrowseStudents extends AppCompatActivity implements  View.OnScrollC
                 studentV.setStudentLName(json.getString("studentLName"));
                 studentV.setStudentNumber(json.getString("studentNumber"));
                 studentV.setTutorState(json.getString("tutorState"));
+                studentV.setStudentImageUrl(json.getString("studentImage"));
             } catch (JSONException e){
                 e.printStackTrace();
             }
