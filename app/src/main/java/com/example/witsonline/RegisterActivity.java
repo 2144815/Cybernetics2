@@ -1,34 +1,53 @@
 package com.example.witsonline;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.util.PatternsCompat;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.ImageDecoder;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 import android.text.TextUtils;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.jetbrains.annotations.NotNull;
+import org.w3c.dom.Text;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -36,11 +55,18 @@ public class RegisterActivity extends AppCompatActivity {
     private TextInputEditText userText;
     private RadioButton rbStudent;
     private RadioButton rbInstructor;
-    private TextInputLayout username, firstName, lastName, email, password, confirmPass;
+    private ImageView image;
+    private TextInputLayout username, firstName, lastName, email, password, confirmPass,bio;
     private Button register;
+    public static final int IMAGE_REQUEST_CODE = 3;
+    public static final int STORAGE_PERMISSION_CODE = 123;
+    private Uri filePath;
+    private Bitmap bitmap;
     private ArrayList<String> studentNumbers = new ArrayList<>();
     private ArrayList<String> instructorUsernames = new ArrayList<>();
     private Boolean instructorCheck=false;
+    private boolean imgSelected = false;
+    private RequestQueue requestQueue;
 
     @Override
     @Generated
@@ -51,7 +77,18 @@ public class RegisterActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         studentNumbers = extras.getStringArrayList("students");
         instructorUsernames = extras.getStringArrayList("instructors");
-
+        image = findViewById(R.id.profileImage);
+        requestStoragePermission();
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            @Generated
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent,"Complete action using"), IMAGE_REQUEST_CODE);
+            }
+        });
 
         rbStudent = findViewById(R.id.student);
         rbInstructor = findViewById(R.id.instructor);
@@ -88,7 +125,7 @@ public class RegisterActivity extends AppCompatActivity {
         password = findViewById(R.id.password);
         confirmPass = findViewById(R.id.confirmPassword);
         register = (Button) findViewById(R.id.buttonRegister);
-
+        bio = findViewById(R.id.bio);
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             @Generated
@@ -101,6 +138,7 @@ public class RegisterActivity extends AppCompatActivity {
                 email.setErrorEnabled(false);
                 password.setErrorEnabled(false);
                 confirmPass.setErrorEnabled(false);
+                bio.setErrorEnabled(false);
 
                 String[] phpFile = {"studentRegister.php"}; // php file for students
                 String[] userType = {"studentNumber"}; // students use student number to register
@@ -113,9 +151,9 @@ public class RegisterActivity extends AppCompatActivity {
                     userType[0] = "studentNumber";//instructors use username to register
                     Log.d("HERE", phpFile[0]);
                 }
-
+                requestQueue = Volley.newRequestQueue(getApplicationContext());
                 try {
-                    processInfo(username, firstName, lastName, email, password, confirmPass, phpFile[0], userType[0],instructorUsernames,studentNumbers,instructorCheck);
+                    processInfo(username, firstName, lastName, email,bio, password, confirmPass, phpFile[0], userType[0],instructorUsernames,studentNumbers,instructorCheck);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -126,50 +164,56 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     //Post request function
-    private void doPostRequest(final TextInputLayout user, TextInputLayout name, TextInputLayout surname, TextInputLayout emailAdd, TextInputLayout pass, String phpFile, String userType) throws IOException {
-        OkHttpClient client = new OkHttpClient();
-
-        HttpUrl.Builder urlBuilder = HttpUrl.parse("https://lamp.ms.wits.ac.za/~s2105624/" + phpFile).newBuilder();
-        urlBuilder.addQueryParameter(userType, user.getEditText().getText().toString());
-        urlBuilder.addQueryParameter("firstname", name.getEditText().getText().toString());
-        urlBuilder.addQueryParameter("lastname", surname.getEditText().getText().toString());
-        urlBuilder.addQueryParameter("email", emailAdd.getEditText().getText().toString());
-        urlBuilder.addQueryParameter("password", pass.getEditText().getText().toString());
-        String url = urlBuilder.build().toString();
-
-        Request request = new Request.Builder()
-                .url(url)
-                .build();
-
-        client.newCall(request).enqueue(new Callback() {
+    private void doPostRequest(final TextInputLayout user, TextInputLayout name, TextInputLayout surname, TextInputLayout emailAdd,TextInputLayout bio, TextInputLayout pass, String phpFile, String userType,boolean instructor) throws IOException {
+        //OkHttpClient client = new OkHttpClient();
+        String bm = "nofile";
+        if (imgSelected){
+            bm = getStringImage(bitmap);
+            if(userType.equals("username")){
+                phpFile = "instructorRegisterImage.php";
+            }
+            else{
+                //still need to create this php file
+                phpFile = "studentRegisterImage.php";
+            }
+        }
+        String url = "https://lamp.ms.wits.ac.za/~s2105624/";
+        String finalBm = bm;
+        StringRequest request = new StringRequest(Request.Method.POST, url+phpFile, new com.android.volley.Response.Listener<String>() {
             @Override
             @Generated
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                e.printStackTrace();
+            public void onResponse(String response) {
+                System.out.println(response);
             }
-
+        }, new Response.ErrorListener() {
             @Override
             @Generated
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                final String responseData = response.body().string();
-                RegisterActivity.this.runOnUiThread(new Runnable() {
-                    @Override
-                    @Generated
-                    public void run() {
-                        Log.d("HERE", responseData);
-                        if (responseData.equals("Successful")) {
-                            Toast toast = Toast.makeText(RegisterActivity.this, "Registration successful", Toast.LENGTH_LONG);
-                            toast.show();
-                            Intent i = new Intent(RegisterActivity.this, LoginActivity.class);
-                            startActivity(i);
-                            finish();
-                        } else {
-                            user.setError(" User already exists");
-                        }
-                    }
-                });
+            public void onErrorResponse(VolleyError error) {
+                System.out.println(error.getMessage());
             }
-        });
+        }) {
+            @Override
+            @Generated
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> parameters = new HashMap<>();
+                parameters.put(userType, user.getEditText().getText().toString());
+                parameters.put("firstname", name.getEditText().getText().toString());
+                parameters.put("lastname", surname.getEditText().getText().toString());
+                parameters.put("email", emailAdd.getEditText().getText().toString());
+                parameters.put("password", pass.getEditText().getText().toString());
+                parameters.put("bio", bio.getEditText().getText().toString());
+                if(!finalBm.equals("nofile")){
+                    parameters.put("bitmap", getStringImage(bitmap));
+                }
+                return parameters;
+            }
+        };
+        requestQueue.add(request);
+        Toast toast = Toast.makeText(RegisterActivity.this, "Registration successful", Toast.LENGTH_LONG);
+        toast.show();
+        Intent i = new Intent(RegisterActivity.this, LoginActivity.class);
+        startActivity(i);
+        finish();
     }
 
     // This function checks if a required text is empty or not
@@ -249,17 +293,18 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     //This function processes data for registration
-    public boolean processInfo(TextInputLayout user, TextInputLayout name, TextInputLayout surname, TextInputLayout emailAdd, TextInputLayout pass, TextInputLayout confirmPass,String phpFile, String userType,ArrayList<String> InstructorNames,ArrayList<String> StudentNums,Boolean instructor) throws IOException {
+     public boolean processInfo(TextInputLayout user, TextInputLayout name, TextInputLayout surname, TextInputLayout emailAdd, TextInputLayout bio, TextInputLayout pass, TextInputLayout confirmPass, String phpFile, String userType, ArrayList<String> InstructorNames, ArrayList<String> StudentNums, Boolean instructor) throws IOException {
         boolean valid = true;
         isEmpty(user);
         isEmpty(name);
         isEmpty(surname);
         isEmpty(emailAdd);
         isEmpty(pass);
+        isEmpty(bio);
         userExists(user,InstructorNames,StudentNums,instructor);
         validateEmail(emailAdd);
-        if(!(isEmpty(user) && isEmpty(name) && isEmpty(surname) && isEmpty(pass) && userExists(user,InstructorNames,StudentNums,instructor)) && validatePassword(pass,confirmPass) && validateEmail(emailAdd) ){
-            doPostRequest(user, name, surname, emailAdd, pass, phpFile, userType);
+        if(!(isEmpty(user) && isEmpty(name) && isEmpty(surname) && isEmpty(pass) &&isEmpty(bio) && userExists(user,InstructorNames,StudentNums,instructor)) && validatePassword(pass,confirmPass) && validateEmail(emailAdd)&&!isEmpty(bio) ){
+            doPostRequest(user, name, surname, emailAdd,bio, pass, phpFile, userType,instructor);
         }
         else{
             valid = false;
@@ -267,7 +312,68 @@ public class RegisterActivity extends AppCompatActivity {
 
         return valid;
     }
+    //getting and setting bitmap
+    @Override
+    @Generated
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == IMAGE_REQUEST_CODE && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            filePath = data.getData();
+        }
+        if (filePath != null) {
+            imgSelected = true;
+            try {
+                ImageDecoder.Source source = ImageDecoder.createSource(this.getContentResolver(), filePath);
+                bitmap = ImageDecoder.decodeBitmap(source);
+                image.setImageBitmap(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else{
+            imgSelected = false;
+        }
+    }
 
+    //getting the bitmap of image and encoding it as a string
+    @Generated
+    public String getStringImage(Bitmap bitmap) {
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] b = baos.toByteArray();
+        final String temp = Base64.encodeToString(b, Base64.DEFAULT);
+        Log.i("My_data_image", "" + temp);
+        return temp;
+    }
+
+    public void requestStoragePermission(){
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+            return;
+        }
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.READ_EXTERNAL_STORAGE)){
+            //can explain here why you need this permission.
+        }
+        //ask for permission
+        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},STORAGE_PERMISSION_CODE);
+    }
+
+    //This method will be called when user taps on allow or deny
+    @Override
+    @Generated
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults){
+
+        //Checking if request code is our request
+        if (requestCode == STORAGE_PERMISSION_CODE){
+
+            //if granted
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                Toast.makeText(this, "Permission granted",Toast.LENGTH_LONG).show();
+            }
+            else{
+                Toast.makeText(this, "Permission denied",Toast.LENGTH_LONG).show();
+            }
+        }
+    }
     @Override
     @Generated
     public void onBackPressed() {

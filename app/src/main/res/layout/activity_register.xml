@@ -8,33 +8,97 @@
     android:background="@color/white"
     android:scrollbarThumbVertical="@null"
     tools:context=".RegisterActivity">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/header"
             android:layout_width="match_parent"
             android:layout_height="120dp"
-            android:id="@+id/header"
-            android:orientation="vertical"
-            android:background="@color/color1">
+            android:background="@color/color1"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:fontFamily="cursive"
                 android:gravity="center"
                 android:text="Welcome to Wits-E"
-                android:textStyle="bold"
+                android:textColor="@color/color3"
                 android:textSize="45dp"
-                android:fontFamily="cursive"
-                android:textColor="@color/color3"/>
+                android:textStyle="bold" />
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/profileImage"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/add_photo_blue"
+                app:layout_constraintVertical_bias="0.0"
+                tools:ignore="MissingConstraints" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/bio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:errorEnabled="true"
+                android:layout_gravity="center"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="10dp"
+                app:counterEnabled="true"
+                app:counterMaxLength="500">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:hint="Bio"
+                    android:maxLength="500"
+                    android:inputType="textMultiLine" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+        <RadioGroup
+            android:id="@+id/rbUserType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/student"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:checked="true"
+                android:text="Student" />
+
+            <RadioButton
+                android:id="@+id/instructor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Instructor" />
+        </RadioGroup>
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -45,85 +109,67 @@
                 android:orientation="vertical"
                 android:padding="10dp">
 
-                <RadioGroup
-                    android:id="@+id/rbUserType"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <RadioButton
-                        android:id="@+id/student"
-                        android:layout_width="200dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:text="Student"
-                        android:checked="true"/>
-
-                    <RadioButton
-                        android:id="@+id/instructor"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Instructor" />
-                </RadioGroup>
-
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    app:errorEnabled="true"
                     app:counterEnabled="true"
-                    app:counterMaxLength="10">
+                    app:counterMaxLength="10"
+                    app:errorEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/RegisterText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
-                        android:maxLength="10"
-                        android:inputType="number" />
+                        android:inputType="number"
+                        android:maxLength="10" />
                 </com.google.android.material.textfield.TextInputLayout>
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/firstName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:errorEnabled="true"
                     android:layout_marginTop="10dp"
                     app:counterEnabled="true"
-                    app:counterMaxLength="20">
+                    app:counterMaxLength="20"
+                    app:errorEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
                         android:hint="First Name"
-                        android:maxLength="20"
-                        android:inputType="textPersonName" />
+                        android:inputType="textPersonName"
+                        android:maxLength="20" />
                 </com.google.android.material.textfield.TextInputLayout>
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/lastName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:errorEnabled="true"
                     android:layout_marginTop="10dp"
                     app:counterEnabled="true"
-                    app:counterMaxLength="20">
+                    app:counterMaxLength="20"
+                    app:errorEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
                         android:hint="Last Name"
-                        android:maxLength="20"
-                        android:inputType="textPersonName" />
+                        android:inputType="textPersonName"
+                        android:maxLength="20" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:errorEnabled="true"
                     app:counterEnabled="true"
-                    app:counterMaxLength="30">
+                    app:counterMaxLength="30"
+                    app:errorEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
@@ -131,8 +177,8 @@
                         android:layout_gravity="left"
                         android:ems="10"
                         android:hint="Email"
-                        android:maxLength="30"
-                        android:inputType="textEmailAddress" />
+                        android:inputType="textEmailAddress"
+                        android:maxLength="30" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -141,8 +187,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="0dp"
                     android:orientation="horizontal"
-                    app:passwordToggleEnabled="true"
-                    app:errorEnabled="true">
+                    app:errorEnabled="true"
+                    app:passwordToggleEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
@@ -157,8 +203,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:orientation="horizontal"
-                    app:passwordToggleEnabled="true"
-                    app:errorEnabled="true">
+                    app:errorEnabled="true"
+                    app:passwordToggleEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
