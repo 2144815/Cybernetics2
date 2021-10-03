@@ -66,6 +66,7 @@ public class RegisterActivity extends AppCompatActivity {
     private ArrayList<String> instructorUsernames = new ArrayList<>();
     private Boolean instructorCheck=false;
     private boolean imgSelected = false;
+    private String url = "https://lamp.ms.wits.ac.za/~s2105624/";
     private RequestQueue requestQueue;
 
     @Override
@@ -164,7 +165,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     //Post request function
-    private void doPostRequest(final TextInputLayout user, TextInputLayout name, TextInputLayout surname, TextInputLayout emailAdd,TextInputLayout bio, TextInputLayout pass, String phpFile, String userType,boolean instructor) throws IOException {
+    private void doPostRequest(final TextInputLayout user, TextInputLayout name, TextInputLayout surname, TextInputLayout emailAdd,TextInputLayout bio, TextInputLayout pass, String phpFile, String userType) throws IOException {
         String bm = "nofile";
         if (imgSelected){
             bm = getStringImage(bitmap);
@@ -176,7 +177,6 @@ public class RegisterActivity extends AppCompatActivity {
                 phpFile = "studentRegisterImage.php";
             }
         }
-        String url = "https://lamp.ms.wits.ac.za/~s2105624/";
         String finalBm = bm;
         StringRequest request = new StringRequest(Request.Method.POST, url+phpFile, new com.android.volley.Response.Listener<String>() {
             @Override
@@ -292,7 +292,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     //This function processes data for registration
-     public boolean processInfo(TextInputLayout user, TextInputLayout name, TextInputLayout surname, TextInputLayout emailAdd, TextInputLayout bio, TextInputLayout pass, TextInputLayout confirmPass, String phpFile, String userType, ArrayList<String> InstructorNames, ArrayList<String> StudentNums, Boolean instructor) throws IOException {
+    public boolean processInfo(TextInputLayout user, TextInputLayout name, TextInputLayout surname, TextInputLayout emailAdd, TextInputLayout bio, TextInputLayout pass, TextInputLayout confirmPass, String phpFile, String userType, ArrayList<String> InstructorNames, ArrayList<String> StudentNums, Boolean instructor) throws IOException {
         boolean valid = true;
         isEmpty(user);
         isEmpty(name);
@@ -303,7 +303,7 @@ public class RegisterActivity extends AppCompatActivity {
         userExists(user,InstructorNames,StudentNums,instructor);
         validateEmail(emailAdd);
         if(!(isEmpty(user) && isEmpty(name) && isEmpty(surname) && isEmpty(pass) &&isEmpty(bio) && userExists(user,InstructorNames,StudentNums,instructor)) && validatePassword(pass,confirmPass) && validateEmail(emailAdd)&&!isEmpty(bio) ){
-            doPostRequest(user, name, surname, emailAdd,bio, pass, phpFile, userType,instructor);
+            doPostRequest(user, name, surname, emailAdd,bio, pass, phpFile, userType);
         }
         else{
             valid = false;
