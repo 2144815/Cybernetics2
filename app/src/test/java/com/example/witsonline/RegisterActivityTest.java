@@ -152,7 +152,7 @@ public class RegisterActivityTest {
         Mockito.when(ExistsEditText_InvalidStudent.getText()).thenReturn(new MockEditable("test2"));
 
         //setUp for ProcessInfo Tests
-         Mockito.when(UserTextLayout.getEditText()).thenReturn(UserEditText);
+       /*  Mockito.when(UserTextLayout.getEditText()).thenReturn(UserEditText);
          Mockito.when(UserEditText.getText()).thenReturn(new MockEditable("testUser"));
 
          Mockito.when(NameTextLayout.getEditText()).thenReturn(NameEditText);
@@ -187,7 +187,7 @@ public class RegisterActivityTest {
 
          Mockito.when(EmailTextLayoutProcess_invalid.getEditText()).thenReturn(EmailEditTextProcess_invalid);
          Mockito.when(EmailEditTextProcess_invalid.getText()).thenReturn(new MockEditable(""));
-
+*/
 
     }
     @Test
@@ -291,7 +291,7 @@ public class RegisterActivityTest {
     @Test
     public void isDigits() {
      }
-    @Test
+    /*@Test
     public void processInfo_valid() throws IOException {
          RegisterActivity temp = new RegisterActivity();
          ArrayList<String> instructor=new ArrayList<String>();
@@ -301,8 +301,8 @@ public class RegisterActivityTest {
          Boolean check =true;
          String php = "test.php";
          String userType="Instructor";
-        /* Boolean output=temp.processInfo(UserTextLayout,NameTextLayout,SurNameTextLayout,EmailTextLayoutProcess,PassTextLayout,ConfirmPassTextLayout,php,userType,instructor,student,check);
-         assertEquals(true,output);*/
+         Boolean output=temp.processInfo(UserTextLayout,NameTextLayout,SurNameTextLayout,EmailTextLayoutProcess,PassTextLayout,ConfirmPassTextLayout,php,userType,instructor,student,check);
+         assertEquals(true,output);
      }
     @Test
     public void processInfo_EmptyUser() throws IOException {
@@ -314,8 +314,8 @@ public class RegisterActivityTest {
         Boolean check =true;
         String php = "test.php";
         String userType="Instructor";
-        /*Boolean output=temp.processInfo(UserTextLayout_invalid,NameTextLayout,SurNameTextLayout,EmailTextLayoutProcess,PassTextLayout,ConfirmPassTextLayout,php,userType,instructor,student,check);
-        assertEquals(true,output);*/
+        Boolean output=temp.processInfo(UserTextLayout_invalid,NameTextLayout,SurNameTextLayout,EmailTextLayoutProcess,PassTextLayout,ConfirmPassTextLayout,php,userType,instructor,student,check);
+        assertEquals(true,output);
     }
     @Test
     public void processInfo_EmptyName() throws IOException {
@@ -327,8 +327,8 @@ public class RegisterActivityTest {
         Boolean check =true;
         String php = "test.php";
         String userType="Instructor";
-       /* Boolean output=temp.processInfo(UserTextLayout,NameTextLayout_invalid,SurNameTextLayout,EmailTextLayoutProcess,PassTextLayout,ConfirmPassTextLayout,php,userType,instructor,student,check);
-        assertEquals(true,output);*/
+        Boolean output=temp.processInfo(UserTextLayout,NameTextLayout_invalid,SurNameTextLayout,EmailTextLayoutProcess,PassTextLayout,ConfirmPassTextLayout,php,userType,instructor,student,check);
+        assertEquals(true,output);
     }
     @Test
     public void processInfo_EmptySurName() throws IOException {
@@ -340,8 +340,8 @@ public class RegisterActivityTest {
         Boolean check =true;
         String php = "test.php";
         String userType="Instructor";
-        /*Boolean output=temp.processInfo(UserTextLayout,NameTextLayout,SurNameTextLayout_invalid,EmailTextLayoutProcess,PassTextLayout,ConfirmPassTextLayout,php,userType,instructor,student,check);
-        assertEquals(true,output);*/
+        Boolean output=temp.processInfo(UserTextLayout,NameTextLayout,SurNameTextLayout_invalid,EmailTextLayoutProcess,PassTextLayout,ConfirmPassTextLayout,php,userType,instructor,student,check);
+        assertEquals(true,output);
     }
     @Test
     public void processInfo_EmptyPass() throws IOException {
@@ -353,8 +353,8 @@ public class RegisterActivityTest {
         Boolean check =true;
         String php = "test.php";
         String userType="Instructor";
-       /* Boolean output=temp.processInfo(UserTextLayout,NameTextLayout,SurNameTextLayout,EmailTextLayoutProcess,PassTextLayout_invalid,ConfirmPassTextLayout,php,userType,instructor,student,check);
-        assertEquals(false,output);*/
+        Boolean output=temp.processInfo(UserTextLayout,NameTextLayout,SurNameTextLayout,EmailTextLayoutProcess,PassTextLayout_invalid,ConfirmPassTextLayout,php,userType,instructor,student,check);
+        assertEquals(false,output);
     }
     @Test
     public void processInfo_UserExists() throws IOException {
@@ -366,8 +366,8 @@ public class RegisterActivityTest {
         Boolean check =true;
         String php = "test.php";
         String userType="Instructor";
-       /* Boolean output=temp.processInfo(UserTextLayout,NameTextLayout,SurNameTextLayout,EmailTextLayoutProcess,PassTextLayout,ConfirmPassTextLayout,php,userType,instructor,student,check);
-        assertEquals(true,output);*/
+        Boolean output=temp.processInfo(UserTextLayout,NameTextLayout,SurNameTextLayout,EmailTextLayoutProcess,PassTextLayout,ConfirmPassTextLayout,php,userType,instructor,student,check);
+        assertEquals(true,output);
     }
     @Test
     public void processInfo_UnMatchingPasswords() throws IOException {
@@ -379,8 +379,8 @@ public class RegisterActivityTest {
         Boolean check =true;
         String php = "test.php";
         String userType="Instructor";
-        /*Boolean output=temp.processInfo(UserTextLayout,NameTextLayout,SurNameTextLayout,EmailTextLayoutProcess,PassTextLayout,ConfirmPassTextLayout_invalid,php,userType,instructor,student,check);
-        assertEquals(false,output);*/
+        Boolean output=temp.processInfo(UserTextLayout,NameTextLayout,SurNameTextLayout,EmailTextLayoutProcess,PassTextLayout,ConfirmPassTextLayout_invalid,php,userType,instructor,student,check);
+        assertEquals(false,output);
     }
     @Test
     public void processInfo_InvalidEmail() throws IOException {
@@ -392,8 +392,8 @@ public class RegisterActivityTest {
         Boolean check =true;
         String php = "test.php";
         String userType="Instructor";
-        /*Boolean output=temp.processInfo(UserTextLayout,NameTextLayout,SurNameTextLayout,EmailTextLayoutProcess_invalid,PassTextLayout,ConfirmPassTextLayout_invalid,php,userType,instructor,student,check);
-        assertEquals(false,output);*/
-    }
+        Boolean output=temp.processInfo(UserTextLayout,NameTextLayout,SurNameTextLayout,EmailTextLayoutProcess_invalid,PassTextLayout,ConfirmPassTextLayout_invalid,php,userType,instructor,student,check);
+        assertEquals(false,output);
+    }*/
 
 }
