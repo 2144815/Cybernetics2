@@ -165,7 +165,6 @@ public class RegisterActivity extends AppCompatActivity {
 
     //Post request function
     private void doPostRequest(final TextInputLayout user, TextInputLayout name, TextInputLayout surname, TextInputLayout emailAdd,TextInputLayout bio, TextInputLayout pass, String phpFile, String userType,boolean instructor) throws IOException {
-        //OkHttpClient client = new OkHttpClient();
         String bm = "nofile";
         if (imgSelected){
             bm = getStringImage(bitmap);
