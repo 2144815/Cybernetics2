@@ -207,6 +207,7 @@ public class RegisterActivity extends AppCompatActivity {
                 return parameters;
             }
         };
+
         requestQueue.add(request);
         Toast toast = Toast.makeText(RegisterActivity.this, "Registration successful", Toast.LENGTH_LONG);
         toast.show();
