@@ -68,6 +68,7 @@ public class RegisterActivity extends AppCompatActivity {
     private boolean imgSelected = false;
     private String url = "https://lamp.ms.wits.ac.za/~s2105624/";
     private RequestQueue requestQueue;
+    MD5Hash m;
 
     @Override
     @Generated
@@ -207,7 +208,11 @@ public class RegisterActivity extends AppCompatActivity {
                 return parameters;
             }
         };
-
+        USER.regUser = user.getEditText().getText().toString().trim();
+        USER.regPass = m.md5(pass.getEditText().getText().toString());
+        if (USER.STUDENT){
+            USER.regStudent = true;
+        }
         requestQueue.add(request);
         Toast toast = Toast.makeText(RegisterActivity.this, "Registration successful", Toast.LENGTH_LONG);
         toast.show();

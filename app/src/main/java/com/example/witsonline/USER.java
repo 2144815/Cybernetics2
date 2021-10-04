@@ -22,4 +22,9 @@ public class USER {
 	public static Set<String> SUBSCRIBED_TO_FEAT_COURSE;
 	public static Map<String, Integer> VOTES  = new HashMap<>();
 	public static Map<String, Integer> INSTRUCTOR_VOTES = new HashMap<>();
+
+	//for registration
+	public static String regUser = "";
+	public static String regPass = "";
+	public static boolean regStudent = false;
 }

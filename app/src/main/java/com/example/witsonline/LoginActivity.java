@@ -51,6 +51,8 @@ public class LoginActivity extends AppCompatActivity {
     @Generated
     protected void onCreate(Bundle savedInstanceState) {
 
+        //Toast.makeText(LoginActivity.this, USER.regUser, Toast.LENGTH_LONG).show();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
@@ -137,7 +139,9 @@ public class LoginActivity extends AppCompatActivity {
                         //error messages will be shown
                     } else {
                         USER.USERNAME = user.getEditText().getText().toString().trim();
-
+                        USER.regUser="";
+                        USER.regPass="";
+                        USER.regStudent=false;
                         Intent i = new Intent(LoginActivity.this, Dashboard.class);
                         startActivity(i);
                         finish();
@@ -149,7 +153,9 @@ public class LoginActivity extends AppCompatActivity {
                         //error messages will be shown
                     } else {
                         USER.USERNAME = user.getEditText().getText().toString().trim();
-
+                        USER.regUser="";
+                        USER.regPass="";
+                        USER.regStudent=false;
                         Intent i = new Intent(LoginActivity.this, Dashboard.class);
                         startActivity(i);
                         finish();
@@ -178,7 +184,7 @@ public class LoginActivity extends AppCompatActivity {
                 USER.STUDENT=false;
             }
         } */
-        if (instDetails.containsKey(usernameInput)){
+        if (instDetails.containsKey(usernameInput) || (usernameInput.equals(USER.regUser) && !USER.regStudent)){
             userExists = true;
             USER.USER_NUM= usernameInput;
             USER.STUDENT=false;
@@ -207,6 +213,9 @@ public class LoginActivity extends AppCompatActivity {
                 correctPassword = true;
             }
         }
+        else if (!passwordInput.isEmpty() && m.md5(passwordInput).equals(USER.regPass)){
+            correctPassword = true;
+        }
         if (passwordInput.isEmpty()) {
             passwordText.setError("Field can't be empty");
             return false;
@@ -226,7 +235,7 @@ public class LoginActivity extends AppCompatActivity {
     public boolean validateStudentUsername(TextInputLayout userText,HashMap<String,String>studDetails) {
         String usernameInput = userText.getEditText().getText().toString().trim();
         boolean userExists = false;
-        if (studDetails.containsKey(usernameInput)){
+        if (studDetails.containsKey(usernameInput) || (usernameInput.equals(USER.regUser) && USER.regStudent)){
             userExists = true;
             USER.USER_NUM=usernameInput;
             USER.STUDENT=true;
@@ -255,7 +264,9 @@ public class LoginActivity extends AppCompatActivity {
                 correctPassword = true;
             }
         }
-
+        else if (!passwordInput.isEmpty() && m.md5(passwordInput).equals(USER.regPass)){
+            correctPassword = true;
+        }
         if (passwordInput.isEmpty()) {
             passwordText.setError("Field can't be empty");
             return false;
