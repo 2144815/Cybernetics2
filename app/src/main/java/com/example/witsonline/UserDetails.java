@@ -77,7 +77,7 @@ public class UserDetails extends AppCompatActivity {
 
     //This is for the delay while loading the email
     private ProgressBar progressBar;
-    private androidx.constraintlayout.widget.ConstraintLayout constraintLayout;
+    private RelativeLayout relativeLayout;
 
     private String getStudentURL = "https://lamp.ms.wits.ac.za/home/s2105624/getStudentProfile.php?unum=";
     private String getInstructorURL = "https://lamp.ms.wits.ac.za/home/s2105624/getInstructorProfile.php?unum=";
@@ -94,7 +94,7 @@ public class UserDetails extends AppCompatActivity {
 
         //Initializing progressbar
         progressBar = findViewById(R.id.userDetailsProgressBar);
-        constraintLayout = findViewById(R.id.userDetailsLayout);
+        relativeLayout = findViewById(R.id.userDetailsLayout);
         progressBar.setVisibility(View.VISIBLE);
 
         requestQueue = Volley.newRequestQueue(this);
@@ -149,7 +149,7 @@ public class UserDetails extends AppCompatActivity {
                     //Calling method parseData to parse the json response
                     parseStudentData(response);
                     //Hiding the progressBar
-                    constraintLayout.setVisibility(View.VISIBLE);
+                    relativeLayout.setVisibility(View.VISIBLE);
                     progressBar.setVisibility(View.GONE);
                 },
                 (error) -> {
@@ -208,7 +208,7 @@ public class UserDetails extends AppCompatActivity {
                     //Calling method parseData to parse the json response
                     parseInstructorData(response);
                     //Hiding the progressBar
-                    constraintLayout.setVisibility(View.VISIBLE);
+                    relativeLayout.setVisibility(View.VISIBLE);
                     progressBar.setVisibility(View.GONE);
                 },
                 (error) -> {

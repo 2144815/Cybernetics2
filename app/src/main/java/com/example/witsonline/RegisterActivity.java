@@ -208,12 +208,6 @@ public class RegisterActivity extends AppCompatActivity {
             }
         };
         requestQueue.add(request);
-        /*if(userType.equals("username")){
-            instructorUsernames.add(user.getEditText().toString());
-        }
-        else{
-            studentNumbers.add(user.getEditText().toString());
-        }*/
         Toast toast = Toast.makeText(RegisterActivity.this, "Registration successful", Toast.LENGTH_LONG);
         toast.show();
         Intent i = new Intent(RegisterActivity.this, LoginActivity.class);
