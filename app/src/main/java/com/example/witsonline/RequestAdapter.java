@@ -43,6 +43,7 @@ public class RequestAdapter extends  RecyclerView.Adapter<RequestAdapter.ViewHol
     private Button btnViewDialogSubscribe;
     private Button btnUnsubscribe, btnCancel;
     private TextView unsubscribeText;
+    private Button btnView, btnCancelViewProfile;
     public RequestAdapter(ArrayList<RequestV> requestVs, Context context){
         super();
         //Getting all requests
@@ -100,8 +101,14 @@ public class RequestAdapter extends  RecyclerView.Adapter<RequestAdapter.ViewHol
             super(itemView);
             courseName = (TextView) itemView.findViewById(R.id.requestCourse);
             courseCode = (TextView) itemView.findViewById(R.id.requestCourseCode);
-            studentName = (TextView) itemView.findViewById(R.id.requestStudentName);
             studentNumber = (TextView) itemView.findViewById(R.id.requestStudentNumber);
+            studentName = (TextView) itemView.findViewById(R.id.requestStudentName);
+            studentName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    createNewViewProfileDialog(studentNumber);
+                }
+            });
             acceptRequest = (Button) itemView.findViewById(R.id.acceptRequestButton);
             declineRequest = (Button) itemView.findViewById(R.id.declineRequestButton);
             image = (ImageView) itemView.findViewById(R.id.requestStudentImage);
@@ -213,6 +220,40 @@ public class RequestAdapter extends  RecyclerView.Adapter<RequestAdapter.ViewHol
             }
         });
 
+
+    }
+
+    @Generated
+    public void createNewViewProfileDialog(TextView studentNumber){
+        dialogBuilder = new AlertDialog.Builder(context);
+        final View viewPopUp = LayoutInflater.from(context)
+                .inflate(R.layout.view_profile_dialog, null);
+
+        btnView = (Button) viewPopUp.findViewById(R.id.btnView);
+        btnCancelViewProfile = (Button) viewPopUp.findViewById(R.id.btnViewCancel);
+
+        dialogBuilder.setView(viewPopUp);
+        dialog = dialogBuilder.create();
+        dialog.show();
+
+        btnView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            @Generated
+            public void onClick(View v) {
+                STUDENT.number = studentNumber.getText().toString();
+                Intent intent5 = new Intent(context,UserDetails.class);
+                intent5.putExtra("userType","student");
+                context.startActivity(intent5);
+                dialog.dismiss();
+            }
+        });
+        btnCancelViewProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            @Generated
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
 
     }
 }
