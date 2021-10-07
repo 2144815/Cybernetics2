@@ -19,7 +19,7 @@ public class Comment {
         public int compare(com.example.witsonline.Comment C1, com.example.witsonline.Comment C2) {
             //If it returns a positive number, C1 has more votes
             //If it returns a negative number, C2 has more votes
-            //If if returns zero, then both comments have the same nummber of votes
+
             int decider = 0;
             if(C1.getTime().after( C2.getTime() )){
                 decider = 1;

@@ -438,6 +438,7 @@ public class ADiscussion extends AppCompatActivity implements View.OnScrollChang
                 return true;
 
             case R.id.menu_sortByRoles:
+
                 //sort by Roles
                 Collections.sort(commentList, Comment.CommentRolesComparator);
                 mAdapter = new CommentsAdapter(commentList, this);

@@ -7,12 +7,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,10 +28,8 @@ import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -483,4 +480,79 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
     }
 
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.course_homepage_menu_instructor, menu);
+        return true;
+
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull @NotNull MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.courseHomepg_menu_instr:
+                getPermissionDataFromServer();
+                /*
+
+                 */
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+    private String getPermissionDataFromServer() {
+        final String[] PermissionData = new String[1];
+        OkHttpClient client = new OkHttpClient();
+
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("https://lamp.ms.wits.ac.za/~s2105624/" + "load_permissions.php").newBuilder();
+        String url = urlBuilder.build().toString();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            @Generated
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            @Generated
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                String responseData = response.body().string();
+                if(response.isSuccessful()){
+
+                    CourseHomePageInstructor.this.runOnUiThread( new Runnable() {
+                        @Override
+                        public void run() {
+                            //Toast.makeText( CourseHomePageInstructor.this, "Retrieval Successful", Toast.LENGTH_SHORT ).show();
+                            loadDataPermission(responseData) ;
+
+                        }
+                    } );
+                }
+                else{
+                    CourseHomePageInstructor.this.runOnUiThread( new Runnable() {
+                        @Override
+                        public void run() {
+
+                        }
+                    } );
+
+                }
+            }
+        });
+        return PermissionData[0];
+    }
+
+    private void loadDataPermission(String responseData) {
+        Intent i = new Intent(CourseHomePageInstructor.this, Permissions.class );
+        i.putExtra( "P",responseData);
+        startActivity( i );
+
+    }
 }

@@ -62,12 +62,22 @@
                     android:layout_height="wrap_content"
                     android:padding="10dp"
                     android:text="Student Name" />
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:id="@+id/assignTutorButton"
-                    android:text="Assign as Tutor"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <Button
+                        android:id="@+id/assignTutorButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:text="Assign Tutor" />
+
+                </RelativeLayout>
 
             </LinearLayout>
 
