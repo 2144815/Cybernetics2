@@ -205,8 +205,15 @@ public class RequestAdapter extends  RecyclerView.Adapter<RequestAdapter.ViewHol
                     Toast toast = Toast.makeText(context, "Updated", Toast.LENGTH_LONG);
                     toast.show();
                     dialog.dismiss();
-                    Intent intent = new Intent(context, Dashboard.class);
-                    context.startActivity(intent);
+
+                    if(USER.STUDENT){
+                        Intent intent = new Intent(context, EnrolmentRequests.class);
+                        context.startActivity(intent);
+                    }
+                    else {
+                        Intent intent = new Intent(context, Dashboard.class);
+                        context.startActivity(intent);
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

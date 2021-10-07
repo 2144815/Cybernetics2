@@ -10,6 +10,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,6 +63,9 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
 
     //for determining whether a student is a tutor or not
     private boolean tutor;
+
+    //If its a tutor and the course has permissions
+    private android.view.Menu courseMenu;
 
     //Creating a list of tags
     private ArrayList<String> tags;
@@ -143,7 +148,6 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
         review = (Button)findViewById(R.id.review);
         image = (ImageView)findViewById(R.id.courseImage);
         viewLesson = (Button)findViewById(R.id.viewLessons);
-
 
         if(!COURSE.IMAGE.equals("null")){
             Glide.with(this).load(COURSE.IMAGE).into(image);
@@ -256,6 +260,14 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
             //    finish();
             }
         });
+
+
+        try {
+            checkIfPermissionGranted();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
 
     }
@@ -755,6 +767,121 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
         }
         COURSE.RATING = String.valueOf(averageRating/listReviewVs.size());
     }
+    @Generated
+    private void checkTutorState() throws IOException {
+        OkHttpClient client = new OkHttpClient();
+
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("https://lamp.ms.wits.ac.za/~s2105624/getTutorState.php").newBuilder();
+        urlBuilder.addQueryParameter("studentNumber", USER.USER_NUM);
+        urlBuilder.addQueryParameter("courseCode", COURSE.CODE);
+        String url = urlBuilder.build().toString();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+
+            @Override
+            @Generated
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            @Generated
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                final String responseData = response.body().string();
+                CourseHomePage.this.runOnUiThread(new Runnable() {
+                    @Override
+                    @Generated
+                    public void run() {
+                        try {
+                            JSONArray all = new JSONArray(responseData);
+                            for (int i = 0; i < all.length();i++){
+                                JSONObject obj = all.getJSONObject(i);
+                                //Adding data to the course object
+                                int tutorState = obj.getInt("Tutor");
+                                //Toast.makeText(this, ""+tutorState, Toast.LENGTH_LONG).show();
+
+                                if (tutorState == 1){
+                                    //if student is a tutor, they can see the requests menu
+                                    MenuItem item = courseMenu.findItem(R.id.menu_view_requests);
+                                    item.setVisible(true);
+                                }
+
+
+                            }
+
+                        }
+                        catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        });
+    }
+    @Generated
+    private void checkIfPermissionGranted() throws IOException {
+        OkHttpClient client = new OkHttpClient();
+
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("https://lamp.ms.wits.ac.za/~s2105624/getPermissionState.php").newBuilder();
+        urlBuilder.addQueryParameter("courseCode", COURSE.CODE);
+        String url = urlBuilder.build().toString();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+
+            @Override
+            @Generated
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            @Generated
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                final String responseData = response.body().string();
+                CourseHomePage.this.runOnUiThread(new Runnable() {
+                    @Override
+                    @Generated
+                    public void run() {
+                        try {
+                            JSONArray all = new JSONArray(responseData);
+                            for (int i = 0; i < all.length();i++){
+                                JSONObject obj = all.getJSONObject(i);
+                                //Adding data to the course object
+                                int requestPermissionState = obj.getInt("Enrolment_Request_Permission");
+                                //Toast.makeText(this, ""+tutorState, Toast.LENGTH_LONG).show();
+
+                                if (requestPermissionState == 1){
+                                    //if permission to accept and decline requests is granted by instructor
+                                    try {
+                                        checkTutorState();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                    //Toast toast = Toast.makeText(CourseHomePage.this, "permission granted", Toast.LENGTH_LONG);
+                                    //toast.show();
+                                }
+
+
+
+                            }
+
+                        }
+                        catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        });
+    }
 
     @Override
     @Generated
@@ -772,5 +899,25 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
             startActivity(intent);
             finish();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate( R.menu.menu_tutor,menu);
+        courseMenu = menu;
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.menu_view_requests:
+                Intent intent = new Intent(CourseHomePage.this, EnrolmentRequests.class);
+                startActivity(intent);
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

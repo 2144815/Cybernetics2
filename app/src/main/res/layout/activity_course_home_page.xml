@@ -57,15 +57,17 @@
                     android:src="@drawable/wits_logo"
                     android:background="#F0F2F5"/>
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="260dp"
                     android:layout_height="100dp"
                     android:id="@+id/courseDescription"
                     android:gravity="center"
                     android:padding="5dp"
                     android:text="Course Description"
                     android:textSize="25dp"
+                    android:layout_toStartOf="@+id/courseDiscMenu"
                     android:fontFamily="cursive"
                     android:textColor="@color/white"/>
+
             </LinearLayout>
 
 

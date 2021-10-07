@@ -3,27 +3,34 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Download/Cybernetics2/app/src/main/res/layout/activity_adiscussion.xml" value="0.14285714285714285" />
+        <entry key="..\:/Download/Cybernetics2/app/src/main/res/drawable/ic_baseline_more_vert_24.xml" value="0.2074074074074074" />
+        <entry key="..\:/Download/Cybernetics2/app/src/main/res/layout/activity_adiscussion.xml" value="0.1" />
         <entry key="..\:/Download/Cybernetics2/app/src/main/res/layout/activity_browse_courses.xml" value="0.14285714285714285" />
+        <entry key="..\:/Download/Cybernetics2/app/src/main/res/layout/activity_course_home_page.xml" value="0.33" />
         <entry key="..\:/Download/Cybernetics2/app/src/main/res/layout/activity_dashboard.xml" value="0.16757246376811594" />
+        <entry key="..\:/Download/Cybernetics2/app/src/main/res/layout/activity_enrolment_requests.xml" value="0.14285714285714285" />
         <entry key="..\:/Download/Cybernetics2/app/src/main/res/layout/activity_forum.xml" value="0.1" />
+        <entry key="..\:/Download/Cybernetics2/app/src/main/res/layout/cancel_request_dialog.xml" value="0.14285714285714285" />
         <entry key="..\:/Download/Cybernetics2/app/src/main/res/layout/course_card.xml" value="0.25" />
         <entry key="..\:/Download/Cybernetics2/app/src/main/res/layout/discussion_card.xml" value="0.14285714285714285" />
+        <entry key="..\:/Download/Cybernetics2/app/src/main/res/layout/edit_discussion_dialog.xml" value="0.16757246376811594" />
         <entry key="..\:/Download/Cybernetics2/app/src/main/res/layout/logout_dialog.xml" value="0.16757246376811594" />
         <entry key="..\:/Download/Cybernetics2/app/src/main/res/layout/one_line_comment.xml" value="0.1" />
+        <entry key="..\:/Download/Cybernetics2/app/src/main/res/layout/open_close_disc_dialog.xml" value="0.14285714285714285" />
         <entry key="..\:/Download/Cybernetics2/app/src/main/res/layout/request_card.xml" value="0.25" />
         <entry key="..\:/Download/Cybernetics2/app/src/main/res/layout/student_card.xml" value="0.33" />
-        <entry key="app/src/main/res/drawable/ic_baseline_keyboard_arrow_up_24.xml" value="0.17866666666666667" />
+        <entry key="..\:/Download/Cybernetics2/app/src/main/res/menu/discussion_menu.xml" value="0.28425925925925927" />
+        <entry key="..\:/Download/Cybernetics2/app/src/main/res/menu/edit_reply_menu.xml" value="0.28425925925925927" />
+        <entry key="..\:/Download/Cybernetics2/app/src/main/res/menu/menu_instructor.xml" value="0.28425925925925927" />
+        <entry key="..\:/Download/Cybernetics2/app/src/main/res/menu/menu_tutor.xml" value="0.28425925925925927" />
+        <entry key="..\:/Download/Cybernetics2/app/src/main/res/menu/sort_comments_menu.xml" value="0.28425925925925927" />
         <entry key="app/src/main/res/layout/activity_adiscussion.xml" value="0.1381340579710145" />
         <entry key="app/src/main/res/layout/activity_course_home_page.xml" value="0.19322916666666667" />
         <entry key="app/src/main/res/layout/activity_course_home_page_instructor.xml" value="0.1671171171171171" />
-        <entry key="app/src/main/res/layout/activity_create_course.xml" value="0.10643115942028986" />
         <entry key="app/src/main/res/layout/activity_dashboard.xml" value="0.1358695652173913" />
-        <entry key="app/src/main/res/layout/activity_edit_course.xml" value="0.10643115942028986" />
         <entry key="app/src/main/res/layout/activity_forum.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_lesson_page.xml" value="0.1671171171171171" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.13269927536231885" />
-        <entry key="app/src/main/res/layout/activity_register.xml" value="0.10643115942028986" />
         <entry key="app/src/main/res/layout/course_card.xml" value="0.18704710144927536" />
         <entry key="app/src/main/res/layout/discussion_card.xml" value="0.18" />
         <entry key="app/src/main/res/layout/discussion_dialog.xml" value="0.1671171171171171" />
@@ -37,8 +44,6 @@
         <entry key="app/src/main/res/layout/review_dialog.xml" value="0.1671171171171171" />
         <entry key="app/src/main/res/layout/subscribe_dialog.xml" value="0.1358695652173913" />
         <entry key="app/src/main/res/layout/unsubscribe_dialog.xml" value="0.10733695652173914" />
-        <entry key="app/src/main/res/menu/discussion_menu.xml" value="0.1671171171171171" />
-        <entry key="app/src/main/res/menu/sort_comments_menu.xml" value="0.1671171171171171" />
       </map>
     </option>
   </component>
