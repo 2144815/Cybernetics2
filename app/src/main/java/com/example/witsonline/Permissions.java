@@ -70,18 +70,18 @@ public class Permissions extends AppCompatActivity {
                 if (checked){
                     if(CheckCourse(COURSE.CODE)){
                         doPostRequest( "Update_Tutor_Permission.php", "1" );
-                        Toast.makeText( Permissions.this, "Tutors are now allowed to manage enrolment requests for this course", Toast.LENGTH_SHORT ).show();
+                        Toast.makeText( Permissions.this, "Permission enabled", Toast.LENGTH_SHORT ).show();
                     }
                     else{
                         doPostRequest( "addPermission.php" ,"1");
                         getPermissionDataFromServer();
-                        Toast.makeText( Permissions.this, "Tutors are now allowed to manage enrolment requests for this course", Toast.LENGTH_SHORT ).show();
+                        Toast.makeText( Permissions.this, "Permission enabled", Toast.LENGTH_SHORT ).show();
                     }
 
                 }
                 else if(!checked) {
                     doPostRequest( "Update_Tutor_Permission.php","0" );
-                    Toast.makeText( Permissions.this, "Tutors are now disallowed to manage enrolment requests for this course", Toast.LENGTH_SHORT ).show();
+                    Toast.makeText( Permissions.this, "Permission disabled", Toast.LENGTH_SHORT ).show();
 
                 }
         }
