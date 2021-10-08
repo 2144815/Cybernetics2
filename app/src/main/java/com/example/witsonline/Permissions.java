@@ -1,10 +1,14 @@
 package com.example.witsonline;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.jetbrains.annotations.NotNull;
@@ -26,6 +30,10 @@ public class Permissions extends AppCompatActivity {
 
     String FetchUrl = "https://lamp.ms.wits.ac.za/~s2105624/load_permissions.php";
     String PermissionString;
+    AlertDialog dialog;
+    Button yes;
+    Button no;
+    TextView dialog_text;
 
     JSONObject jsonObject;
 
@@ -43,6 +51,17 @@ public class Permissions extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        AlertDialog.Builder dialogBuilder= new AlertDialog.Builder(this);
+
+        final View viewPopUp = LayoutInflater.from(this)
+                .inflate(R.layout.allow_permission_dialog, null);
+        dialogBuilder.setView(viewPopUp);
+        dialog = dialogBuilder.create();
+        yes = (Button)viewPopUp.findViewById( R.id.btn_permission_yes );
+        no = (Button)viewPopUp.findViewById( R.id.btn_permission_no );
+        dialog_text = (TextView)viewPopUp.findViewById( R.id.dialog_question_permission );
+
 
 
         tutorRequests.setOnClickListener( new View.OnClickListener() {
@@ -67,21 +86,93 @@ public class Permissions extends AppCompatActivity {
         // Check which checkbox was clicked
         switch(view.getId()) {
             case R.id.checkBox_enrolment_requests:
+     
+
                 if (checked){
                     if(CheckCourse(COURSE.CODE)){
-                        doPostRequest( "Update_Tutor_Permission.php", "1" );
-                        Toast.makeText( Permissions.this, "Permission enabled", Toast.LENGTH_SHORT ).show();
+                        dialog.show();
+                        yes.setOnClickListener( new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                try {
+                                    doPostRequest( "Update_Tutor_Permission.php", "1" );
+                                    getPermissionDataFromServer();
+
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+
+
+                                Toast.makeText( Permissions.this, "Permission enabled", Toast.LENGTH_SHORT ).show();
+                                dialog.dismiss();
+                            }
+                        } );
+                        no.setOnClickListener( new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                ((CheckBox)findViewById( R.id.checkBox_enrolment_requests )).setChecked( false );
+                                dialog.dismiss();
+
+                            }
+                        } );
+
+
+
+
                     }
                     else{
-                        doPostRequest( "addPermission.php" ,"1");
-                        getPermissionDataFromServer();
-                        Toast.makeText( Permissions.this, "Permission enabled", Toast.LENGTH_SHORT ).show();
+
+                        dialog.show();
+                        yes.setOnClickListener( new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                try {
+                                    doPostRequest( "addPermission.php" ,"1");
+                                    getPermissionDataFromServer();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+
+                                Toast.makeText( Permissions.this, "Permission enabled", Toast.LENGTH_SHORT ).show();
+                                dialog.dismiss();
+                            }
+                        } );
+                        no.setOnClickListener( new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                ((CheckBox)findViewById( R.id.checkBox_enrolment_requests )).setChecked( false );
+                                dialog.dismiss();
+                            }
+                        } );
+                        parsePermissionData( PermissionString );
+
                     }
 
                 }
                 else if(!checked) {
-                    doPostRequest( "Update_Tutor_Permission.php","0" );
-                    Toast.makeText( Permissions.this, "Permission disabled", Toast.LENGTH_SHORT ).show();
+                    dialog_text.setText( "Do you want to disable this permission?" );
+                    dialog.show();
+
+                    yes.setOnClickListener( new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            try {
+                                doPostRequest( "Update_Tutor_Permission.php","0" );
+                                getPermissionDataFromServer();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            Toast.makeText( Permissions.this, "Permission disabled", Toast.LENGTH_SHORT ).show();
+                            dialog.dismiss();
+                        }
+                    } );
+                    no.setOnClickListener( new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            ((CheckBox)findViewById( R.id.checkBox_enrolment_requests )).setChecked( true );
+                            dialog.dismiss();
+                        }
+                    } );
 
                 }
         }
@@ -89,6 +180,7 @@ public class Permissions extends AppCompatActivity {
 
     private boolean CheckCourse(String course) throws JSONException {
         boolean exists = false;
+        getPermissionDataFromServer();
         JSONObject json = new JSONObject(PermissionString);
         JSONArray jsonArray = json.getJSONArray( "myArr" );
         for (int i = 0; i< jsonArray.length(); i++){
@@ -96,6 +188,7 @@ public class Permissions extends AppCompatActivity {
             JSONObject j = jsonArray.getJSONObject( i );
             if(j.getString("courseCode").equals(course)){
                 exists = true;
+                break;
             }
         }
         return exists;
@@ -209,10 +302,11 @@ public class Permissions extends AppCompatActivity {
                 if(j.getString( "PermissionStatus" ).equals("1")){
                     ((CheckBox)findViewById( R.id.checkBox_enrolment_requests)).setChecked( true );
                 }
+                else{
+                    ((CheckBox)findViewById( R.id.checkBox_enrolment_requests)).setChecked( false );
+                }
             }
         }
-
-
     }
 
 
