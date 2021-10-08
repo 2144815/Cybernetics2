@@ -90,6 +90,7 @@ public class Permissions extends AppCompatActivity {
 
                 if (checked){
                     if(CheckCourse(COURSE.CODE)){
+                        dialog_text.setText( "Do you want to enable this permission?" );
                         dialog.show();
                         yes.setOnClickListener( new View.OnClickListener() {
                             @Override
