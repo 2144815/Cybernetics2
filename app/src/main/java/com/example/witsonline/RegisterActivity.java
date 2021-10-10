@@ -106,12 +106,14 @@ public class RegisterActivity extends AppCompatActivity {
             @Generated
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == R.id.student) {
+                    USER.regStudent = true;
                     userText.setHint("Student Number");
                     userText.setInputType(InputType.TYPE_CLASS_NUMBER);
                     userText.setText("");
                     username.setCounterMaxLength(10);
                     userText.setFilters(new InputFilter[] { new InputFilter.LengthFilter(10) });
                 } else {
+                    USER.regStudent = false;
                     userText.setHint("Username");
                     userText.setInputType(InputType.TYPE_CLASS_TEXT);
                     username.setCounterMaxLength(20);
@@ -168,6 +170,9 @@ public class RegisterActivity extends AppCompatActivity {
     //Post request function
     private void doPostRequest(final TextInputLayout user, TextInputLayout name, TextInputLayout surname, TextInputLayout emailAdd,TextInputLayout bio, TextInputLayout pass, String phpFile, String userType) throws IOException {
         String bm = "nofile";
+        USER.regUser = user.getEditText().getText().toString().trim();
+        USER.regPass = m.md5(pass.getEditText().getText().toString());
+
         if (imgSelected){
             bm = getStringImage(bitmap);
             if(userType.equals("username")){
@@ -208,11 +213,7 @@ public class RegisterActivity extends AppCompatActivity {
                 return parameters;
             }
         };
-        USER.regUser = user.getEditText().getText().toString().trim();
-        USER.regPass = m.md5(pass.getEditText().getText().toString());
-        if (USER.STUDENT){
-            USER.regStudent = true;
-        }
+
         requestQueue.add(request);
         Toast toast = Toast.makeText(RegisterActivity.this, "Registration successful", Toast.LENGTH_LONG);
         toast.show();
