@@ -481,6 +481,7 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
 
 
     @Override
+    @Generated
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.course_homepage_menu_instructor, menu);
@@ -490,6 +491,7 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
 
 
     @Override
+    @Generated
     public boolean onOptionsItemSelected(@NonNull @NotNull MenuItem item) {
 
         switch (item.getItemId()) {
@@ -502,6 +504,7 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
                 return super.onOptionsItemSelected(item);
         }
     }
+    @Generated
     private String getPermissionDataFromServer() {
         final String[] PermissionData = new String[1];
         OkHttpClient client = new OkHttpClient();
@@ -528,6 +531,7 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
 
                     CourseHomePageInstructor.this.runOnUiThread( new Runnable() {
                         @Override
+                        @Generated
                         public void run() {
                             //Toast.makeText( CourseHomePageInstructor.this, "Retrieval Successful", Toast.LENGTH_SHORT ).show();
                             loadDataPermission(responseData) ;
@@ -538,6 +542,7 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
                 else{
                     CourseHomePageInstructor.this.runOnUiThread( new Runnable() {
                         @Override
+                        @Generated
                         public void run() {
 
                         }
@@ -548,7 +553,7 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
         });
         return PermissionData[0];
     }
-
+    @Generated
     private void loadDataPermission(String responseData) {
         Intent i = new Intent(CourseHomePageInstructor.this, Permissions.class );
         i.putExtra( "P",responseData);

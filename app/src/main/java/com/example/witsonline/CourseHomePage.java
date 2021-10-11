@@ -902,6 +902,7 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
     }
 
     @Override
+    @Generated
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate( R.menu.menu_tutor,menu);
@@ -911,6 +912,7 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
     }
 
     @Override
+    @Generated
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_view_requests:

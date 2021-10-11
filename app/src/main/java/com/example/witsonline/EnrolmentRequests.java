@@ -43,6 +43,7 @@ public class EnrolmentRequests extends AppCompatActivity implements View.OnScrol
     private int courseCount = 1;
 
     @Override
+    @Generated
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enrolment_requests);
@@ -189,6 +190,7 @@ public class EnrolmentRequests extends AppCompatActivity implements View.OnScrol
     }
 
     @Override
+    @Generated
     public void onBackPressed() {
         Intent intent = new Intent(EnrolmentRequests.this , CourseHomePage.class);
         startActivity(intent);

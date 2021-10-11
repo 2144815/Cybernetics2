@@ -166,6 +166,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     //Post request function
+    @Generated
     private void doPostRequest(final TextInputLayout user, TextInputLayout name, TextInputLayout surname, TextInputLayout emailAdd,TextInputLayout bio, TextInputLayout pass, String phpFile, String userType) throws IOException {
         String bm = "nofile";
         if (imgSelected){
@@ -298,6 +299,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     //This function processes data for registration
+    @Generated
     public boolean processInfo(TextInputLayout user, TextInputLayout name, TextInputLayout surname, TextInputLayout emailAdd, TextInputLayout bio, TextInputLayout pass, TextInputLayout confirmPass, String phpFile, String userType, ArrayList<String> InstructorNames, ArrayList<String> StudentNums, Boolean instructor) throws IOException {
         boolean valid = true;
         isEmpty(user);
@@ -350,7 +352,7 @@ public class RegisterActivity extends AppCompatActivity {
         Log.i("My_data_image", "" + temp);
         return temp;
     }
-
+    @Generated
     public void requestStoragePermission(){
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
             return;

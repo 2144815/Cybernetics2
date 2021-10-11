@@ -38,6 +38,7 @@ public class Permissions extends AppCompatActivity {
     JSONObject jsonObject;
 
     @Override
+    @Generated
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView(R.layout.permissions);
@@ -66,6 +67,7 @@ public class Permissions extends AppCompatActivity {
 
         tutorRequests.setOnClickListener( new View.OnClickListener() {
             @Override
+            @Generated
             public void onClick(View v) {
                 try {
                     onCheckboxClicked( v );
@@ -78,7 +80,7 @@ public class Permissions extends AppCompatActivity {
     }
 
 
-
+    @Generated
     public void onCheckboxClicked(View view) throws IOException, JSONException {
         // Is the view now checked?
         boolean checked = ((CheckBox) view).isChecked();
@@ -94,6 +96,7 @@ public class Permissions extends AppCompatActivity {
                         dialog.show();
                         yes.setOnClickListener( new View.OnClickListener() {
                             @Override
+                            @Generated
                             public void onClick(View v) {
                                 try {
                                     doPostRequest( "Update_Tutor_Permission.php", "1" );
@@ -110,6 +113,7 @@ public class Permissions extends AppCompatActivity {
                         } );
                         no.setOnClickListener( new View.OnClickListener() {
                             @Override
+                            @Generated
                             public void onClick(View v) {
                                 ((CheckBox)findViewById( R.id.checkBox_enrolment_requests )).setChecked( false );
                                 dialog.dismiss();
@@ -126,6 +130,7 @@ public class Permissions extends AppCompatActivity {
                         dialog.show();
                         yes.setOnClickListener( new View.OnClickListener() {
                             @Override
+                            @Generated
                             public void onClick(View v) {
                                 try {
                                     doPostRequest( "addPermission.php" ,"1");
@@ -140,6 +145,7 @@ public class Permissions extends AppCompatActivity {
                         } );
                         no.setOnClickListener( new View.OnClickListener() {
                             @Override
+                            @Generated
                             public void onClick(View v) {
                                 ((CheckBox)findViewById( R.id.checkBox_enrolment_requests )).setChecked( false );
                                 dialog.dismiss();
@@ -156,6 +162,7 @@ public class Permissions extends AppCompatActivity {
 
                     yes.setOnClickListener( new View.OnClickListener() {
                         @Override
+                        @Generated
                         public void onClick(View v) {
                             try {
                                 doPostRequest( "Update_Tutor_Permission.php","0" );
@@ -169,6 +176,7 @@ public class Permissions extends AppCompatActivity {
                     } );
                     no.setOnClickListener( new View.OnClickListener() {
                         @Override
+                        @Generated
                         public void onClick(View v) {
                             ((CheckBox)findViewById( R.id.checkBox_enrolment_requests )).setChecked( true );
                             dialog.dismiss();
@@ -178,7 +186,7 @@ public class Permissions extends AppCompatActivity {
                 }
         }
     }
-
+    @Generated
     private boolean CheckCourse(String course) throws JSONException {
         boolean exists = false;
         getPermissionDataFromServer();
@@ -223,6 +231,7 @@ public class Permissions extends AppCompatActivity {
 
                     Permissions.this.runOnUiThread( new Runnable() {
                         @Override
+                        @Generated
                         public void run() {
 
                         }
@@ -231,6 +240,7 @@ public class Permissions extends AppCompatActivity {
                 else{
                     Permissions.this.runOnUiThread( new Runnable() {
                         @Override
+                        @Generated
                         public void run() {
 
                         }
@@ -240,6 +250,7 @@ public class Permissions extends AppCompatActivity {
             }
         });
     }
+    @Generated
     private String getPermissionDataFromServer() {
         final String[] PermissionData = new String[1];
         OkHttpClient client = new OkHttpClient();
@@ -266,6 +277,7 @@ public class Permissions extends AppCompatActivity {
 
                     Permissions.this.runOnUiThread( new Runnable() {
                         @Override
+                        @Generated
                         public void run() {
                             //Toast.makeText( CourseHomePageInstructor.this, "Retrieval Successful", Toast.LENGTH_SHORT ).show();
                             UpdateData(responseData) ;
@@ -276,6 +288,7 @@ public class Permissions extends AppCompatActivity {
                 else{
                     Permissions.this.runOnUiThread( new Runnable() {
                         @Override
+                        @Generated
                         public void run() {
 
                         }
@@ -286,12 +299,12 @@ public class Permissions extends AppCompatActivity {
         });
         return PermissionData[0];
     }
-
+    @Generated
     private void UpdateData(String responseData) {
         PermissionString = responseData;
     }
 
-
+    @Generated
     private void parsePermissionData(String response) throws JSONException {
         JSONObject json = new JSONObject(response);
         JSONArray jsonArray = json.getJSONArray( "myArr" );
