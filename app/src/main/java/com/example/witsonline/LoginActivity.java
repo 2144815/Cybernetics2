@@ -141,7 +141,7 @@ public class LoginActivity extends AppCompatActivity {
                         USER.USERNAME = user.getEditText().getText().toString().trim();
                         USER.regUser="";
                         USER.regPass="";
-                        USER.regStudent=false;
+                        USER.regStudent=true;
                         Intent i = new Intent(LoginActivity.this, Dashboard.class);
                         startActivity(i);
                         finish();
@@ -155,7 +155,7 @@ public class LoginActivity extends AppCompatActivity {
                         USER.USERNAME = user.getEditText().getText().toString().trim();
                         USER.regUser="";
                         USER.regPass="";
-                        USER.regStudent=false;
+                        USER.regStudent=true;
                         Intent i = new Intent(LoginActivity.this, Dashboard.class);
                         startActivity(i);
                         finish();
@@ -175,30 +175,24 @@ public class LoginActivity extends AppCompatActivity {
 
     public boolean validateInstructorUsername(TextInputLayout userText,HashMap<String,String>instDetails) {
         String usernameInput = userText.getEditText().getText().toString().trim();
-        boolean userExists = false;
-       /* for (int i = 0; i < instructorList.size(); i++) {
-            if (usernameInput.equals(instructorList.get(i).get(0))) {
-                userExists = true;
-                instructorIndex = i;
-                USER.USER_NUM=instructorList.get(i).get(0);
-                USER.STUDENT=false;
-            }
-        } */
+
         if (instDetails.containsKey(usernameInput) || (usernameInput.equals(USER.regUser) && !USER.regStudent)){
-            userExists = true;
             USER.USER_NUM= usernameInput;
             USER.STUDENT=false;
         }
+        else{
+            userText.setError("Username does not exist");
+            return false;
+        }
+
         if (usernameInput.isEmpty()) {
             userText.setError("Field can't be empty");
             return false;
         } else if (usernameInput.length() > 20) {
             userText.setError("Username too long");
             return false;
-        } else if (!userExists) {
-            userText.setError("Username does not exist");
-            return false;
-        } else {
+        }
+        else {
             userText.setError(null);
             return true;
         }
@@ -234,11 +228,13 @@ public class LoginActivity extends AppCompatActivity {
 
     public boolean validateStudentUsername(TextInputLayout userText,HashMap<String,String>studDetails) {
         String usernameInput = userText.getEditText().getText().toString().trim();
-        boolean userExists = false;
-        if (studDetails.containsKey(usernameInput) || (usernameInput.equals(USER.regUser) && USER.regStudent)){
-            userExists = true;
+        if (studDetails.containsKey(usernameInput) ||  (usernameInput.equals(USER.regUser) && USER.regStudent) ){
             USER.USER_NUM=usernameInput;
             USER.STUDENT=true;
+        }
+        else{
+            userText.setError("Username does not exist");
+            return false;
         }
         if (usernameInput.isEmpty()) {
             userText.setError("Field can't be empty");
@@ -246,10 +242,8 @@ public class LoginActivity extends AppCompatActivity {
         } else if (usernameInput.length() > 20) {
             userText.setError("Username too long");
             return false;
-        } else if (!userExists) {
-            userText.setError("Username does not exist");
-            return false;
-        } else {
+        }
+        else {
             userText.setError(null);
             return true;
         }

@@ -111,14 +111,6 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
             holder.courseLock.setVisibility(View.GONE);
         }
 
-
-        //add course to visibility hash map
-        // if (!courseVisibilites.containsKey(courseV.getCourseCode()) && courseV.getCourseVisibility() != null){
-        //     courseVisibilites.put(courseV.getCourseCode(),courseV.getCourseVisibility());
-        //    //Toast.makeText(context, courseV.getCourseCode(), Toast.LENGTH_SHORT).show();
-        // }
-
-
         //for view profile, we need the instructor's username
         instUsernames.put(courseV.getCourseCode(), courseV.getCourseInstructor());
 
@@ -215,8 +207,8 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
 
                             if (strContext.contains("Dashboard")){
                                 boolean featuredCourse = USER.SUBSCRIBED_TO_FEAT_COURSE.contains(COURSE.CODE);
-                                //if not subscribed to featured course
-                                if (!featuredCourse) {
+                                //if not subscribed to featured course and course is private
+                                if (!featuredCourse && !courseVisibility.getText().toString().equals("Public") ) {
                                     createNewRequestDialog();
                                     //Toast.makeText(context, "This course is private", Toast.LENGTH_SHORT).show();
                                 } else {

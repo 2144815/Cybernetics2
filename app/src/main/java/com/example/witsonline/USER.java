@@ -26,5 +26,5 @@ public class USER {
 	//for registration
 	public static String regUser = "";
 	public static String regPass = "";
-	public static boolean regStudent = false;
+	public static boolean regStudent = true;
 }
