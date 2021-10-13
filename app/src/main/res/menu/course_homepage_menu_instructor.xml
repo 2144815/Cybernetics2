@@ -4,4 +4,8 @@
     <item
         android:id="@+id/courseHomepg_menu_instr"
         android:title="Permissions" />
+
+    <item
+        android:id="@+id/courseHomepg_menu_quiz"
+        android:title="Quizzes" />
 </menu>

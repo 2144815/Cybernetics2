@@ -500,6 +500,9 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
                 /*
 
                  */
+            case R.id.courseHomepg_menu_quiz:
+                Intent i = new Intent(CourseHomePageInstructor.this, QuizActivity.class );
+                startActivity( i );
             default:
                 return super.onOptionsItemSelected(item);
         }

@@ -54,6 +54,7 @@
         <activity android:name=".MyCourses" />
         <activity android:name=".UserDetails" />
         <activity android:name=".ForumActivity" />
+        <activity android:name=".QuizActivity"/>
         <activity android:name=".ADiscussion" />
         <activity
             android:name=".RegisterActivity"
@@ -77,7 +78,7 @@
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
-        <activity android:name=".Permissions"/>
+        <activity android:name=".Permissions" />
     </application>
 
 </manifest>
